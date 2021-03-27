@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
+import Barra from '../layout/Barra';
 
 const Login = (props) => {
 
@@ -10,14 +12,14 @@ const Login = (props) => {
     const { alerta, mostrarAlerta } = alertaContext;
 
     const authContext = useContext(AuthContext);
-    const { mensaje, autenticado, iniciarSesion,token } = authContext;
+    const { mensaje, autenticado, iniciarSesion, token } = authContext;
 
     // En caso de que el password o usuario no exista
     useEffect(() => {
 
         if (autenticado) {
             alert("Ingreso Exitoso");
-            props.history.push('/servicios');
+            props.history.push('/inicio');
 
         }
 
@@ -77,50 +79,53 @@ const Login = (props) => {
 
 
     return (
+        <Fragment>
+            <Barra />
 
-        <div className="form-usuario">
-            { alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>) : null}
-            <div className="contenedor-form sombra-dark">
-                <h1>Iniciar Sesión</h1>
+            <div className="form-usuario">
+                {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>) : null}
+                <div className="contenedor-form sombra-dark">
+                    <h1>Iniciar Sesión</h1>
 
-                <form
-                    onSubmit={onSubmit}
-                >
-                    <div className="campo-form">
-                        <label htmlFor="documento">N° Documento</label>
-                        <input
-                            type="number"
-                            id="documento"
-                            name="documento"
-                            className="camposNum"
-                            placeholder="Tu numero de documento"
-                            value={documento}
-                            onChange={onChange}
-                        />
-                    </div>
+                    <form
+                        onSubmit={onSubmit}
+                    >
+                        <div className="campo-form">
+                            <label htmlFor="documento">N° Documento</label>
+                            <input
+                                type="text"
+                                id="documento"
+                                name="documento"
+                                className="camposNum"
+                                placeholder="Tu numero de documento"
+                                value={documento}
+                                onChange={onChange}
+                            />
+                        </div>
 
-                    <div className="campo-form">
-                        <label htmlFor="contraseña">Contraseña</label>
-                        <input
-                            type="password"
-                            id="contraseña"
-                            name="contraseña"
-                            placeholder="Tu contraseña"
-                            value={contraseña}
-                            onChange={onChange}
-                        />
-                    </div>
+                        <div className="campo-form">
+                            <label htmlFor="contraseña">Contraseña</label>
+                            <input
+                                type="password"
+                                id="contraseña"
+                                name="contraseña"
+                                placeholder="Tu contraseña"
+                                value={contraseña}
+                                onChange={onChange}
+                            />
+                        </div>
 
-                    <div className="campo-form">
-                        <input type="submit" className="btn btn-primary btn-block" value="Iniciar Sesión" />
-                    </div>
-                </form>
+                        <div className="campo-form">
+                            <input type="submit" className="btn btn-primary btn-block" value="Iniciar Sesión" />
+                        </div>
+                    </form>
 
-                <Link to={'/nueva-cuenta'} className="enlace-cuenta">
-                    Obtener Cuenta
+                    <Link to={'/cambio-contrasena'} className="olvido enlace-cuenta" >
+                        Olvidaste la contraseña?
                 </Link>
+                </div>
             </div>
-        </div>
+        </Fragment>
     );
 }
 

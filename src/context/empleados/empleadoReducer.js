@@ -8,7 +8,8 @@ import {
     ACTUAL,
     LIMPIAR,
     ACTUALIZAR,
-    DISPONIBLE
+    DISPONIBLE,
+    CAMBIAR
 } from '../../types';
 
 
@@ -20,10 +21,16 @@ export default (state, action) => {
                 ...state,
                 formulario: true
             }
+
         case VALIDAR_FORMULARIO:
             return {
                 ...state,
                 errorformulario: true
+            }
+        case CAMBIAR:
+            return {
+                ...state,
+                caso: action.payload
             }
 
         case AGREGAR:

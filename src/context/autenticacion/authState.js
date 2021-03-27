@@ -34,8 +34,6 @@ const AuthState = props => {
                 payload: respuesta.data
             });
 
-            // Obtener el usuario que se registro
-            usuarioAutenticado();
         } catch (error) {
             dispatch({
                 type: LOGIN_ERROR

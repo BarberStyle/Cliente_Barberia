@@ -127,18 +127,31 @@ aside {
 
 .formulario-nuevo-proyecto {
   margin-top: 6rem;
-  max-width: 100%;
-  margin-left: 1rem;
+  max-width: 25%;
+  margin-left: 40%;
   font-size: medium;
 }
 
-.formulario-nuevo-proyecto .input-text  {
+.formulario-nuevo-proyecto .input-text {
   border-bottom: 1px solid var(--gris2);
   border-radius: 0;
   background-color: var(--gris1);
 }
 
-.camposNum{
+.formulario-pregunta {
+  margin-top: 6rem;
+  max-width: 50%;
+  margin-left: 10rem;
+  font-size: medium;
+}
+
+.formulario-pregunta .input-text {
+  border-bottom: 1px solid var(--gris2);
+  border-radius: 0;
+  background-color: var(--gris1);
+}
+
+.camposNum {
   border-bottom: 1px solid var(--gris2);
   border-radius: 0;
   padding: 1rem;
@@ -147,7 +160,6 @@ aside {
   width: 100%;
   border: 1px solid #e1e1e1;
   padding: 1rem;
-  
 }
 
 .formulario-nuevo-proyecto .input-text::placeholder {
@@ -172,27 +184,28 @@ aside {
 .app-header {
   display: flex;
   justify-content: space-between;
-  background-color: var(--gris2);
   padding: 4rem;
+  max-width: 100%;
 }
 
 .nombre-usuario {
   color: var(--blanco);
   font-size: 2.2rem;
-  margin: 0;
+  margin-top: 0.5% ;
+  margin-right: 2%;
+  
+  float: right;
 }
 
 .nombre-usuario span {
   font-weight: 900;
 }
 
-.boton-cerrar{
-
+.boton-cerrar {
   margin-left: 70%;
   width: 300px;
   display: flex;
   justify-content: space-between;
-
 }
 
 .nav-principal a {
@@ -384,9 +397,7 @@ aside {
   font-size: medium;
 }
 
-.campo-form input[type="password"], 
-  .campo-form input[type="email"], 
-  .campo-form input[type="direccion"], .campo-form input[type="text"] {
+.campo-form input[type="password"], .campo-form input[type="email"], .campo-form input[type="direccion"], .campo-form input[type="text"] {
   border: 1px solid #e1e1e1;
   padding: 1rem;
   flex: 1;
@@ -394,12 +405,10 @@ aside {
 
 .enlace-cuenta {
   margin-top: 2rem;
-  display: block;
+  display: inline-flex;
   opacity: .7;
   font-size: medium;
 }
-
-
 
 .alerta-ok {
   background-color: rgb(109, 211, 109);
@@ -427,14 +436,14 @@ aside {
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: whitesmoke;
+  border-color: red;
+  border: 5px;
 }
 
 .App-link {
@@ -455,24 +464,136 @@ aside {
 }
 
 /* Style the top navigation bar */
+
 .topnav {
-  overflow: hidden;
-  color: var(--gris2);
-  font-size: medium;
+  width: 100%;
+  background: rgb(5, 4, 4);
+}
+
+.olvido {
+  float: right;
+  text-align: center;
 }
 
 /* Style the topnav links */
+
 .topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
+  float: right;
+  display: inline-flex;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-size: medium;
+  max-width: 100%;
 }
 
 .topnav a:hover {
-  background-color: #ddd;
-  color: #282c34;
+  color: #fc2004;
+  transition: all .3s;
+  background-color: white;
 }
 
+/*menu logueado*/
+
+.navegacion {
+  background: rgb(5, 4, 4);
+  max-width: 100%;
+}
+
+.navegacion ul {
+  list-style: none;
+}
+
+.menu>li {
+  position: relative;
+  display: inline-block;
+}
+
+.menu>li>a {
+  display: block;
+  padding: 15px 20px;
+  color: #f7f5f5;
+  font-family: 'Open sans';
+  text-decoration: none;
+  font-size: medium;
+}
+
+.menu li a:hover {
+  color: #fc2004;
+  transition: all .3s;
+  background-color: white;
+}
+
+/* Submenu*/
+
+.submenu {
+  position: absolute;
+  background: #333333;
+  width: 120%;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1.5s;
+}
+
+.submenu li a {
+  display: block;
+  padding: 15px;
+  color: #fff;
+  font-family: 'Open sans';
+  text-decoration: none;
+}
+
+.menu li:hover .submenu {
+  visibility: visible;
+  opacity: 1;
+}
+
+.logo {
+  margin-left: 30%;
+  margin-top: 5%;
+}
+
+img {
+  width: 50%;
+  height: 50%;
+}
+
+.image-somos {
+  padding: 30px;
+  margin: 5%;
+}
+
+.texto-somos {
+  float: right;
+  padding: 30px;
+  margin: 5%;
+
+}
+
+.btn-cerrar {
+  padding: 15px 20px;
+  color: #f7f5f5;
+  font-family: 'Open sans';
+  text-decoration: none;
+  font-size: medium;
+  background-color: black;
+  border: none;
+}
+
+.btn-cerrar:hover {
+  color: #fc2004;
+  transition: all .3s;
+  background-color: white;
+}
+
+.contentedor-externo {
+  margin: 20px auto;
+  width: 90%;
+  height: 100%;
+  background-color: whitesmoke;
+  border: 1px solid whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

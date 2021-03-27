@@ -1,9 +1,8 @@
 import React, {useContext, useEffect} from 'react';
-import Sidebar from '../layout/SidebarEmpleados';
 import ListaEmpleados from '../empleados/ListadoEmpleados';
-import Barra from '../layout/Barra';
 import AuthContext from '../../context/autenticacion/authContext';
 import { Fragment } from 'react';
+import MenuPrincipal from '../inicio/menuPrincipal';
 
 
 const Empleados = () => {
@@ -20,9 +19,8 @@ const Empleados = () => {
 
     return (
         <div className="contenedor-app">
-            <Sidebar />
             <div className="seccion-principal">
-                <Barra />
+                <MenuPrincipal/>
                 <main>
                     <br></br>
                     <div className="contenedor-tareas">

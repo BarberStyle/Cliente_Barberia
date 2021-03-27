@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useContext, useEffect } from 'react';
 import AlertaContext from '../../context/alertas/alertaContext';
+import DetalleContext from '../../context/detalle/detalleContext';
 import EmpleadoContext from '../../context/empleados/empleadoContext';
+import MenuPrincipal from '../inicio/menuPrincipal';
 
 
 
@@ -15,6 +17,8 @@ const NuevoEmpleado = () => {
     //obtener el state de empleados y todas sus funciones
     const empleadoContext = useContext(EmpleadoContext);
 
+    const detalleContext = useContext(DetalleContext);
+
 
     //Funciones para alertas
     const { alerta } = alertaContext;
@@ -22,9 +26,12 @@ const NuevoEmpleado = () => {
 
     //extraer objetos del state
     const { formulario, mostrarFormulario, mostrarError, errorformulario,
-        agregarEmpleado, empleadoSeleccionado, limpiarEmpleado, actualizarEmpleado } = empleadoContext;
+        agregarEmpleado, empleadoSeleccionado, caso, cambiarCaso,
+        limpiarEmpleado, actualizarEmpleado, tipoEmpleado } = empleadoContext;
 
 
+
+    const { limpiarDetalle } = detalleContext;
 
     // Effect que detecta si hay un empleado seleccionado
 
@@ -176,12 +183,17 @@ const NuevoEmpleado = () => {
             confirmarcontrasena: ''
         })
 
+        alert('Empleado guardado con exito');
+
 
     }
 
     // Mostrar o no el formulario
     const onClickFormulario = () => {
+        var caso = 'Crear';
+        cambiarCaso(caso);
         limpiarEmpleado();
+        limpiarDetalle();
         mostrarFormulario();
     }
 
@@ -189,156 +201,178 @@ const NuevoEmpleado = () => {
 
     return (
         <Fragment>
-            <button
-                type="button"
-                className="btn btn-block btn-primary"
-                onClick={onClickFormulario}
-            >Crear Empleado</button>
+            <MenuPrincipal />
+            <form
+                className="formulario-nuevo-proyecto"
+                onSubmit={onSubmit}
+            >
+                <h1>Nuevo Empleado</h1>
+                <hr></hr>
+                <br></br>
+                <div className="campo-form">
+                    <label htmlFor="tipo">Tipo Documento</label>
+                    <input
+                        type="text"
+                        id="tipo"
+                        name="tipo"
+                        className="input-text"
+                        placeholder="Tipo de Documento"
+                        value={tipo}
+                        onChange={onChange}
+                    />
 
-            {formulario ? (
-                <form
-                    className="formulario-nuevo-proyecto"
-                    onSubmit={onSubmit}
-                >
+                </div>
+                <div className="campo-form">
+                    <label htmlFor="documento">N° Documento</label>
+                    <input
+                        type="number"
+                        id="documento"
+                        name="documento"
+                        className="input-text"
+                        placeholder="Número de Doc."
+                        value={documento}
+                        onChange={onChange}
+
+                    />
+
+                </div>
+
+                <div className="campo-form">
+                    <label htmlFor="nombres">Nombres</label>
+                    <input
+                        type="text"
+                        id="nombres"
+                        name="nombres"
+                        className="input-text"
+                        placeholder="Tu nombre"
+                        value={nombres}
+                        onChange={onChange}
+
+                    />
+                </div>
+                <div className="campo-form">
+                    <label htmlFor="apellidos">Apellidos</label>
+                    <input
+                        type="text"
+                        id="apellidos"
+                        name="apellidos"
+                        className="input-text"
+                        placeholder="Tus apellidos"
+                        value={apellidos}
+                        onChange={onChange}
+
+                    />
+                </div>
+
+                <div className="campo-form">
+                    <label htmlFor="correo">Correo Electrónico</label>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        className="input-text"
+                        placeholder="Tu Correo Electrónico"
+                        value={correo}
+                        onChange={onChange}
+
+                    />
+                </div>
+
+                <div className="campo-form">
+                    <label htmlFor="confirmarCorreo">Confirmar Correo</label>
+                    <input
+                        type="email"
+                        id="confirmarCorreo"
+                        name="confirmarCorreo"
+                        className="input-text"
+                        placeholder="Confirma el correo"
+                        value={confirmarCorreo}
+                        onChange={onChange}
+
+                    />
+                </div>
+
+                <div className="campo-form">
+                    <label htmlFor="telefono">Teléfono</label>
+                    <input
+                        type="number"
+                        id="telefono"
+                        name="telefono"
+                        className="input-text"
+                        placeholder="Tu Teléfono"
+                        value={telefono}
+                        onChange={onChange}
+
+                    />
+                </div>
+
+                {empleadoSeleccionado ? null : (
+
                     <div className="campo-form">
-                        <label htmlFor="tipo">Tipo Documento</label>
+                        <label htmlFor="fecha">Fecha de Nacimiento</label>
                         <input
-                            type="text"
-                            id="tipo"
-                            name="tipo"
-                            className="input-text"
-                            placeholder="Tipo de Documento"
-                            value={tipo}
-                            onChange={onChange}
-                        />
-
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="documento">N° Documento</label>
-                        <input
-                            type="number"
-                            id="documento"
-                            name="documento"
-                            className="input-text"
-                            placeholder="Número de Doc."
-                            value={documento}
+                            type="date"
+                            id="fecha"
+                            name="fecha"
+                            className="input-date"
+                            placeholder="Fecha en que naciste"
+                            value={fecha}
                             onChange={onChange}
 
                         />
                     </div>
+                )}
 
-                    <div className="campo-form">
-                        <label htmlFor="nombres">Nombres</label>
-                        <input
-                            type="text"
-                            id="nombres"
-                            name="nombres"
-                            className="input-text"
-                            placeholder="Tu nombre"
-                            value={nombres}
-                            onChange={onChange}
 
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="apellidos">Apellidos</label>
-                        <input
-                            type="text"
-                            id="apellidos"
-                            name="apellidos"
-                            className="input-text"
-                            placeholder="Tus apellidos"
-                            value={apellidos}
-                            onChange={onChange}
+                <div className="campo-form">
+                    <label htmlFor="password">Perfil</label>
+                    <select
+                        type="text"
+                        id="perfil"
+                        name="perfil"
+                        className="input-text"
+                        placeholder="Perfil del empleado"
+                        value={perfil}
+                        onChange={onChange}
 
-                        />
-                    </div>
+                    >  <option>--Seleccione--</option>
+                        {tipoEmpleado.map(tipo => (
+                            <option
+                                key={tipo._id}
+                            >{tipo.nombre}</option>
+                        ))}
+                    </select>
+                </div>
+
+                {empleadoSeleccionado ? null : (
 
                     <div className="campo-form">
-                        <label htmlFor="correo">Correo Electrónico</label>
+                        <label htmlFor="password">contraseña</label>
                         <input
-                            type="email"
-                            id="correo"
-                            name="correo"
+                            type="password"
+                            id="contrasena"
+                            name="contrasena"
                             className="input-text"
-                            placeholder="Tu Correo Electrónico"
-                            value={correo}
+                            placeholder="Tu contrasena"
+                            value={contrasena}
                             onChange={onChange}
 
                         />
                     </div>
+                )}
 
-                    <div className="campo-form">
-                        <label htmlFor="confirmarCorreo">Confirmar Correo</label>
-                        <input
-                            type="email"
-                            id="confirmarCorreo"
-                            name="confirmarCorreo"
-                            className="input-text"
-                            placeholder="Confirma el correo"
-                            value={confirmarCorreo}
-                            onChange={onChange}
 
-                        />
-                    </div>
-
-                    <div className="campo-form">
-                        <label htmlFor="telefono">Teléfono</label>
-                        <input
-                            type="number"
-                            id="telefono"
-                            name="telefono"
-                            className="input-text"
-                            placeholder="Tu Teléfono"
-                            value={telefono}
-                            onChange={onChange}
-
-                        />
-                    </div>
-
-                    {empleadoSeleccionado ? null : (
-
+                {empleadoSeleccionado ? null :
+                    (
                         <div className="campo-form">
-                            <label htmlFor="fecha">Fecha de Nacimiento</label>
-                            <input
-                                type="date"
-                                id="fecha"
-                                name="fecha"
-                                className="input-date"
-                                placeholder="Fecha en que naciste"
-                                value={fecha}
-                                onChange={onChange}
-
-                            />
-                        </div>
-                    )}
-
-
-                    <div className="campo-form">
-                        <label htmlFor="password">Perfil</label>
-                        <input
-                            type="text"
-                            id="perfil"
-                            name="perfil"
-                            className="input-text"
-                            placeholder="Perfil del empleado"
-                            value={perfil}
-                            onChange={onChange}
-
-                        />
-                    </div>
-
-                    {empleadoSeleccionado ? null : (
-
-                        <div className="campo-form">
-                            <label htmlFor="password">contraseña</label>
+                            <label htmlFor="confirmarcontrasena">Confirmar contraseña</label>
                             <input
                                 type="password"
-                                id="contrasena"
-                                name="contrasena"
+                                id="confirmarcontrasena"
+                                name="confirmarcontrasena"
                                 className="input-text"
-                                placeholder="Tu contrasena"
-                                value={contrasena}
+                                placeholder="Confirma tu contrasena"
+                                value={confirmarcontrasena}
                                 onChange={onChange}
 
                             />
@@ -346,46 +380,27 @@ const NuevoEmpleado = () => {
                     )}
 
 
-                    {empleadoSeleccionado ? null :
-                        (
-                            <div className="campo-form">
-                                <label htmlFor="confirmarcontrasena">Confirmar contraseña</label>
-                                <input
-                                    type="password"
-                                    id="confirmarcontrasena"
-                                    name="confirmarcontrasena"
-                                    className="input-text"
-                                    placeholder="Confirma tu contrasena"
-                                    value={confirmarcontrasena}
-                                    onChange={onChange}
+                {empleadoSeleccionado ? (
 
-                                />
-                            </div>
-                        )}
+                    <input
+                        type="submit"
+                        className="btn btn-primary btn-block"
+                        value="Actualizar Empleado"
+                    />
 
-
-                    {empleadoSeleccionado ? (
-
+                ) :
+                    (
                         <input
                             type="submit"
                             className="btn btn-primary btn-block"
-                            value="Actualizar Empleado"
+                            value="Registrar"
                         />
 
-                    ) :
-                        (
-                            <input
-                                type="submit"
-                                className="btn btn-primary btn-block"
-                                value="Agregar Empleado"
-                            />
+                    )}
 
-                        )}
+            </form>
 
-                </form>
-            ) : null}
             {errorformulario ? (<p className="mensaje error">Todos los campos son Obligatorios</p>) : null}
-
 
         </Fragment>
     );

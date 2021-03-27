@@ -12,8 +12,17 @@ import RutaPrivada from './components/rutas/RutaPrivada';
 import ListadoServicios from './components/servicios/listadoServicios';
 import Empleados from './components/empleados/Empleados';
 import EmpleadoSatate from './context/empleados/empleadoState';
-import Agendamiento from './components/agendamiento/Agendamientos';
 import CitaState from './context/citas/citaState';
+import DetalleState from './context/detalle/detalleState';
+import EstudioState from './context/estudios/estudioState';
+import NuevaContraseña from './components/seguridad/NuevaContraseña';
+import PreguntaState from './context/preguntas/preguntaState';
+import Principal from './components/principal/Principal';
+import Inicio from './components/inicio/inicio';
+import Somos from './components/informativo/Somos';
+import Galeria from './components/informativo/Galeria';
+import NuevoEmpleado from './components/empleados/NuevoEmpleado';
+
 
 
 //Revisar si tenemos un token
@@ -28,21 +37,32 @@ function App() {
     <EmpleadoSatate>
       <ServicioState>
         <CitaState>
-          <AlertaState>
-            <AuthState>
-              <Router>
-                <Switch>
-                  <Route exact path="/" component={Login} />
-                  <Route exact path="/nueva-cuenta" component={NuevaCuenta} />
-                  <RutaPrivada path='/servicios' exact component={Servicios} />
-                  <RutaPrivada path='/nuevo-servicio' exact component={NuevoServicio} />
-                  <RutaPrivada path='/lista-servicios' exact component={ListadoServicios} />
-                  <RutaPrivada path='/empleados' exact component={Empleados} />
-                  <RutaPrivada path='/agendamiento' exact component={Agendamiento} />
-                </Switch>
-              </Router>
-            </AuthState>
-          </AlertaState>
+          <DetalleState>
+            <EstudioState>
+              <PreguntaState>
+                <AlertaState>
+                  <AuthState>
+                    <Router>
+                      <Switch>
+                        <Route exact path="/iniciar-sesion" component={Login} />
+                        <RutaPrivada exact path="/nueva-cuenta" component={NuevaCuenta} />
+                        <Route path='/servicios' exact component={Servicios} />
+                        <RutaPrivada path='/nuevo-servicio' exact component={NuevoServicio} />
+                        <Route path='/lista-servicios' exact component={ListadoServicios} />
+                        <RutaPrivada path='/empleados' exact component={Empleados} />
+                        <RutaPrivada path='/nuevo-empleado' exact component={NuevoEmpleado} />
+                        <Route exact path="/cambio-contrasena" component={NuevaContraseña} />
+                        <RutaPrivada exact path="/inicio" component={Inicio} />
+                        <Route exact path="/somos" component={Somos} />
+                        <Route exact path="/galeria" component={Galeria} />
+                        <Route exact path="/" component={Principal} />
+                      </Switch>
+                    </Router>
+                  </AuthState>
+                </AlertaState>
+              </PreguntaState>
+            </EstudioState>
+          </DetalleState>
         </CitaState>
       </ServicioState>
     </EmpleadoSatate>

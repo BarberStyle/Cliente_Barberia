@@ -13,7 +13,7 @@ import {
     ACTUAL,
     LIMPIAR,
     ACTUALIZAR,
-    DISPONIBLE
+    CAMBIAR
 } from '../../types';
 
 
@@ -25,12 +25,18 @@ const EmpleadoSatate = props => {
 
         empleados: [],
         formulario: false,
-        formulario_cita: false,
         errorformulario: false,
         empleado: null,
         mensaje: null,
-        empleadoSeleccionado: null
+        empleadoSeleccionado: null,
+        caso: ''
     }
+
+    const tipoEmpleado = [
+        { nombre: 'Empleado' },
+        { nombre: 'Admin Provisional' },
+        { nombre: 'Vendedor' }
+    ]
 
     // Dispatch para ejecutar las acciones del reducer
     const [state, dispatch] = useReducer(empleadoReducer, initialState);
@@ -41,6 +47,8 @@ const EmpleadoSatate = props => {
             type: FORMULARIO
         })
     }
+
+
 
     // Valida el formulario por errores
     const mostrarError = () => {
@@ -124,7 +132,6 @@ const EmpleadoSatate = props => {
         })
     }
 
-    
 
     //limpia el empleado seleccionado
     const limpiarEmpleado = () => {
@@ -147,6 +154,12 @@ const EmpleadoSatate = props => {
         }
     }
 
+    const cambiarCaso = caso => {
+        dispatch({
+            type: CAMBIAR,
+            payload:caso
+        })
+    }
 
     return (
         <empleadoContext.Provider
@@ -156,6 +169,7 @@ const EmpleadoSatate = props => {
                 formulario_cita: state.formulario_cita,
                 errorformulario: state.errorformulario,
                 empleadoSeleccionado: state.empleadoSeleccionado,
+                caso: state.caso,
                 mostrarFormulario,
                 mostrarError,
                 agregarEmpleado,
@@ -163,7 +177,9 @@ const EmpleadoSatate = props => {
                 eliminarEmpleado,
                 guardarEmpleadoSeccionado,
                 limpiarEmpleado,
-                actualizarEmpleado
+                actualizarEmpleado,
+                tipoEmpleado,
+                cambiarCaso
             }}
         >
             {props.children}

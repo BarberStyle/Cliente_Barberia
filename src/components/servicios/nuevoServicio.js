@@ -2,6 +2,7 @@ import React, { Fragment, useState, useContext, useEffect } from 'react';
 import ServicioContext from '../../context/servicios/servicioContext';
 import AlertaContext from '../../context/alertas/alertaContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MenuPrincipal from '../inicio/menuPrincipal';
 
 const NuevoServicio = () => {
 
@@ -100,6 +101,7 @@ const NuevoServicio = () => {
         }
         //mensaje de confirmacion
 
+        alert("Servicio guardado con exito");
         // Reiniciar el form
         guardarServicio({
             nombre: '',
@@ -118,77 +120,74 @@ const NuevoServicio = () => {
 
     return (
         <Fragment>
-            <button
-                type="button"
-                className="btn btn-block btn-primary"
-                onClick={onClickFormulario}
-            >Crear Servicio</button>
+            <MenuPrincipal />
             {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
             ) : null}
-            { formulario ? (
 
-                <form
-                    className="formulario-nuevo-proyecto"
-                    onSubmit={onSubmitServicio}
-                >
-                    <label>Nombre</label>
+            <form
+                className="formulario-nuevo-proyecto"
+                onSubmit={onSubmitServicio}
+            >
+                <h1>Nuevo Servicio</h1>
+                <hr></hr>
+                <br></br>
+                <label>Nombre</label>
+                <input
+                    type="text"
+                    className="input-text"
+                    placeholder="Nombre Servicio"
+                    name="nombre"
+                    value={nombre}
+                    onChange={onChangeServicio}
+                />
+                <label>Precio</label>
+                <input
+                    type="number"
+                    className="input-text"
+                    placeholder="Precio Servicio"
+                    name="precio"
+                    value={precio}
+                    onChange={onChangeServicio}
+                />
+
+                <label>Duración</label>
+                <input
+                    type="number"
+                    className="input-text"
+                    placeholder="Duración (Min)"
+                    name="duracion"
+                    value={duracion}
+                    onChange={onChangeServicio}
+                />
+
+                <label>Tipo</label>
+                <input
+                    type="text"
+                    className="input-text"
+                    placeholder="Tipo"
+                    name="tipo"
+                    value={tipo}
+                    onChange={onChangeServicio}
+                />
+                {servicioSeleccionado ? (
+
                     <input
-                        type="text"
-                        className="input-text"
-                        placeholder="Nombre Servicio"
-                        name="nombre"
-                        value={nombre}
-                        onChange={onChangeServicio}
+                        type="submit"
+                        className="btn btn-primary btn-block"
+                        value="Actualizar Servicio"
                     />
-                    <label>Precio</label>
+
+                ) :
+
                     <input
-                        type="number"
-                        className="input-text"
-                        placeholder="Precio Servicio"
-                        name="precio"
-                        value={precio}
-                        onChange={onChangeServicio}
+                        type="submit"
+                        className="btn btn-primary btn-block"
+                        value="Agregar Servicio"
                     />
+                }
 
-                    <label>Duración</label>
-                    <input
-                        type="number"
-                        className="input-text"
-                        placeholder="Duración (Min)"
-                        name="duracion"
-                        value={duracion}
-                        onChange={onChangeServicio}
-                    />
+            </form>
 
-                    <label>Tipo</label>
-                    <input
-                        type="text"
-                        className="input-text"
-                        placeholder="Tipo"
-                        name="tipo"
-                        value={tipo}
-                        onChange={onChangeServicio}
-                    />
-                    { servicioSeleccionado ? (
-
-                        <input
-                            type="submit"
-                            className="btn btn-primary btn-block"
-                            value="Actualizar Servicio"
-                        />
-
-                    ) :
-
-                        <input
-                            type="submit"
-                            className="btn btn-primary btn-block"
-                            value="Agregar Servicio"
-                        />
-                    }
-
-                </form>
-            )
-                : null}
             {errorformulario ? (<p className="mensaje error">Todos los campos son Obligatorios</p>) : null}
 
         </Fragment>

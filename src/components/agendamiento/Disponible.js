@@ -10,8 +10,6 @@ const Disponible = ({ empleado }) => {
     //instanciar state de cita
     const citaContext = useContext(CitaContext);
 
-    const empleadoContext = useContext(EmpleadoContext);
-
 
     const { mostrarCita } = citaContext;
     const { guardarEmpleadoDisponible } = citaContext;

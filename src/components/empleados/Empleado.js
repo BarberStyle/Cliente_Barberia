@@ -2,6 +2,7 @@ import React, { useState, useContext, Fragment } from 'react';
 import EmpleadoContext from '../../context/empleados/empleadoContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import DetalleContext from '../../context/detalle/detalleContext';
 
 
 const Empleado = ({ empleado }) => {
@@ -10,8 +11,12 @@ const Empleado = ({ empleado }) => {
     //instanciar state de empleado
     const empleadoContext = useContext(EmpleadoContext);
 
+    const detalleContext = useContext(DetalleContext);
 
-    const { mostrarFormulario, eliminarEmpleado, guardarEmpleadoSeccionado } = empleadoContext;
+
+    const { mostrarFormulario, eliminarEmpleado, guardarEmpleadoSeccionado, cambiarCaso } = empleadoContext;
+
+    const { mostrarFormularioProfesional } = detalleContext;
 
     //state para modal
     const [modalEliminar, setModalEliminar] = useState(false);
@@ -28,10 +33,16 @@ const Empleado = ({ empleado }) => {
 
     //guardar servicio para editar o llama a eliminar
     const seleccionarEmpleado = (empleado, caso) => {
-        if (caso === 'HojaVida') { setModalEliminar(true) };
+
+        guardarEmpleadoSeccionado(empleado);
+        cambiarCaso(caso);
+
+        if (caso === 'HojaVida') {
+            mostrarFormularioProfesional();
+
+        };
 
         if (caso === 'Editar') {
-            guardarEmpleadoSeccionado(empleado);
             mostrarFormulario();
 
         }
@@ -73,7 +84,7 @@ const Empleado = ({ empleado }) => {
                         <button
                             className="btn btn-danger"
                             onClick={() => seleccionarEmpleado(empleado, 'HojaVida')}>
-                            Hoja de Vida</button>
+                            Detalles</button>
                     </tr>
 
                 </tbody>

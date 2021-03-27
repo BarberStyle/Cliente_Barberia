@@ -1,7 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
+import MenuPrincipal from '../inicio/menuPrincipal';
+import Barra from '../layout/Barra';
 
 const NuevaCuenta = (props) => {
 
@@ -15,8 +18,6 @@ const NuevaCuenta = (props) => {
     // En caso de que el password o usuario no exista
     useEffect(() => {
         if (autenticado) {
-            alert("Registro Exitoso");
-            props.history.push('/servicios');
         }
         //si hay mensaje fue porque algo fallo
         if (mensaje) {
@@ -112,131 +113,150 @@ const NuevaCuenta = (props) => {
 
             });
 
+
+        //limpiar form
+        guardarUsuario({
+            tipo: '',
+            documento: '',
+            nombres: '',
+            apellidos: '',
+            correo: '',
+            confirmarCorreo: '',
+            telefono: '',
+            contraseña: '',
+            confirmarContraseña: '',
+
+        });
+
+        alert('Registro del cliente exitoso');
+
+
     }
 
     return (
-        <div className="form-usuario">
-            {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
-            ) : null}
-            <div className="contenedor-form sombra-dark">
-                <h1>Obtener una Cuenta</h1>
+        <Fragment>
+            <MenuPrincipal />
+            <div className="form-usuario">
+                {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
+                ) : null}
+                <div className="contenedor-form sombra-dark">
+                    <h1>Registrar Cliente</h1>
 
-                <form
-                    onSubmit={onSubmit}
-                >
-                    <div className="campo-form">
-                        <label htmlFor="tipo">Tipo Documento</label>
-                        <input
-                            type="text"
-                            id="tipo"
-                            name="tipo"
-                            placeholder="Tipo de Documento"
-                            value={tipo}
-                            onChange={onChange}
-                        />
+                    <form
+                        onSubmit={onSubmit}
+                    >
+                        <div className="campo-form">
+                            <label htmlFor="tipo">Tipo Documento</label>
+                            <input
+                                type="text"
+                                id="tipo"
+                                name="tipo"
+                                placeholder="Tipo de Documento"
+                                value={tipo}
+                                onChange={onChange}
+                            />
 
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="documento">N° Documento</label>
-                        <input
-                            type="number"
-                            id="documento"
-                            name="documento"
-                            className="camposNum"
-                            placeholder="Número de Documento"
-                            value={documento}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="nombres">Nombres</label>
-                        <input
-                            type="text"
-                            id="nombres"
-                            name="nombres"
-                            placeholder="Tu nombre"
-                            value={nombres}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="apellidos">Apellidos</label>
-                        <input
-                            type="text"
-                            id="apellidos"
-                            name="apellidos"
-                            placeholder="Tus apellidos"
-                            value={apellidos}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="correo">Correo Electrónico</label>
-                        <input
-                            type="email"
-                            id="correo"
-                            name="correo"
-                            placeholder="Tu Correo Electrónico"
-                            value={correo}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="confirmarCorreo">Confirmar Correo</label>
-                        <input
-                            type="email"
-                            id="confirmarCorreo"
-                            name="confirmarCorreo"
-                            placeholder="Confirma el correo"
-                            value={confirmarCorreo}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="telefono">Teléfono</label>
-                        <input
-                            type="number"
-                            id="telefono"
-                            name="telefono"
-                            className="camposNum"
-                            placeholder="Tu Teléfono"
-                            value={telefono}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="password">Contraseña</label>
-                        <input
-                            type="password"
-                            id="contraseña"
-                            name="contraseña"
-                            placeholder="Tu Contraseña"
-                            value={contraseña}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="campo-form">
-                        <label htmlFor="confirmarContraseña">Confirmar Contraseña</label>
-                        <input
-                            type="password"
-                            id="confirmarContraseña"
-                            name="confirmarContraseña"
-                            placeholder="Confirma tu contraseña"
-                            value={confirmarContraseña}
-                            onChange={onChange}
-                        />
-                    </div>
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="documento">N° Documento</label>
+                            <input
+                                type="number"
+                                id="documento"
+                                name="documento"
+                                className="camposNum"
+                                placeholder="Número de Documento"
+                                value={documento}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="nombres">Nombres</label>
+                            <input
+                                type="text"
+                                id="nombres"
+                                name="nombres"
+                                placeholder="Tu nombre"
+                                value={nombres}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="apellidos">Apellidos</label>
+                            <input
+                                type="text"
+                                id="apellidos"
+                                name="apellidos"
+                                placeholder="Tus apellidos"
+                                value={apellidos}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="correo">Correo Electrónico</label>
+                            <input
+                                type="email"
+                                id="correo"
+                                name="correo"
+                                placeholder="Tu Correo Electrónico"
+                                value={correo}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="confirmarCorreo">Confirmar Correo</label>
+                            <input
+                                type="email"
+                                id="confirmarCorreo"
+                                name="confirmarCorreo"
+                                placeholder="Confirma el correo"
+                                value={confirmarCorreo}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="telefono">Teléfono</label>
+                            <input
+                                type="number"
+                                id="telefono"
+                                name="telefono"
+                                className="camposNum"
+                                placeholder="Tu Teléfono"
+                                value={telefono}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="password">Contraseña</label>
+                            <input
+                                type="password"
+                                id="contraseña"
+                                name="contraseña"
+                                placeholder="Tu Contraseña"
+                                value={contraseña}
+                                onChange={onChange}
+                            />
+                        </div>
+                        <div className="campo-form">
+                            <label htmlFor="confirmarContraseña">Confirmar Contraseña</label>
+                            <input
+                                type="password"
+                                id="confirmarContraseña"
+                                name="confirmarContraseña"
+                                placeholder="Confirma tu contraseña"
+                                value={confirmarContraseña}
+                                onChange={onChange}
+                            />
+                        </div>
 
-                    <div className="campo-form">
-                        <input type="submit" className="btn btn-primary btn-block" value="Registrarme" />
-                    </div>
-                </form>
+                        <div className="campo-form">
+                            <input type="submit" className="btn btn-primary btn-block" value="Registrar" />
 
-                <Link to={'/'} className="enlace-cuenta">
-                    Volver a iniciar sesion
-                </Link>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-        </div>
+        </Fragment>
     );
 }
 

@@ -20,5 +20,7 @@ export const CERRAR_SESION = 'CERRAR_SESION';
 export const DISPONIBLE = 'DISPONIBLE';
 
 export const DIAS = 'DIAS';
+export const FORMULARIO_PROF = 'FORMULARIO_PROF';
+export const CAMBIAR = 'CAMBIAR';
 
 

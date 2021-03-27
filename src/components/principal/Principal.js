@@ -1,13 +1,14 @@
 import React from 'react'
+import { Fragment } from 'react';
+import Barra from '../../components/layout/Barra';
+import Logo from '../principal/Logo';
 
 const principal = () => {
     return (
-        <div>
-        <h1>
-           
-
-        </h1>
-        </div>
+        <Fragment>
+            <Barra />
+            <Logo />
+        </Fragment>
     )
 }
 
