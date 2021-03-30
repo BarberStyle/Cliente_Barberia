@@ -16,12 +16,14 @@ import CitaState from './context/citas/citaState';
 import DetalleState from './context/detalle/detalleState';
 import EstudioState from './context/estudios/estudioState';
 import NuevaContraseña from './components/seguridad/NuevaContraseña';
-import PreguntaState from './context/preguntas/preguntaState';
 import Principal from './components/principal/Principal';
 import Inicio from './components/inicio/inicio';
 import Somos from './components/informativo/Somos';
 import Galeria from './components/informativo/Galeria';
 import NuevoEmpleado from './components/empleados/NuevoEmpleado';
+import NuevoProducto from './components/productos/NuevoProducto';
+import Productos from './components/productos/Productos';
+import ProductoState from './context/productos/productoState';
 
 
 
@@ -39,20 +41,22 @@ function App() {
         <CitaState>
           <DetalleState>
             <EstudioState>
-              <PreguntaState>
+              <ProductoState>
                 <AlertaState>
                   <AuthState>
                     <Router>
                       <Switch>
-                        <Route exact path="/iniciar-sesion" component={Login} />
-                        <RutaPrivada exact path="/nueva-cuenta" component={NuevaCuenta} />
-                        <Route path='/servicios' exact component={Servicios} />
-                        <RutaPrivada path='/nuevo-servicio' exact component={NuevoServicio} />
-                        <Route path='/lista-servicios' exact component={ListadoServicios} />
-                        <RutaPrivada path='/empleados' exact component={Empleados} />
-                        <RutaPrivada path='/nuevo-empleado' exact component={NuevoEmpleado} />
-                        <Route exact path="/cambio-contrasena" component={NuevaContraseña} />
                         <RutaPrivada exact path="/inicio" component={Inicio} />
+                        <RutaPrivada exact path="/nueva-cuenta" component={NuevaCuenta} />
+                        <RutaPrivada exact path='/nuevo-servicio'  component={NuevoServicio} />
+                        <RutaPrivada exact path='/empleados'  component={Empleados} />
+                        <RutaPrivada exact path='/nuevo-empleado'  component={NuevoEmpleado} />
+                        <RutaPrivada exact path='/nuevo-producto'  component={NuevoProducto} />
+                        <RutaPrivada exact path='/productos'  component={Productos} />
+                        <Route exact path="/iniciar-sesion" component={Login} />
+                        <Route exact path="/cambio-contrasena" component={NuevaContraseña} />
+                        <Route exact path='/servicios'  component={Servicios} />
+                        <Route exact path='/lista-servicios'  component={ListadoServicios} />
                         <Route exact path="/somos" component={Somos} />
                         <Route exact path="/galeria" component={Galeria} />
                         <Route exact path="/" component={Principal} />
@@ -60,7 +64,7 @@ function App() {
                     </Router>
                   </AuthState>
                 </AlertaState>
-              </PreguntaState>
+              </ProductoState>
             </EstudioState>
           </DetalleState>
         </CitaState>

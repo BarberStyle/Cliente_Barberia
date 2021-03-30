@@ -16,8 +16,8 @@ const MenuPrincipal = () => {
         // eslint-disable-next-line
     }, []);
 
-     //Confirma cerrar sesion
-     const cerrar = (caso) => {
+    //Confirma cerrar sesion
+    const cerrar = (caso) => {
         if (caso === 'salir') { setModalCerrar(true) };
     }
 
@@ -30,11 +30,17 @@ const MenuPrincipal = () => {
                 <nav className="navegacion">
 
                     <ul className="menu">
-                        {usuario ? <p className="nombre-usuario">Hola  <span>{usuario.nombres} </span> </p> : null}
+                        {usuario ? <p className="nombre-usuario">Bienvenid@  <span>{usuario.nombres} </span> </p> : null}
 
                         <li><a href="/inicio">Inicio</a></li>
 
-                        <li><a href="#">Productos</a></li>
+                        <li><a href="#">Productos</a>
+                            <ul className="submenu">
+                                <li><a href="/productos">Lista de Productos</a></li>
+                                <li><a href="/nuevo-producto">Crear Producto</a></li>
+
+                            </ul>
+                        </li>
 
                         <li><a href="#">Servicios</a>
                             <ul className="submenu">
@@ -55,6 +61,7 @@ const MenuPrincipal = () => {
 
                             </ul>
                         </li>
+
                         <li><a href="#">Registro de Ventas</a></li>
                         <li><a href="#">Agendar Citas</a></li>
                         <button

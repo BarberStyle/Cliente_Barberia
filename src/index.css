@@ -138,6 +138,23 @@ aside {
   background-color: var(--gris1);
 }
 
+.formulario-producto {
+  margin-top: 6rem;
+  max-width: 40%;
+  margin-left: 30%;
+  font-size: medium;
+}
+
+.formulario-producto .input-text {
+  border-bottom: 1px solid var(--gris2);
+  border-radius: 0;
+  background-color: var(--gris1);
+}
+
+.formulario-producto .h1 {
+  margin: auto;
+}
+
 .formulario-pregunta {
   margin-top: 6rem;
   max-width: 50%;
@@ -191,9 +208,8 @@ aside {
 .nombre-usuario {
   color: var(--blanco);
   font-size: 2.2rem;
-  margin-top: 0.5% ;
+  margin-top: 0.5%;
   margin-right: 2%;
-  
   float: right;
 }
 
@@ -568,7 +584,6 @@ img {
   float: right;
   padding: 30px;
   margin: 5%;
-
 }
 
 .btn-cerrar {
@@ -596,4 +611,30 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/**Barra Buscadora */
+
+.textField {
+  height: 32px;
+  width: 200px;
+  border: 1px solid ​;
+  padding: 0 32px 0 16px;
+}
+
+.textField:hover {
+  cursor: pointer;
+}
+
+.btnBuscar {
+  height: 34px;
+  width: 32px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.barraBusqueda {
+  float: right;
+  padding: 20px;
 }

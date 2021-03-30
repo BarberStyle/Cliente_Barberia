@@ -8,21 +8,28 @@ const Galeria = () => {
     let imagenes = [
         require("../../images/image2.jpeg"),
         require("../../images/image3.jpeg"),
-        require("../../images/image4.jpeg")
+        require("../../images/image4.jpeg"),
+        require("../../images/image5.jpg"),
+        require("../../images/image6.jpg"),
+        require("../../images/image7.jpg"),
+        require("../../images/image8.jpg"),
+        require("../../images/image9.jpg")
+
     ];
 
     return (
         <Fragment>
             <Barra />
             <br></br>
+            <br></br>
             <h1>Galeria</h1>
             <hr></hr>
             <RViewer imageUrls={imagenes}>
-                <div style={{ display: 'flex', marginTop: '40px' }}>
+                <div style={{ display: 'flex', marginLeft:'20px', marginRight: '20px', marginTop: '40px' }}>
                     {imagenes.map((imagen, index) => {
                         return (
                             <RViewerTrigger index={index}>
-                                <img src={imagen} style={{ width: '150px', height: '150px', marginLeft: '15%', border: '2px solid black' }} />
+                                <img src={imagen} style={{ width: '150px', height: '150px', margin: '1%', border: '2px solid black' }} />
                             </RViewerTrigger>
                         )
                     })}
