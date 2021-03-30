@@ -638,3 +638,16 @@ img {
   float: right;
   padding: 20px;
 }
+
+/*mensaje de campos obligatorios*/
+
+.campos-obligatorios {
+  color: #fc2004;
+  margin-left: 15%;
+  margin-bottom: 10%;
+  margin-right: 15%;
+}
+
+.asterisco {
+  color: #fc2004;
+}

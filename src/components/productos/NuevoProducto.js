@@ -11,7 +11,7 @@ const NuevoProducto = () => {
     const alertaContext = useContext(AlertaContext);
     const productoContext = useContext(ProductoContext);
 
-    const { errorformulario, agregarProducto } = productoContext;
+    const { errorformulario, agregarProducto, mostrarError } = productoContext;
 
 
     const { alerta } = alertaContext;
@@ -37,6 +37,17 @@ const NuevoProducto = () => {
         //destructure de los valores enviados por el metodo onchange de cada input
         const { name, value } = evento.target;
 
+        //expresion regular que no permite que en campos de texto se escriban numeros
+        if (name !== "disponibles" && name !== "precio" && name !== "descripcion") {
+            let regex = new RegExp("^[ñíóáéú a-zA-Z ]+$");
+            for (let i = 0; i <= value.length - 1; i++) {
+                let letra = value[i]
+                if (!regex.test(letra) || !letra === " ") {
+                    return;
+                }
+            }
+        }
+
         guardarProducto({
             ...producto,
             [name]: value
@@ -51,7 +62,26 @@ const NuevoProducto = () => {
 
         e.preventDefault();
 
-        console.log(producto);
+        // Validar  de campos 
+        if (nombre === '' || descripcion === '' || precio === null || disponibles === null || estado === '') {
+            mostrarError();
+            return;
+        }
+
+        if (precio <= 0) {
+            alert("Ingrese un precio valido")
+            return;
+        }
+
+        if (disponibles <= 0) {
+            alert("Ingrese la cantidd de unidades disponibles")
+            return;
+        }
+
+        if (estado === '--Selecione--') {
+            alert("Ingrese un estado valido")
+            return;
+        }
 
         agregarProducto(producto);
 
@@ -86,12 +116,17 @@ const NuevoProducto = () => {
                 className="formulario-producto"
                 onSubmit={onSubmitProducto}
             >
+                <div className="campos-obligatorios">
+                    <h3>Los campos marcados con * son obligatorios</h3>
+                </div>
+
                 <h1>Nuevo Producto</h1>
                 <hr></hr>
                 <br></br>
                 <div className="row">
 
                     <div className="col-6">
+                        <label className="asterisco">*</label>
                         <label>Nombre</label>
                         <input
                             type="text"
@@ -105,6 +140,7 @@ const NuevoProducto = () => {
                     </div>
 
                     <div className="col-6">
+                        <label className="asterisco">*</label>
                         <label>Descripción</label>
                         <input
                             type="text"
@@ -121,6 +157,7 @@ const NuevoProducto = () => {
 
                 <div className="row">
                     <div className="col-6">
+                        <label className="asterisco">*</label>
                         <label>Precio</label>
                         <input
                             type="number"
@@ -150,6 +187,7 @@ const NuevoProducto = () => {
 
                 <div className="row">
                     <div className="col-6">
+                        <label className="asterisco">*</label>
                         <label>Unidades</label>
                         <input
                             type="number"
@@ -162,7 +200,7 @@ const NuevoProducto = () => {
                     </div>
 
                     <div className="col-6">
-
+                        <label className="asterisco">*</label>
                         <label>Estado</label>
                         <select
                             className="input-text"
