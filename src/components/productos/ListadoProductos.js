@@ -72,7 +72,7 @@ const ListadoProductos = () => {
         guardarBusqueda(productos);
 
         // eslint-disable-next-line
-    }, [mensaje, productos]);
+    }, [mensaje]);
 
 
 
