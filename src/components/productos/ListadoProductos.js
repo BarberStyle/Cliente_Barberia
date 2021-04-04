@@ -67,11 +67,11 @@ const ListadoProductos = () => {
             mostrarAlerta(mensaje.msg, mensaje.categoria);
         }
 
-        obtenerProductos();
-
         guardarBusqueda(productos);
 
+        obtenerProductos();
         // eslint-disable-next-line
+
     }, [mensaje]);
 
 
