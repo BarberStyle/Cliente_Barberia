@@ -7,7 +7,6 @@ import tokenAuth from '../../config/token';
 
 import {
     REGISTRO_EXITOSO,
-    REGISTRO_ERROR,
     OBTENER_USUARIO,
     LOGIN_EXITOSO,
     LOGIN_ERROR,

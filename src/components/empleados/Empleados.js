@@ -1,7 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import ListaEmpleados from '../empleados/ListadoEmpleados';
 import AuthContext from '../../context/autenticacion/authContext';
-import { Fragment } from 'react';
 import MenuPrincipal from '../inicio/menuPrincipal';
 
 

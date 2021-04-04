@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, {  useReducer } from 'react';
 import clienteAxios from '../../config/axios';
 import detalleContext from './detalleContext';
 import detalleReducer from './detalleReducer';

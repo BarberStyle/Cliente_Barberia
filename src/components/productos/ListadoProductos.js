@@ -13,7 +13,6 @@ import {
     ModalBody,
     FormGroup,
     ModalFooter,
-    NavItem,
 } from "reactstrap";
 
 function buscandoFiltro(consult) {
@@ -118,10 +117,6 @@ const ListadoProductos = () => {
 
     }
 
-    const desactivarProducto = producto => {
-
-
-    }
 
     const handleChange = (e) => {
         guardarEditable({

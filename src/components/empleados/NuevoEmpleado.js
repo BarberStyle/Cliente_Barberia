@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useContext, useEffect } from 'react';
 import AlertaContext from '../../context/alertas/alertaContext';
-import DetalleContext from '../../context/detalle/detalleContext';
 import EmpleadoContext from '../../context/empleados/empleadoContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
 
@@ -17,21 +16,16 @@ const NuevoEmpleado = () => {
     //obtener el state de empleados y todas sus funciones
     const empleadoContext = useContext(EmpleadoContext);
 
-    const detalleContext = useContext(DetalleContext);
-
 
     //Funciones para alertas
     const { alerta } = alertaContext;
 
 
     //extraer objetos del state
-    const { formulario, mostrarFormulario, mostrarError, errorformulario,
-        agregarEmpleado, empleadoSeleccionado, caso, cambiarCaso,
+    const {  mostrarError, errorformulario,
+        agregarEmpleado, empleadoSeleccionado,
         limpiarEmpleado, actualizarEmpleado, tipoEmpleado } = empleadoContext;
 
-
-
-    const { limpiarDetalle } = detalleContext;
 
     // Effect que detecta si hay un empleado seleccionado
 
@@ -187,16 +181,6 @@ const NuevoEmpleado = () => {
 
 
     }
-
-    // Mostrar o no el formulario
-    const onClickFormulario = () => {
-        var caso = 'Crear';
-        cambiarCaso(caso);
-        limpiarEmpleado();
-        limpiarDetalle();
-        mostrarFormulario();
-    }
-
 
 
     return (

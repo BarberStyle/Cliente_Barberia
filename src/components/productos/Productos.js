@@ -11,9 +11,11 @@ const Productos = () => {
     const { usuarioAutenticado } = authContext;
 
     useEffect(() => {
+
         // eslint-disable-next-line
         usuarioAutenticado();
-    }, [])
+
+    })
 
     return (
         <div className="contenedor-app">
@@ -22,7 +24,7 @@ const Productos = () => {
                 <main>
                     <br></br>
                     <div className="contenedor-tareas">
-                        <ListaProductos/>
+                        <ListaProductos />
                     </div>
 
                 </main>

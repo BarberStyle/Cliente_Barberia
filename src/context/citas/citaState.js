@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react'
+import React, {  useReducer } from 'react'
 import citaContext from './citaContext';
 import citaReducer from './citaReducer';
 import clienteAxios from '../../config/axios';

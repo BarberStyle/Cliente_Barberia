@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment, useState } from 'react';
+import React, { useContext, useEffect, Fragment } from 'react';
 import EmpleadoContext from '../../context/empleados/empleadoContext';
 import Empleado from './Empleado';
 import AlertaContext from '../../context/alertas/alertaContext';

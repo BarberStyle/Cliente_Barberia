@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import productoContext from './productoContext';
 import productoReducer from './productoReducer';
 

@@ -10,8 +10,8 @@ const NuevoServicio = () => {
     const servicioContext = useContext(ServicioContext);
     const alertaContext = useContext(AlertaContext);
 
-    const { formulario, errorformulario,
-        servicioSeleccionado, agregarServicio, mostrarError, mostrarFormulario,
+    const {errorformulario,
+        servicioSeleccionado, agregarServicio, mostrarError,
         actualizarServicio, limpiarServicio } = servicioContext;
     const { alerta } = alertaContext;
 
@@ -110,13 +110,6 @@ const NuevoServicio = () => {
             tipo: ''
         })
     }
-
-    // Mostrar el formulario
-    const onClickFormulario = () => {
-        limpiarServicio();
-        mostrarFormulario();
-    }
-
 
     return (
         <Fragment>

@@ -34,7 +34,7 @@ const MenuPrincipal = () => {
 
                         <li><a href="/inicio">Inicio</a></li>
 
-                        <li><a href="#">Productos</a>
+                        <li><a href="/productos">Productos</a>
                             <ul className="submenu">
                                 <li><a href="/productos">Lista de Productos</a></li>
                                 <li><a href="/nuevo-producto">Crear Producto</a></li>
@@ -42,28 +42,28 @@ const MenuPrincipal = () => {
                             </ul>
                         </li>
 
-                        <li><a href="#">Servicios</a>
+                        <li><a  href="/servicios">Servicios</a>
                             <ul className="submenu">
                                 <li><a href="/servicios">Lista de Servicios</a></li>
                                 <li><a href="/nuevo-servicio">Crear Servicio</a></li>
 
                             </ul>
                         </li>
-                        <li><a href="#">Empleados</a>
+                        <li><a href="/empleados">Empleados</a>
                             <ul className="submenu">
                                 <li><a href="/empleados">Lista de Empleados</a></li>
                                 <li><a href="/nuevo-empleado">Crear Empleado</a></li>
 
                             </ul></li>
-                        <li><a href="#">Clientes</a>
+                        <li><a href="/nueva-cuenta">Clientes</a>
                             <ul className="submenu">
                                 <li><a href="/nueva-cuenta">Registrar Cliente</a></li>
 
                             </ul>
                         </li>
 
-                        <li><a href="#">Registro de Ventas</a></li>
-                        <li><a href="#">Agendar Citas</a></li>
+                        <li><a href="/empleados">Registro de Ventas</a></li>
+                        <li><a href="/empleados">Agendar Citas</a></li>
                         <button
                             className="btn-cerrar"
                             onClick={() => cerrar('salir')}

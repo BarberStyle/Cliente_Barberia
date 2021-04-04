@@ -12,7 +12,7 @@ const Login = (props) => {
     const { alerta, mostrarAlerta } = alertaContext;
 
     const authContext = useContext(AuthContext);
-    const { mensaje, autenticado, iniciarSesion, token } = authContext;
+    const { mensaje, autenticado, iniciarSesion } = authContext;
 
     // En caso de que el password o usuario no exista
     useEffect(() => {

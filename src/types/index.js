@@ -22,5 +22,7 @@ export const DISPONIBLE = 'DISPONIBLE';
 export const DIAS = 'DIAS';
 export const FORMULARIO_PROF = 'FORMULARIO_PROF';
 export const CAMBIAR = 'CAMBIAR';
+export const USUARIO_ERROR = 'USUARIO_ERROR';
+export const USUARIO_EXITOSO = 'USUARIO_EXITOSO';
 
 

@@ -1,10 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
-import Barra from '../layout/Barra';
 
 const NuevaCuenta = (props) => {
 

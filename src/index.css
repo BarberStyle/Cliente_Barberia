@@ -434,6 +434,10 @@ aside {
 .alerta-error {
   background-color: rgb(230, 78, 78);
   color: var(--blanco);
+  max-width: 25%;
+  margin: auto;
+  font-size: medium;
+  align-content: center;
 }
 
 .App {
