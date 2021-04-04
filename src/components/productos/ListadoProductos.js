@@ -72,7 +72,7 @@ const ListadoProductos = () => {
         obtenerProductos();
         // eslint-disable-next-line
 
-    }, [mensaje]);
+    }, [mensaje, productos]);
 
 
 
