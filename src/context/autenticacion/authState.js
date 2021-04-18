@@ -10,13 +10,15 @@ import {
     OBTENER_USUARIO,
     LOGIN_EXITOSO,
     LOGIN_ERROR,
-    CERRAR_SESION
+    CERRAR_SESION,
+    VALIDAR_FORMULARIO
 } from '../../types';
 
 const AuthState = props => {
     const initialState = {
         token: localStorage.getItem('token'),
         autenticado: null,
+        errorformulario: false,
         usuario: null,
         mensaje: null,
         cargando: true
@@ -43,7 +45,7 @@ const AuthState = props => {
     // Retorna el usuario autenticado
     const usuarioAutenticado = async () => {
         const token = localStorage.getItem('token');
-      
+
         if (token) {
             tokenAuth(token);
         }
@@ -88,6 +90,14 @@ const AuthState = props => {
         }
     }
 
+    // Valida el formulario por errores
+    const mostrarError = () => {
+        dispatch({
+            type: VALIDAR_FORMULARIO
+        })
+    }
+
+
     // Cierra la sesión del usuario
     const cerrarSesion = () => {
 
@@ -104,10 +114,12 @@ const AuthState = props => {
                 usuario: state.usuario,
                 mensaje: state.mensaje,
                 cargando: state.cargando,
+                errorformulario: state.errorformulario,
                 registrarUsuario,
                 iniciarSesion,
                 usuarioAutenticado,
-                cerrarSesion
+                cerrarSesion,
+                mostrarError
             }}
         >{props.children}
 

@@ -1,9 +1,11 @@
 import React, { Fragment, useContext, useState, useEffect } from 'react';
 import ProductoContext from '../../context/productos/productoContext';
 import AlertaContext from '../../context/alertas/alertaContext';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import EditIcon from '@material-ui/icons/Edit';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+
 import {
     Table,
     Button,
@@ -28,16 +30,6 @@ const ListadoProductos = () => {
     /** */
     const { productos, obtenerProductos, actualizarProducto, mensaje } = productoContext;
     const { mostrarAlerta } = alertaContext;
-
-
-    const [busquedas, guardarBusqueda] = useState({
-        nombre: '',
-        descripcion: '',
-        precio: '',
-        foto: '',
-        unidades: '',
-        estado: ''
-    })
 
 
     const [consulta, guardarConsulta] = useState({
@@ -67,12 +59,10 @@ const ListadoProductos = () => {
             mostrarAlerta(mensaje.msg, mensaje.categoria);
         }
 
-        guardarBusqueda(productos);
-
-        obtenerProductos();
         // eslint-disable-next-line
+        obtenerProductos();
 
-    }, [mensaje, productos]);
+    }, [mensaje]);
 
 
 
@@ -144,77 +134,75 @@ const ListadoProductos = () => {
 
     return (
         <Fragment>
-            <h1>Listado de Productos</h1>
+            <div className="contenedor-basico sombra-dark">
+                <h1>Listado de Productos</h1>
 
-            <div className="barraBusqueda">
-                <input
-                    type="text"
-                    placeholder="Buscar"
-                    className="textField"
-                    name="consult"
-                    value={consult}
-                    onChange={onChangeBusqueda}
-                />
-                <button type="button" className="btnBuscar" /*onClick={onClear}*/>
-                    {" "}
-                    <FontAwesomeIcon icon={faSearch} />
-                </button>
-            </div>
+                <div className="barraBusqueda">
+                    <input
 
-            <br></br>
-            <Container>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Foto</th>
-                            <th>Unidades</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {busquedas ? (
-                            busquedas.filter(buscandoFiltro(consult)).map(producto => (
-                                <tr>
-                                    <td>{producto.nombre}</td>
-                                    <td>{producto.descripcion}</td>
-                                    <td>{producto.precio}</td>
-                                    <td>{producto.foto}</td>
-                                    <td>{producto.disponibles}</td>
-                                    <td>{producto.estado}</td>
-                                    <td>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => mostrarModalActualizar(producto)}
-                                        > Actualizar</button>{"  "}
+                        type="text"
+                        placeholder="Buscar"
+                        className="textField"
+                        name="consult"
+                        value={consult}
+                        onChange={onChangeBusqueda}
+                    />
 
-                                        {producto.estado === 'Activo' ? (
+                </div>
+
+                <br></br>
+                <Container >
+                    <Table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Unidades</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {productos ? (
+                                productos.filter(buscandoFiltro(consult)).map(producto => (
+                                    <tr key={producto._id}>
+                                        <td>{producto.nombre}</td>
+                                        <td>{producto.descripcion}</td>
+                                        <td>{producto.precio}</td>
+                                        <td>{producto.disponibles}</td>
+                                        <td>{producto.estado}</td>
+                                        <td>
                                             <button
-                                                className="btn btn-danger"
-                                                onClick={() => cambiarEstado(producto)}
-                                            >Desactivar</button>
-                                        ) :
-                                            (
+                                                className="btn btn-primary"
+                                                onClick={() => mostrarModalActualizar(producto)}
+                                            > <EditIcon /></button>{"  "}
+
+                                            {producto.estado === 'Activo' ? (
                                                 <button
                                                     className="btn btn-danger"
                                                     onClick={() => cambiarEstado(producto)}
-                                                > Activar </button>
+                                                ><HighlightOffIcon /></button>
+                                            ) :
+                                                (
+                                                    <button
+                                                        className="btn btn-success"
+                                                        onClick={() => cambiarEstado(producto)}
+                                                    > <AssignmentTurnedInIcon /> </button>
 
-                                            )}
+                                                )}
 
-                                    </td>
+                                        </td>
 
-                                </tr>
-                            )))
-                            :
-                            null}
+                                    </tr>
+                                )))
+                                :
+                                null}
 
-                    </tbody>
-                </Table>
-            </Container>
+                        </tbody>
+                    </Table>
+                </Container>
+            </div>
 
             <Modal isOpen={modalActualizar}>
                 <ModalHeader>

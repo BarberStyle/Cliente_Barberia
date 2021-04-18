@@ -10,7 +10,7 @@ const NuevoServicio = () => {
     const servicioContext = useContext(ServicioContext);
     const alertaContext = useContext(AlertaContext);
 
-    const {errorformulario,
+    const { errorformulario,
         servicioSeleccionado, agregarServicio, mostrarError,
         actualizarServicio, limpiarServicio } = servicioContext;
     const { alerta } = alertaContext;
@@ -103,12 +103,18 @@ const NuevoServicio = () => {
 
         alert("Servicio guardado con exito");
         // Reiniciar el form
+        
+        limpiarForm();
+    }
+
+    const limpiarForm = () => {
         guardarServicio({
             nombre: '',
             precio: '',
             duracion: '',
             tipo: ''
         })
+
     }
 
     return (
@@ -118,66 +124,98 @@ const NuevoServicio = () => {
             ) : null}
 
             <form
-                className="formulario-nuevo-proyecto"
+                className="formulario-producto"
                 onSubmit={onSubmitServicio}
             >
+                <div className="campos-obligatorios">
+                    <h3>Los campos marcados con * son obligatorios</h3>
+                </div>
+
                 <h1>Nuevo Servicio</h1>
                 <hr></hr>
                 <br></br>
-                <label>Nombre</label>
-                <input
-                    type="text"
-                    className="input-text"
-                    placeholder="Nombre Servicio"
-                    name="nombre"
-                    value={nombre}
-                    onChange={onChangeServicio}
-                />
-                <label>Precio</label>
-                <input
-                    type="number"
-                    className="input-text"
-                    placeholder="Precio Servicio"
-                    name="precio"
-                    value={precio}
-                    onChange={onChangeServicio}
-                />
 
-                <label>Duración</label>
-                <input
-                    type="number"
-                    className="input-text"
-                    placeholder="Duración (Min)"
-                    name="duracion"
-                    value={duracion}
-                    onChange={onChangeServicio}
-                />
+                <div className="row">
 
-                <label>Tipo</label>
-                <input
-                    type="text"
-                    className="input-text"
-                    placeholder="Tipo"
-                    name="tipo"
-                    value={tipo}
-                    onChange={onChangeServicio}
-                />
-                {servicioSeleccionado ? (
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label>Nombre</label>
+                        <input
+                            type="text"
+                            className="input-text"
+                            placeholder="Nombre Servicio"
+                            name="nombre"
+                            value={nombre}
+                            onChange={onChangeServicio}
+                        />
+                    </div>
 
-                    <input
-                        type="submit"
-                        className="btn btn-primary btn-block"
-                        value="Actualizar Servicio"
-                    />
+                    <div className="col-6">
 
-                ) :
+                        <label className="asterisco">*</label>
+                        <label>Precio</label>
+                        <input
+                            type="number"
+                            className="input-text"
+                            placeholder="Precio Servicio"
+                            name="precio"
+                            value={precio}
+                            onChange={onChangeServicio}
+                        />
+                    </div>
+                </div>
 
-                    <input
-                        type="submit"
-                        className="btn btn-primary btn-block"
-                        value="Agregar Servicio"
-                    />
-                }
+
+                <div className="row">
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label>Duración</label>
+                        <input
+                            type="number"
+                            className="input-text"
+                            placeholder="Duración (Min)"
+                            name="duracion"
+                            value={duracion}
+                            onChange={onChangeServicio}
+                        />
+                    </div>
+
+                    <div className="col-6">
+
+                        <label className="asterisco">*</label>
+                        <label>Tipo</label>
+                        <input
+                            type="text"
+                            className="input-text"
+                            placeholder="Tipo"
+                            name="tipo"
+                            value={tipo}
+                            onChange={onChangeServicio}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+
+
+                    <div className="col-6">
+                        <input
+                            type="submit"
+                            className="btn btn-primary btn-block"
+                            value="Ingresar"
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <input
+                            className="btn btn-primary btn-block"
+                            onClick={() => limpiarForm()}
+                            value="Limpiar"
+                        />
+                    </div>
+                </div>
+
 
             </form>
 

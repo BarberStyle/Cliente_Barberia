@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import ListaEmpleados from '../empleados/ListadoEmpleados';
 import AuthContext from '../../context/autenticacion/authContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
@@ -12,14 +12,16 @@ const Empleados = () => {
     const { usuarioAutenticado } = authContext;
 
     useEffect(() => {
-        usuarioAutenticado();
+
         // eslint-disable-next-line
+
+        usuarioAutenticado();
     }, [])
 
     return (
         <div className="contenedor-app">
             <div className="seccion-principal">
-                <MenuPrincipal/>
+                <MenuPrincipal />
                 <main>
                     <br></br>
                     <div className="contenedor-tareas">

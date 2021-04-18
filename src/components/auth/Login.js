@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
 import Barra from '../layout/Barra';
+import Header from '../layout/Header';
+
 
 const Login = (props) => {
 
@@ -60,33 +62,47 @@ const Login = (props) => {
         // Validar que no haya campos vacios
         if (documento.trim() === '' || contraseña.trim() === '') {
             alert('Todos los campos son obligatorios');
+            return;
         }
 
         if (documento <= 0) {
             alert('Número de documento invalido');
+            return;
         }
 
+        
         //reinicia el form
         guardarUsuario({
             documento: '',
             contraseña: ''
         })
 
+        if (documento.trim() !== '' || contraseña.trim() !== '') {
+            iniciarSesion({ documento, contraseña });
+        }
+
         // Pasarlo al action
-        iniciarSesion({ documento, contraseña });
+     
+
+
 
     }
 
 
     return (
         <Fragment>
+            <Header />
+
             <Barra />
 
             <div className="form-usuario">
+
                 {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>) : null}
+
+
                 <div className="contenedor-form sombra-dark">
                     <h1>Iniciar Sesión</h1>
-
+                    <br></br>
                     <form
                         onSubmit={onSubmit}
                     >
@@ -125,6 +141,7 @@ const Login = (props) => {
                 </Link>
                 </div>
             </div>
+
         </Fragment>
     );
 }

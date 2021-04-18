@@ -26,6 +26,7 @@ import Productos from './components/productos/Productos';
 import ProductoState from './context/productos/productoState';
 import ContraseñaState from './context/contraseñas/contrasenaState';
 import IngresarCodigo from './components/seguridad/IngresarCodigo';
+import NuevaPregunta from './components/configuracion/NuevaPregunta';
 
 
 
@@ -58,6 +59,7 @@ function App() {
                           <RutaPrivada exact path='/productos' component={Productos} />
                           <Route exact path="/iniciar-sesion" component={Login} />
                           <Route exact path="/cambio-contrasena" component={NuevaContraseña} />
+                          <RutaPrivada exact path="/nueva-pregunta" component={NuevaPregunta} />
                           <Route exact path="/ingresar-codigo" component={IngresarCodigo} />
                           <Route exact path='/servicios' component={Servicios} />
                           <Route exact path='/lista-servicios' component={ListadoServicios} />

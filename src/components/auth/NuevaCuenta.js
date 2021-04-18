@@ -11,7 +11,7 @@ const NuevaCuenta = (props) => {
 
     // extraer los valores del context
     const authContext = useContext(AuthContext);
-    const { mensaje, autenticado, registrarUsuario } = authContext;
+    const { mensaje, autenticado, registrarUsuario, errorformulario, mostrarError } = authContext;
 
     // En caso de que el password o usuario no exista
     useEffect(() => {
@@ -76,7 +76,9 @@ const NuevaCuenta = (props) => {
         if (tipo.trim() === '' || documento.trim() === '' || nombres.trim() === '' || apellidos.trim() === '' ||
             correo.trim() === '' || confirmarCorreo.trim() === '' || telefono.trim() === '' ||
             contraseña.trim() === '' || confirmarContraseña.trim() === '') {
-            alert('Todos los campos son obligatorios');
+            mostrarError();
+            return;
+
         }
 
         // Password minimo de 6 caracteres
@@ -113,6 +115,15 @@ const NuevaCuenta = (props) => {
 
 
         //limpiar form
+        limpiarForm();
+
+
+        alert('Registro del cliente exitoso');
+
+
+    }
+
+    const limpiarForm = () => {
         guardarUsuario({
             tipo: '',
             documento: '',
@@ -126,134 +137,192 @@ const NuevaCuenta = (props) => {
 
         });
 
-        alert('Registro del cliente exitoso');
-
-
     }
 
     return (
         <Fragment>
             <MenuPrincipal />
-            <div className="form-usuario">
-                {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
-                ) : null}
-                <div className="contenedor-form sombra-dark">
-                    <h1>Registrar Cliente</h1>
 
-                    <form
-                        onSubmit={onSubmit}
-                    >
-                        <div className="campo-form">
-                            <label htmlFor="tipo">Tipo Documento</label>
-                            <input
-                                type="text"
-                                id="tipo"
-                                name="tipo"
-                                placeholder="Tipo de Documento"
-                                value={tipo}
-                                onChange={onChange}
-                            />
+            {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
+            ) : null}
 
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="documento">N° Documento</label>
-                            <input
-                                type="number"
-                                id="documento"
-                                name="documento"
-                                className="camposNum"
-                                placeholder="Número de Documento"
-                                value={documento}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="nombres">Nombres</label>
-                            <input
-                                type="text"
-                                id="nombres"
-                                name="nombres"
-                                placeholder="Tu nombre"
-                                value={nombres}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="apellidos">Apellidos</label>
-                            <input
-                                type="text"
-                                id="apellidos"
-                                name="apellidos"
-                                placeholder="Tus apellidos"
-                                value={apellidos}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="correo">Correo Electrónico</label>
-                            <input
-                                type="email"
-                                id="correo"
-                                name="correo"
-                                placeholder="Tu Correo Electrónico"
-                                value={correo}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="confirmarCorreo">Confirmar Correo</label>
-                            <input
-                                type="email"
-                                id="confirmarCorreo"
-                                name="confirmarCorreo"
-                                placeholder="Confirma el correo"
-                                value={confirmarCorreo}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="telefono">Teléfono</label>
-                            <input
-                                type="number"
-                                id="telefono"
-                                name="telefono"
-                                className="camposNum"
-                                placeholder="Tu Teléfono"
-                                value={telefono}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="password">Contraseña</label>
-                            <input
-                                type="password"
-                                id="contraseña"
-                                name="contraseña"
-                                placeholder="Tu Contraseña"
-                                value={contraseña}
-                                onChange={onChange}
-                            />
-                        </div>
-                        <div className="campo-form">
-                            <label htmlFor="confirmarContraseña">Confirmar Contraseña</label>
-                            <input
-                                type="password"
-                                id="confirmarContraseña"
-                                name="confirmarContraseña"
-                                placeholder="Confirma tu contraseña"
-                                value={confirmarContraseña}
-                                onChange={onChange}
-                            />
-                        </div>
 
-                        <div className="campo-form">
-                            <input type="submit" className="btn btn-primary btn-block" value="Registrar" />
+            <form
+                onSubmit={onSubmit}
+                className="formulario-producto"
 
-                        </div>
-                    </form>
-
+            >
+                <div className="campos-obligatorios">
+                    <h3>Los campos marcados con * son obligatorios</h3>
                 </div>
-            </div>
+
+                <h1>Nuevo Cliente</h1>
+                <hr></hr>
+                <br></br>
+
+                <div className="row">
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="tipo">Tipo Documento</label>
+                        <input
+                            type="text"
+                            id="tipo"
+                            name="tipo"
+                            className="input-text"
+                            placeholder="Tipo de Documento"
+                            value={tipo}
+                            onChange={onChange}
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+
+                        <label htmlFor="documento">N° Documento</label>
+                        <input
+                            type="number"
+                            id="documento"
+                            name="documento"
+                            className="input-text"
+                            placeholder="Número de Documento"
+                            value={documento}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="nombres">Nombres</label>
+                        <input
+                            type="text"
+                            id="nombres"
+                            name="nombres"
+                            className="input-text"
+                            placeholder="Tu nombre"
+                            value={nombres}
+                            onChange={onChange}
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="apellidos">Apellidos</label>
+                        <input
+                            type="text"
+                            id="apellidos"
+                            name="apellidos"
+                            className="input-text"
+                            placeholder="Tus apellidos"
+                            value={apellidos}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="correo">Correo Electrónico</label>
+                        <input
+                            type="email"
+                            id="correo"
+                            name="correo"
+                            className="input-text"
+                            placeholder="Tu Correo Electrónico"
+                            value={correo}
+                            onChange={onChange}
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="confirmarCorreo">Confirmar Correo</label>
+                        <input
+                            type="email"
+                            id="confirmarCorreo"
+                            name="confirmarCorreo"
+                            className="input-text"
+                            placeholder="Confirma el correo"
+                            value={confirmarCorreo}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="telefono">Teléfono</label>
+                        <input
+                            type="number"
+                            id="telefono"
+                            name="telefono"
+                            className="input-text"
+                            placeholder="Tu Teléfono"
+                            value={telefono}
+                            onChange={onChange}
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="password">Contraseña</label>
+                        <input
+                            type="password"
+                            id="contraseña"
+                            name="contraseña"
+                            className="input-text"
+                            placeholder="Tu Contraseña"
+                            value={contraseña}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+
+
+                <div className="row">
+
+                    <div className="col-6">
+                        <label className="asterisco">*</label>
+                        <label htmlFor="confirmarContraseña">Confirmar Contraseña</label>
+                        <input
+                            type="password"
+                            id="confirmarContraseña"
+                            name="confirmarContraseña"
+                            className="input-text"
+                            placeholder="Confirma tu contraseña"
+                            value={confirmarContraseña}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <input
+                            type="submit"
+                            className="btn btn-primary btn-block"
+                            value="Ingresar"
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <input
+                            className="btn btn-primary"
+                            className="btn btn-primary btn-block"
+                            onClick={() => limpiarForm()}
+                            value="Limpiar"
+                        />
+                    </div>
+                </div>
+            </form>
+
+            {errorformulario ? (<p className="mensaje error">Todos los campos son Obligatorios</p>) : null}
+
+
         </Fragment>
     );
 }

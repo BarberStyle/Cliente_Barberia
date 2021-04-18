@@ -123,8 +123,8 @@ const NuevoProducto = () => {
                 <h1>Nuevo Producto</h1>
                 <hr></hr>
                 <br></br>
-                <div className="row">
 
+                <div className="row">
                     <div className="col-6">
                         <label className="asterisco">*</label>
                         <label>Nombre</label>
@@ -231,7 +231,6 @@ const NuevoProducto = () => {
 
                     <div className="col-6">
                         <input
-                            className="btn btn-primary"
                             className="btn btn-primary btn-block"
                             onClick={() => limpiarForm()}
                             value="Limpiar"
