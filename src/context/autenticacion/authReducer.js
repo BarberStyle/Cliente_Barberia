@@ -24,7 +24,8 @@ export default (state, action) => {
                 ...state,
                 mensaje: null,
                 cargando: false,
-                errorformulario: false
+                errorformulario: false,
+                mensajeConfirmación: [...state.mensajeConfirmación, action.payload]
             }
         case OBTENER_USUARIO:
             return {
@@ -36,21 +37,21 @@ export default (state, action) => {
         case VALIDAR_FORMULARIO:
             return {
                 ...state,
-                errorformulario: true
+                errorformulario: true,
+                textoAlert: action.payload
             }
         case CERRAR_SESION:
         case LOGIN_ERROR:
         case REGISTRO_ERROR:
             localStorage.removeItem('token');
             return {
-                ...state,
                 token: null,
                 usuario: null,
                 autenticado: false,
                 mensaje: action.payload,
-                cargando: false
+                cargando: false,
             }
-
+        
         default:
             return state;
     }

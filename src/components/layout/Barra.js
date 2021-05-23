@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Barra = () => {
 
- 
+
 
     return (
         <Fragment>
@@ -14,12 +14,12 @@ const Barra = () => {
             <header className="App-header">
 
                 <nav className="topnav">
+                    <Link to="/">Inicio</Link>
                     <Link to="/galeria">Galeria</Link>
-                    <Link to="/empleados">Empleados</Link>
-                    <Link to="/servicios">Servicios</Link>
-                    <Link to="/servicios">Contacto</Link>
+                    <Link to="/#">Servicios</Link>
+                    <Link to="/contacto">Contacto</Link>
                     <Link to="/somos">Quiénes somos</Link>
-                  
+
                 </nav>
 
             </header>

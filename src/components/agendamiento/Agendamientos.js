@@ -1,12 +1,26 @@
 import React, { useContext, useEffect } from 'react';
 import AuthContext from '../../context/autenticacion/authContext';
-import ListaDisponibles from './ListadoDisponibles';
-import Sidebar from '../layout/SidebarAgendamiento';
-import Barra from '../layout/Barra';
+import ListaServicios from '../servicios/ListadoServiciosCita';
+import AppBar from '@material-ui/core/AppBar';
+import Header from '../layout/Header';
+import MenuPrincipal from '../inicio/menuPrincipal';
+import { makeStyles } from '@material-ui/core/styles';
+import Resumen from './Resumen';
+import Modal from './Modal';
+import ValidarUsuario from './ValidarUsuario';
 
+const useStyles = makeStyles((theme) => ({
 
+    appBar: {
+        position: 'relative',
+    }
+
+}));
 
 const Agendamientos = () => {
+
+    const classes = useStyles();
+
     // Extraer la información de autenticación
     const authContext = useContext(AuthContext);
     const { usuarioAutenticado } = authContext;
@@ -17,19 +31,33 @@ const Agendamientos = () => {
     }, [])
 
     return (
-        <div className="contenedor-app">
-            <Sidebar />
-            <div className="seccion-principal">
-                <Barra />
+
+        <div className="seccion-principal">
+            <AppBar position="absolute" color="default" className={classes.appBar}>
+                <Header />
+                <MenuPrincipal />
+            </AppBar>
+
+            <div className="contenedor-principal">
                 <main>
                     <br></br>
-                    <div className="contenedor-tareas">
-                        <ListaDisponibles />
-                    </div>
+                    <div className="contenedor-basico sombra-dark">
+                        <div className="contenedor-agenda">
+                            <ListaServicios />
 
+                            <ValidarUsuario />
+                            <div className="contenedor-tareas">
+                                <Resumen />
+                            </div>
+
+                            <Modal />
+
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
+
     );
 }
 

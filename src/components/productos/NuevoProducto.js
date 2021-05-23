@@ -1,20 +1,89 @@
 import React, { Fragment, useContext, useState } from 'react';
 import MenuPrincipal from '../inicio/menuPrincipal';
-import AlertaContext from '../../context/alertas/alertaContext';
 import ProductoContext from '../../context/productos/productoContext';
+import Header from '../layout/Header';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import AppBar from '@material-ui/core/AppBar';
 import "bootstrap/dist/css/bootstrap.min.css";
+import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 
+
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& .MuiFormLabel-root':
+        {
+            fontSize: 14,
+            marginTop: -10
+
+        }
+    },
+    appBar: {
+        position: 'relative',
+    },
+
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+            width: 600,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    paper: {
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+            marginTop: theme.spacing(6),
+            marginBottom: theme.spacing(6),
+            padding: theme.spacing(3),
+        },
+    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    button: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
+    },
+    formControl: {
+        minWidth: 200,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+        width: 265
+
+    },
+    text: {
+        fontSize: 14,
+        marginTop: -10
+    }
+
+}));
 
 const NuevoProducto = () => {
 
 
-    const alertaContext = useContext(AlertaContext);
+
+    const classes = useStyles();
+
+
     const productoContext = useContext(ProductoContext);
 
-    const { errorformulario, agregarProducto, mostrarError } = productoContext;
+    const { errorformulario, agregarProducto, mostrarError, textoAlert } = productoContext;
 
-
-    const { alerta } = alertaContext;
 
     const [producto, guardarProducto] = useState({
         nombre: '',
@@ -26,9 +95,7 @@ const NuevoProducto = () => {
 
     });
 
-    const { nombre, descripcion, precio, foto, disponibles, estado } = producto;
-
-
+    const { nombre, descripcion, precio, disponibles, estado } = producto;
 
 
     // Lee los contenidos del input
@@ -64,17 +131,16 @@ const NuevoProducto = () => {
 
         // Validar  de campos 
         if (nombre === '' || descripcion === '' || precio === null || disponibles === null || estado === '') {
-            mostrarError();
             return;
         }
 
-        if (precio <= 0) {
-            alert("Ingrese un precio valido")
+        if (precio <= 0 || precio > 500000) {
+            mostrarError('El valor debe ser mayor a 0 y menor a 200.000$');
             return;
         }
 
-        if (disponibles <= 0) {
-            alert("Ingrese la cantidd de unidades disponibles")
+        if (disponibles <= 0 || disponibles > 50) {
+            mostrarError("La cantidad de unidades debe ser mayor a 0 y menor a 50")
             return;
         }
 
@@ -108,142 +174,127 @@ const NuevoProducto = () => {
 
     return (
         <Fragment>
-            <MenuPrincipal />
-            {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
-            ) : null}
+            <AppBar position="absolute" color="default" className={classes.appBar}>
+                <Header />
+                <MenuPrincipal />
+            </AppBar>
 
-            <form
-                className="formulario-producto"
-                onSubmit={onSubmitProducto}
-            >
-                <div className="campos-obligatorios">
-                    <h3>Los campos marcados con * son obligatorios</h3>
-                </div>
-
-                <h1>Nuevo Producto</h1>
-                <hr></hr>
+            <div className="contenedor-principal">
                 <br></br>
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label>Nombre</label>
-                        <input
-                            type="text"
-                            className="input-text"
-                            placeholder="Nombre Producto"
-                            name="nombre"
-                            value={nombre}
-                            onChange={onChangeProducto}
+                <form
+                    onSubmit={onSubmitProducto}
+                >
 
-                        />
-                    </div>
+                    <main className={classes.layout}>
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label>Descripción</label>
-                        <input
-                            type="text"
-                            className="input-text"
-                            placeholder="Tamaño, medida, marca, proveedor"
-                            name="descripcion"
-                            value={descripcion}
-                            onChange={onChangeProducto}
+                        {errorformulario ?
+                            (
+                                <Alert severity="error">{textoAlert}</Alert>
 
-                        />
-                    </div>
-
-                </div>
-
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label>Precio</label>
-                        <input
-                            type="number"
-                            className="input-text"
-                            placeholder="Precio del Producto"
-                            name="precio"
-                            value={precio}
-                            onChange={onChangeProducto}
-
-                        />
-                    </div>
-
-                    <div className="col-6">
-                        <label>Foto</label>
-                        <input
-                            type="file"
-                            className="input-text"
-                            name="foto"
-                            value={foto}
-                            onChange={onChangeProducto}
-
-                        />
-                    </div>
+                            )
+                            : null}
 
 
-                </div>
+                        <Paper className={classes.paper}>
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label>Unidades</label>
-                        <input
-                            type="number"
-                            className="input-text"
-                            placeholder="Unidades Disponibles"
-                            name="disponibles"
-                            value={disponibles}
-                            onChange={onChangeProducto}
-                        />
-                    </div>
+                            <div className="campos-obligatorios">
+                                <h3>Los campos marcados con * son obligatorios</h3>
+                            </div>
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label>Estado</label>
-                        <select
-                            className="input-text"
-                            placeholder="Activo o Inactivo"
-                            name="estado"
-                            value={estado}
-                            onChange={onChangeProducto}
+                            <h1>Nuevo Producto</h1>
+                            <hr></hr>
+                            <br></br>
 
-                        >
-                            <option>--Seleccione--</option>
-                            <option>Activo</option>
-                            <option>Inactivo</option>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="nombre"
+                                        name="nombre"
+                                        label="Nombre"
+                                        value={nombre}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChangeProducto}
 
-                        </select>
-                    </div>
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="precio"
+                                        name="precio"
+                                        label="Precio"
+                                        value={precio}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChangeProducto}
 
-                </div>
-                <div className="row">
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        id="descripcion"
+                                        name="descripcion"
+                                        label="Descripción"
+                                        value={descripcion}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChangeProducto}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="disponibles"
+                                        name="disponibles"
+                                        label="Unidades"
+                                        value={disponibles}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChangeProducto}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel className={classes.text} id="required-label">Estado</InputLabel>
+                                        <Select
+                                            labelId="required-label"
+                                            id="select-required"
+                                            value={estado}
+                                            name="estado"
+                                            className={classes.selectEmpty}
+                                            fullWidth
+                                            onChange={onChangeProducto}
+                                        >
+                                            <MenuItem value='Activo'>Activo</MenuItem>
+                                            <MenuItem value='Inactivo'>Inactivo</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                            <div className={classes.buttons}>
 
+                                <Button className={classes.button}
+                                    onClick={() => limpiarForm()}>
+                                    Limpiar  </Button>
 
-                    <div className="col-6">
-                        <input
-                            type="submit"
-                            className="btn btn-primary btn-block"
-                            value="Ingresar"
-                        />
-                    </div>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                >Registrar </Button>
+                            </div>
 
-                    <div className="col-6">
-                        <input
-                            className="btn btn-primary btn-block"
-                            onClick={() => limpiarForm()}
-                            value="Limpiar"
-                        />
-                    </div>
-                </div>
+                        </Paper>
 
+                    </main>
 
-
-            </form>
-            {errorformulario ? (<p className="mensaje error">Todos los campos son Obligatorios</p>) : null}
-
-
+                </form>
+            </div>
         </Fragment>
 
 

@@ -1,54 +1,112 @@
 import React, { Fragment, useState, useContext, useEffect } from 'react';
-import AlertaContext from '../../context/alertas/alertaContext';
 import EmpleadoContext from '../../context/empleados/empleadoContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
+import Header from '../layout/Header';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import AppBar from '@material-ui/core/AppBar';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
+import ServicioContext from '../../context/servicios/servicioContext';
 
 
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& .MuiFormLabel-root':
+        {
+            fontSize: 14,
+            marginTop: -10
+
+        }
+    },
+    appBar: {
+        position: 'relative',
+    },
+
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+            width: 600,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    paper: {
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+            marginTop: theme.spacing(6),
+            marginBottom: theme.spacing(6),
+            padding: theme.spacing(3),
+        },
+    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    button: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
+    },
+    formControl: {
+        minWidth: 200,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+        width: 265
+
+    },
+    text: {
+        fontSize: 14,
+        marginTop: -10
+    },
+    textFecha: {
+        fontSize: 14,
+        marginTop: -2
+    },
+    textField: {
+        marginRight: theme.spacing(1),
+        fontSize: 14,
+    },
+
+}));
 
 
 const NuevoEmpleado = () => {
 
+    const classes = useStyles();
 
-    //obtener el state de las alertas y todas sus funciones
-    const alertaContext = useContext(AlertaContext);
 
     //obtener el state de empleados y todas sus funciones
     const empleadoContext = useContext(EmpleadoContext);
-
-
-    //Funciones para alertas
-    const { alerta } = alertaContext;
+    const servicioContext = useContext(ServicioContext);
 
 
     //extraer objetos del state
     const { mostrarError, errorformulario,
-        agregarEmpleado, empleadoSeleccionado,
-        limpiarEmpleado, actualizarEmpleado, tipoEmpleado } = empleadoContext;
+        agregarEmpleado, limpiarEmpleado, mensajeConfirmación, textoAlert } = empleadoContext;
+
+
+    const { tipos, obtenerTipos } = servicioContext;
 
 
     // Effect que detecta si hay un empleado seleccionado
 
     useEffect(() => {
-        if (empleadoSeleccionado !== null) {
-            guardarEmpleado(empleadoSeleccionado);
-        } else {
-            guardarEmpleado({
-                tipo: '',
-                documento: '',
-                nombres: '',
-                apellidos: '',
-                correo: '',
-                confirmarCorreo: '',
-                telefono: '',
-                fecha: '',
-                perfil: '',
-                contrasena: '',
-                confirmarcontrasena: ''
-            })
-        }
-
-    }, [empleadoSeleccionado]);
+        obtenerTipos();
+        // eslint-disable-next-line
+    }, []);
 
     //State para guardar los datos personales del empleado
     const [empleado, guardarEmpleado] = useState({
@@ -75,7 +133,7 @@ const NuevoEmpleado = () => {
         const { name, value } = e.target;//destructure de los valores enviados por el metodo onchange de cada input
 
         if (name !== "telefono" && name !== "fecha" && name !== "documento" && name !== "correo" && name !== "confirmarCorreo"
-            && name !== "confirmarcontrasena" && name !== "contrasena"
+            && name !== "confirmarcontrasena" && name !== "contrasena" && name !== "perfil"
 
         ) {
             let regex = new RegExp("^[ñíóáéú a-zA-Z ]+$");
@@ -99,75 +157,43 @@ const NuevoEmpleado = () => {
         e.preventDefault();
 
 
-        // Validar  de campos 
-        if (tipo === '' || documento === null || nombres === '' || apellidos === '' ||
-            correo === '' || confirmarCorreo === '' || telefono === null || fecha === '' ||
-            perfil === '') {
-            mostrarError();
+
+        if (contrasena.length < 6) {
+            mostrarError('La contrasena debe ser de minimo 6 caracteres');
             return;
         }
 
-        if (empleadoSeleccionado === null) {
-            // Password minimo de 6 caracteres
-            if (contrasena.length < 6) {
-                alert('La contrasena debe ser de minimo 6 caracteres');
-                return;
-            }
-
-            // Los 2 passwords son iguales
-            if (contrasena !== confirmarcontrasena) {
-                alert('Las contrasenas no son iguales');
-                return;
-            }
-
-
-
-            //valida contraseñas igualesY
-            if (contrasena === '' || confirmarcontrasena === '') {
-                mostrarError();
-                return;
-            }
-
+        // Los 2 passwords son iguales
+        if (contrasena !== confirmarcontrasena) {
+            mostrarError('Las contrasenas no son iguales');
+            return;
         }
 
         // confirma que Los 2 correos son iguales
 
         if (correo !== confirmarCorreo) {
-            alert('Los correos no son iguales');
+            mostrarError('Los correos no son iguales');
             return;
         }
 
 
         if (documento <= 0) {
-            alert("Ingrese un documento valido")
+            mostrarError("Ingrese un documento valido")
             return;
         }
 
         if (telefono <= 0) {
-            alert("Ingrese un teléfono valido")
+            mostrarError("Ingrese un teléfono valido")
             return;
         }
 
-        if (empleadoSeleccionado === null) {
+        agregarEmpleado(empleado);
 
-            agregarEmpleado(empleado);
-
-
-        } else {
-            // actualizar empleado existente
-            actualizarEmpleado(empleado);
-
-            // Elimina empleado seleccionado del state
-            limpiarEmpleado();
-
-        }
+        // Elimina empleado seleccionado del state
+        limpiarEmpleado();
 
         //reiniciar formulario
         limpiarForm();
-
-
-        alert('Empleado guardado con exito');
-
 
     }
 
@@ -192,235 +218,242 @@ const NuevoEmpleado = () => {
 
     return (
         <Fragment>
-            <MenuPrincipal />
-            {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>
-            ) : null}
+            <AppBar position="absolute" color="default" className={classes.appBar}>
+                <Header />
+                <MenuPrincipal />
+            </AppBar>
 
-            <form
-                className="formulario-producto"
-                onSubmit={onSubmit}
-            >
-
-                <div className="campos-obligatorios">
-                    <h3>Los campos marcados con * son obligatorios</h3>
-                </div>
-
-                <h1>Nuevo Empleado</h1>
-                <hr></hr>
+            <div className="contenedor-principal">
                 <br></br>
 
-                <div className="row">
+                <form
+                    onSubmit={onSubmit}
+                >
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="tipo">Tipo Documento</label>
-                        <input
-                            type="text"
-                            id="tipo"
-                            name="tipo"
-                            className="input-text"
-                            placeholder="Tipo de Documento"
-                            value={tipo}
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="documento">N° Documento</label>
-                        <input
-                            type="number"
-                            id="documento"
-                            name="documento"
-                            className="input-text"
-                            placeholder="Número de Doc."
-                            value={documento}
-                            onChange={onChange}
+                    <main className={classes.layout}>
 
-                        />
-                    </div>
-                </div>
+                        {errorformulario ?
+                            (
+                                <Alert severity="error">{textoAlert}</Alert>
 
+                            )
+                            : null}
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
+                        {mensajeConfirmación ?
+                            (
+                                <Alert severity="success">{mensajeConfirmación}</Alert>
 
-                        <label htmlFor="nombres">Nombres</label>
-                        <input
-                            type="text"
-                            id="nombres"
-                            name="nombres"
-                            className="input-text"
-                            placeholder="Tu nombre"
-                            value={nombres}
-                            onChange={onChange}
-                        />
-                    </div>
+                            )
+                            : null}
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
+                        <Paper className={classes.paper}>
 
-                        <label htmlFor="apellidos">Apellidos</label>
-                        <input
-                            type="text"
-                            id="apellidos"
-                            name="apellidos"
-                            className="input-text"
-                            placeholder="Tus apellidos"
-                            value={apellidos}
-                            onChange={onChange}
+                            <div className="campos-obligatorios">
+                                <h3>Los campos marcados con * son obligatorios</h3>
+                            </div>
 
-                        />
+                            <h1>Nuevo Empleado</h1>
+                            <hr></hr>
+                            <br></br>
 
-                    </div>
-                </div>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel className={classes.text} id="required-label">Tipo Documento</InputLabel>
+                                        <Select
+                                            labelId="required-label"
+                                            id="select-required"
+                                            value={tipo}
+                                            name="tipo"
+                                            className={classes.selectEmpty}
+                                            fullWidth
+                                            onChange={onChange}
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="correo">Correo Electrónico</label>
-                        <input
-                            type="email"
-                            id="correo"
-                            name="correo"
-                            className="input-text"
-                            placeholder="Tu Correo Electrónico"
-                            value={correo}
-                            onChange={onChange}
+                                        >
+                                            <MenuItem value='CC'>CC</MenuItem>
+                                            <MenuItem value='PASAPORTE'>PASAPORTE</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        type="number"
+                                        id="documento"
+                                        name="documento"
+                                        label="N° Documento"
+                                        value={documento}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
 
-                        />
-                    </div>
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="nombres"
+                                        name="nombres"
+                                        label="Nombres"
+                                        value={nombres}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="confirmarCorreo">Confirmar Correo</label>
-                        <input
-                            type="email"
-                            id="confirmarCorreo"
-                            name="confirmarCorreo"
-                            className="input-text"
-                            placeholder="Confirma el correo"
-                            value={confirmarCorreo}
-                            onChange={onChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="apellidos"
+                                        name="apellidos"
+                                        label="Apellidos"
+                                        value={apellidos}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
 
-                        />
-                    </div>
-                </div>
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        type="email"
+                                        id="correo"
+                                        name="correo"
+                                        label="Correo Electrónico"
+                                        value={correo}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        type="email"
+                                        id="confirmarCorreo"
+                                        name="confirmarCorreo"
+                                        label="Confirmar correo"
+                                        value={confirmarCorreo}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} >
+                                    <TextField
+                                        required
+                                        type="number"
+                                        id="telefono"
+                                        name="telefono"
+                                        label="Teléfono"
+                                        value={telefono}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="telefono">Teléfono</label>
-                        <input
-                            type="number"
-                            id="telefono"
-                            name="telefono"
-                            className="input-text"
-                            placeholder="Tu Teléfono"
-                            value={telefono}
-                            onChange={onChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
 
-                        />
-                    </div>
+                                    <InputLabel className={classes.textFecha} id="required-label">Fecha de nacimiento</InputLabel>
+                                    <TextField
+                                        required
+                                        type="date"
+                                        id="fecha"
+                                        name="fecha"
+                                        value={fecha}
+                                        className={classes.textField}
+                                        fullWidth
+                                        onChange={onChange}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Grid>
 
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel className={classes.text} id="required-label">Tipo</InputLabel>
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="fecha">Fecha de Nacimiento</label>
-                        <input
-                            type="date"
-                            id="fecha"
-                            name="fecha"
-                            className="input-text"
-                            placeholder="Fecha en que naciste"
-                            value={fecha}
-                            onChange={onChange}
+                                        <Select
+                                            required
+                                            labelId="required-label"
+                                            id="select-required"
+                                            value={perfil}
+                                            name="perfil"
+                                            className={classes.selectEmpty}
+                                            fullWidth
+                                            onChange={onChange}
+                                        >
+                                            {tipos ? (
+                                                tipos.map(tipo => (
+                                                    <MenuItem
+                                                        key={tipo._id}
+                                                        value={tipo.nombreTipo}
+                                                    >
+                                                        {tipo.nombreTipo}
+                                                    </MenuItem>
+                                                )))
+                                                :
+                                                null}
 
-                        />
-                    </div>
-                </div>
+                                        </Select>
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="password">Perfil</label>
-                        <select
-                            type="text"
-                            id="perfil"
-                            name="perfil"
-                            className="input-text"
-                            placeholder="Perfil del empleado"
-                            value={perfil}
-                            onChange={onChange}
+                                    </FormControl>
+                                </Grid>
 
-                        >  <option>--Seleccione--</option>
-                            {tipoEmpleado.map(tipo => (
-                                <option
-                                    key={tipo._id}
-                                >{tipo.nombre}</option>
-                            ))}
-                        </select>
-                    </div>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        type="password"
+                                        id="contrasena"
+                                        name="contrasena"
+                                        label="Contraseña"
+                                        value={contrasena}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
 
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        type="password"
+                                        id="confirmarcontrasena"
+                                        name="confirmarcontrasena"
+                                        label="Confirmar contraseña"
+                                        value={confirmarcontrasena}
+                                        className={classes.root}
+                                        fullWidth
+                                        onChange={onChange}
 
-                        <label htmlFor="password">Contraseña</label>
-                        <input
-                            type="password"
-                            id="contrasena"
-                            name="contrasena"
-                            className="input-text"
-                            placeholder="Tu contrasena"
-                            value={contrasena}
-                            onChange={onChange}
+                                    />
+                                </Grid>
 
-                        />
-                    </div>
-                </div>
+                            </Grid>
+                            <div className={classes.buttons}>
 
+                                <Button className={classes.button}
+                                    onClick={() => limpiarForm()}>
+                                    Limpiar  </Button>
 
-                <div className="row">
-                    <div className="col-6">
-                        <label className="asterisco">*</label>
-                        <label htmlFor="confirmarcontrasena">Confirmar contraseña</label>
-                        <input
-                            type="password"
-                            id="confirmarcontrasena"
-                            name="confirmarcontrasena"
-                            className="input-text"
-                            placeholder="Confirma tu contrasena"
-                            value={confirmarcontrasena}
-                            onChange={onChange}
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                >Registrar </Button>
+                            </div>
 
-                        />
-                    </div>
+                        </Paper>
 
-                </div>
+                    </main>
 
-                <div className="row">
-
-
-                    <div className="col-6">
-                        <input
-                            type="submit"
-                            className="btn btn-primary btn-block"
-                            value="Ingresar"
-                        />
-                    </div>
-
-                    <div className="col-6">
-                        <input
-                            className="btn btn-primary btn-block"
-                            onClick={() => limpiarForm()}
-                            value="Limpiar"
-                        />
-                    </div>
-                </div>
-
-            </form>
-
-            {errorformulario ? (<p className="mensaje error">Todos los campos son Obligatorios</p>) : null}
+                </form>
+            </div>
 
         </Fragment>
     );

@@ -12,11 +12,9 @@ const MenuPrincipal = () => {
 
     useEffect(() => {
 
-        // eslint-disable-next-line
         usuarioAutenticado();
+        // eslint-disable-next-line
     }, []);
-
-
 
 
     return (
@@ -51,16 +49,24 @@ const MenuPrincipal = () => {
 
                             </ul>
                         </li>
-                        <li><a href="/nueva-cuenta">Clientes</a>
+                        <li><a href="/clientes">Clientes</a>
                             <ul className="submenu">
-                                <li><a href="/nueva-cuenta">Registrar Cliente</a></li>
+                                <li><a href="/clientes">Lista de Clientes</a></li>
+                                <li><a href="/nueva-cuenta">Crear Cliente</a></li>
 
                             </ul>
                         </li>
 
 
                         <li><a href="/empleados">Registro de Ventas</a></li>
-                        <li><a href="/empleados">Agendar Citas</a></li>
+
+                        <li><a href="/agendamiento">Agendamiento</a>
+
+                            <ul className="submenu">
+                                <li><a href="/agendamiento">Agendar Cita</a></li>
+
+                            </ul>
+                        </li>
 
 
                     </ul>

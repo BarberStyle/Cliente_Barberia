@@ -2,9 +2,23 @@ import React, { useContext, useEffect } from 'react';
 import ListaEmpleados from '../empleados/ListadoEmpleados';
 import AuthContext from '../../context/autenticacion/authContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
+import AppBar from '@material-ui/core/AppBar';
+import Header from '../layout/Header';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+
+    appBar: {
+        position: 'relative',
+    }
+
+}));
 
 
 const Empleados = () => {
+
+    const classes = useStyles();
 
 
     // Extraer la información de autenticación
@@ -13,24 +27,27 @@ const Empleados = () => {
 
     useEffect(() => {
 
-        // eslint-disable-next-line
-
         usuarioAutenticado();
+        // eslint-disable-next-line
     }, [])
 
     return (
-        <div className="contenedor-app">
-            <div className="seccion-principal">
+
+        <div className="seccion-principal">
+            <AppBar position="absolute" color="default" className={classes.appBar}>
+                <Header />
                 <MenuPrincipal />
+            </AppBar>
+
+            <div className="contenedor-principal">
                 <main>
                     <br></br>
-                    <div className="contenedor-tareas">
-                        <ListaEmpleados />
-                    </div>
-
+                    <ListaEmpleados />
                 </main>
             </div>
-        </div>);
+        </div>
+
+    );
 }
 
 export default Empleados;

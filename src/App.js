@@ -12,10 +12,6 @@ import RutaPrivada from './components/rutas/RutaPrivada';
 import ListadoServicios from './components/servicios/listadoServicios';
 import Empleados from './components/empleados/Empleados';
 import EmpleadoSatate from './context/empleados/empleadoState';
-import CitaState from './context/citas/citaState';
-import DetalleState from './context/detalle/detalleState';
-import EstudioState from './context/estudios/estudioState';
-import NuevaContraseña from './components/seguridad/NuevaContraseña';
 import Principal from './components/principal/Principal';
 import Inicio from './components/inicio/inicio';
 import Somos from './components/informativo/Somos';
@@ -24,11 +20,21 @@ import NuevoEmpleado from './components/empleados/NuevoEmpleado';
 import NuevoProducto from './components/productos/NuevoProducto';
 import Productos from './components/productos/Productos';
 import ProductoState from './context/productos/productoState';
-import ContraseñaState from './context/contraseñas/contrasenaState';
-import IngresarCodigo from './components/seguridad/IngresarCodigo';
-import NuevaPregunta from './components/configuracion/NuevaPregunta';
+import ConfiguracionState from './context/cambioContraseña/configuracionState';
+import NuevaRespuesta from './components/respuestas/NuevaRespuesta';
+import RespuestaState from './context/respuestas/respuestaState';
+import ValidarPregunta from './components/cambioContraseña/ValidarPregunta';
+import NuevaContraseña from './components/cambioContraseña/NuevaContraseña';
+import Clientes from './components/clientes/Clientes';
+import ClienteState from './context/clientes/clienteState';
+import Agendamientos from './components/agendamiento/Agendamientos';
+import AgendamientoState from './context/agendamiento/agendamientoState';
+import CarouselContainer from './components/principal/CarruselContainer';
+import Contacto from './components/informativo/Contacto';
+import Modal from 'react-modal';
 
 
+Modal.setAppElement('#root');
 
 //Revisar si tenemos un token
 const token = localStorage.getItem('token');
@@ -38,16 +44,19 @@ if (token) {
 
 function App() {
   return (
+    <div >
+      <CarouselContainer/>
+    </div>,
 
-    <EmpleadoSatate>
-      <ServicioState>
-        <CitaState>
-          <DetalleState>
-            <EstudioState>
-              <ProductoState>
-                <AlertaState>
-                  <AuthState>
-                    <ContraseñaState>
+    <AgendamientoState>
+      <ClienteState>
+        <EmpleadoSatate>
+          <ServicioState>
+            <ProductoState>
+              <AlertaState>
+                <ConfiguracionState>
+                  <RespuestaState>
+                    <AuthState>
                       <Router>
                         <Switch>
                           <RutaPrivada exact path="/inicio" component={Inicio} />
@@ -57,26 +66,30 @@ function App() {
                           <RutaPrivada exact path='/nuevo-empleado' component={NuevoEmpleado} />
                           <RutaPrivada exact path='/nuevo-producto' component={NuevoProducto} />
                           <RutaPrivada exact path='/productos' component={Productos} />
+                          <RutaPrivada exact path="/nueva-pregunta" component={NuevaRespuesta} />
+                          <RutaPrivada exact path='/servicios' component={Servicios} />
+                          <RutaPrivada exact path="/agendamiento" component={Agendamientos} />
+                          <RutaPrivada exact path='/clientes' component={Clientes} />
                           <Route exact path="/iniciar-sesion" component={Login} />
-                          <Route exact path="/cambio-contrasena" component={NuevaContraseña} />
-                          <RutaPrivada exact path="/nueva-pregunta" component={NuevaPregunta} />
-                          <Route exact path="/ingresar-codigo" component={IngresarCodigo} />
-                          <Route exact path='/servicios' component={Servicios} />
+                          <Route exact path="/validar-pregunta" component={ValidarPregunta} />
+                          <Route exact path="/nueva-contraseña" component={NuevaContraseña} />
                           <Route exact path='/lista-servicios' component={ListadoServicios} />
                           <Route exact path="/somos" component={Somos} />
                           <Route exact path="/galeria" component={Galeria} />
                           <Route exact path="/" component={Principal} />
+                          <Route exact path="/contacto" component={Contacto} />
+
                         </Switch>
                       </Router>
-                    </ContraseñaState>
-                  </AuthState>
-                </AlertaState>
-              </ProductoState>
-            </EstudioState>
-          </DetalleState>
-        </CitaState>
-      </ServicioState>
-    </EmpleadoSatate>
+                    </AuthState>
+                  </RespuestaState>
+                </ConfiguracionState>
+              </AlertaState>
+            </ProductoState>
+          </ServicioState>
+        </EmpleadoSatate>
+      </ClienteState>
+    </AgendamientoState>
   );
 }
 

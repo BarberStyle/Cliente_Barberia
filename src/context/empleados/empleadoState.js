@@ -29,13 +29,13 @@ const EmpleadoSatate = props => {
         empleado: null,
         mensaje: null,
         empleadoSeleccionado: null,
-        caso: ''
+        textoAlert:'',
+        mensajeConfirmación: '',
     }
 
     const tipoEmpleado = [
-        { nombre: 'Empleado' },
-        { nombre: 'Admin Provisional' },
-        { nombre: 'Vendedor' }
+        { nombre: 'Manicurista' },
+        { nombre: 'Maquilladora' }
     ]
 
     // Dispatch para ejecutar las acciones del reducer
@@ -51,9 +51,10 @@ const EmpleadoSatate = props => {
 
 
     // Valida el formulario por errores
-    const mostrarError = () => {
+    const mostrarError = alert => {
         dispatch({
-            type: VALIDAR_FORMULARIO
+            type: VALIDAR_FORMULARIO,
+            payload: alert
         })
     }
 
@@ -80,7 +81,6 @@ const EmpleadoSatate = props => {
                 payload: alerta
             })
         }
-
     }
 
     // Obtener los empleados
@@ -169,6 +169,7 @@ const EmpleadoSatate = props => {
                 formulario_cita: state.formulario_cita,
                 errorformulario: state.errorformulario,
                 empleadoSeleccionado: state.empleadoSeleccionado,
+                mensajeConfirmación: state.mensajeConfirmación,
                 caso: state.caso,
                 mostrarFormulario,
                 mostrarError,

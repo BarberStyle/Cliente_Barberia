@@ -1,9 +1,8 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import ServicioContext from '../../context/servicios/servicioContext';
-import AlertaContext from '../../context/alertas/alertaContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import EditIcon from '@material-ui/icons/Edit';
+
 import {
     Table,
     Button,
@@ -24,10 +23,8 @@ function buscandoFiltro(consult) {
 const ListadoServicios = () => {
 
     const servicioContext = useContext(ServicioContext);
-    const alertaContext = useContext(AlertaContext);
     /** */
-    const { servicios, obtenerServicios,actualizarServicio, mensaje } = servicioContext;
-    const { mostrarAlerta } = alertaContext;
+    const { servicios, obtenerServicios, actualizarServicio } = servicioContext;
 
     const [consulta, guardarConsulta] = useState({
         consult: ''
@@ -50,14 +47,10 @@ const ListadoServicios = () => {
 
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
-        // si hay un error
-        if (mensaje) {
-            mostrarAlerta(mensaje.msg, mensaje.categoria);
-        }
-
+      
         obtenerServicios();
         // eslint-disable-next-line
-    }, [mensaje]);
+    }, []);
 
 
     const onChangeBusqueda = e => {
@@ -115,62 +108,60 @@ const ListadoServicios = () => {
 
     return (
         <Fragment>
-            <h1>Listado de Servicios</h1>
+            <div className="contenedor-basico sombra-dark">
 
-            <div className="barraBusqueda">
-                <input
-                    type="text"
-                    placeholder="Buscar"
-                    className="textField"
-                    name="consult"
-                    value={consult}
-                    onChange={onChangeBusqueda}
-                />
-                <button type="button" className="btnBuscar" /*onClick={onClear}*/>
-                    {" "}
-                    <FontAwesomeIcon icon={faSearch} />
-                </button>
+                <h1>Listado de Servicios</h1>
+
+                <div className="barraBusqueda">
+                    <input
+                        type="text"
+                        placeholder="Buscar"
+                        className="textField"
+                        name="consult"
+                        value={consult}
+                        onChange={onChangeBusqueda}
+                    />
+                </div>
+
+                <br></br>
+
+                <Container>
+                    <Table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Duración(min)</th>
+                                <th>Tipo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {servicios ? (
+                                servicios.filter(buscandoFiltro(consult)).map(servicio => (
+                                    <tr>
+                                        <td>{servicio.nombre}</td>
+                                        <td>{servicio.precio}</td>
+                                        <td>{servicio.duracion}</td>
+                                        <td>{servicio.tipo}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => mostrarModalActualizar(servicio)}
+                                            > <EditIcon /></button>{"  "}
+
+
+                                        </td>
+
+                                    </tr>
+                                )))
+                                :
+                                null}
+
+                        </tbody>
+                    </Table>
+                </Container>
             </div>
-
-            <br></br>
-
-            <Container>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Duración(min)</th>
-                            <th>Tipo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {servicios ? (
-                            servicios.filter(buscandoFiltro(consult)).map(servicio => (
-                                <tr>
-                                    <td>{servicio.nombre}</td>
-                                    <td>{servicio.precio}</td>
-                                    <td>{servicio.duracion}</td>
-                                    <td>{servicio.tipo}</td>
-                                    <td>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => mostrarModalActualizar(servicio)}
-                                        > Actualizar</button>{"  "}
-
-
-                                    </td>
-
-                                </tr>
-                            )))
-                            :
-                            null}
-
-                    </tbody>
-                </Table>
-            </Container>
-
             <Modal isOpen={modalActualizar}>
                 <ModalHeader>
                     <div><h3>Editar Servicio</h3></div>

@@ -32,7 +32,8 @@ export default (state, action) => {
         case VALIDAR_FORMULARIO:
             return {
                 ...state,
-                errorformulario: true
+                errorformulario: true,
+                textoAlert: action.payload
             }
         case ACTUAL:
             return {

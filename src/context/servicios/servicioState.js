@@ -11,7 +11,8 @@ import {
     ACTUAL,
     ELIMINAR,
     ACTUALIZAR,
-    LIMPIAR
+    LIMPIAR,
+    OBTENER_TIPOS
 } from '../../types';
 
 import clienteAxios from '../../config/axios';
@@ -25,7 +26,11 @@ const ServicioState = props => {
         errorformulario: false,
         servicio: null,
         mensaje: null,
-        servicioSeleccionado: null
+        servicioSeleccionado: null,
+        textoAlert: '',
+        tipos: [],
+        mensajeConfirmación: ''
+
     }
     // Dispatch para ejecutar las acciones
     const [state, dispatch] = useReducer(servicioReducer, initialState);
@@ -90,12 +95,6 @@ const ServicioState = props => {
         }
     }
 
-    // Valida el formulario por errores
-    const mostrarError = () => {
-        dispatch({
-            type: VALIDAR_FORMULARIO
-        })
-    }
 
     // Selecciona el Proyecto que el usuario dio click
     const guardarServicioSeccionado = servicio => {
@@ -153,13 +152,40 @@ const ServicioState = props => {
         })
     }
 
-    // ver formulario registro de servicios
-    const mostrarFormulario = () => {
+     // Valida el formulario por errores
+     const mostrarError = alert => {
+        dispatch({
+            type: VALIDAR_FORMULARIO,
+            payload: alert
+        })
+    }
+
+     // ver formulario registro de productos
+     const mostrarFormulario = () => {
         dispatch({
             type: FORMULARIO
         })
     }
 
+
+    const obtenerTipos = async () => {
+        try {
+            const resultado = await clienteAxios.get('/api/tipos');
+            dispatch({
+                type: OBTENER_TIPOS,
+                payload: resultado.data.tipo
+            })
+        } catch (error) {
+            const alerta = {
+                msg: 'Hubo un error',
+            }
+
+            dispatch({
+                type: ERROR,
+                payload: alerta
+            })
+        }
+    }
 
     return (
         <servicioContext.Provider
@@ -170,7 +196,10 @@ const ServicioState = props => {
                 servicio: state.servicio,
                 servicioSeleccionado: state.servicioSeleccionado,
                 mensaje: state.mensaje,
+                textoAlert: state.textoAlert,
                 editServicio: editServicio,
+                tipos: state.tipos,
+                mensajeConfirmación: state.mensajeConfirmación,
                 obtenerServicios,
                 agregarServicio,
                 mostrarError,
@@ -179,8 +208,8 @@ const ServicioState = props => {
                 actualizarServicio,
                 guardarServicioSeccionado,
                 limpiarServicio,
-                mostrarFormulario
-                // guardarPregunta
+                mostrarFormulario,
+                obtenerTipos
             }}
         >
             {props.children}

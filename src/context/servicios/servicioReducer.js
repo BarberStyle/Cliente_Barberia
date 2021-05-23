@@ -7,7 +7,8 @@ import {
     ACTUAL,
     ELIMINAR,
     ACTUALIZAR,
-    LIMPIAR
+    LIMPIAR,
+    OBTENER_TIPOS
 } from '../../types';
 
 export default (state, action) => {
@@ -25,14 +26,15 @@ export default (state, action) => {
         case AGREGAR:
             return {
                 ...state,
-                servicios: [...state.servicios, action.payload],
                 formulario: false,
-                errorformulario: false
+                errorformulario: false,
+                mensajeConfirmación: [...state.mensajeConfirmación, action.payload]
             }
         case VALIDAR_FORMULARIO:
             return {
                 ...state,
-                errorformulario: true
+                errorformulario: true,
+                textoAlert: action.payload
             }
         case ACTUAL:
             return {
@@ -61,6 +63,11 @@ export default (state, action) => {
                 ...state,
                 servicioSeleccionado: null
             }
+            case OBTENER_TIPOS:
+                return {
+                    ...state,
+                    tipos: action.payload
+                }
         default:
             return state;
     }

@@ -25,9 +25,9 @@ const Header = () => {
     );
 
     useEffect(() => {
-        // eslint-disable-next-line
-
+       
         usuarioAutenticado();
+         // eslint-disable-next-line
     }, []);
 
 
@@ -35,9 +35,6 @@ const Header = () => {
     return (
 
         <Fragment>
-
-
-
 
             <div className="header-segundario">
                 <ul>

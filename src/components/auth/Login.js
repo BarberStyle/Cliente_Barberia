@@ -1,38 +1,86 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
 import Barra from '../layout/Barra';
 import Header from '../layout/Header';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 
+
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" to="https://material-ui.com/">
+                La Terraza de Frida
+        </Link>{' '}
+            {new Date().getFullYear()}
+            
+            {'.'}
+        </Typography>
+    );
+}
+
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& .MuiFormLabel-root':
+        {
+            fontSize: 14,
+            marginTop: -6
+
+        }
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.primary.dark,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    link: {
+
+        fontSize: 14
+    },
+}));
 
 const Login = (props) => {
 
+    const classes = useStyles();
     // extraer los valores del context
-    const alertaContext = useContext(AlertaContext);
-    const { alerta, mostrarAlerta } = alertaContext;
 
     const authContext = useContext(AuthContext);
-    const { mensaje, autenticado, iniciarSesion } = authContext;
+    const { mensaje, autenticado, iniciarSesion, mostrarError } = authContext;
 
     // En caso de que el password o usuario no exista
     useEffect(() => {
-
-        if (autenticado) {
+        if (autenticado && documento !== '' && contraseña !== '') {
             alert("Ingreso Exitoso");
             props.history.push('/inicio');
-
+        
         }
-
-        if (mensaje) {
-            mostrarAlerta(mensaje.msg, mensaje.categoria);
-        }
-
-
         // eslint-disable-next-line
     }, [mensaje, autenticado, props.history]);
-
 
     // State para iniciar sesión
     const [usuario, guardarUsuario] = useState({
@@ -42,8 +90,6 @@ const Login = (props) => {
 
     // extraer de usuario
     const { documento, contraseña } = usuario;
-
-
 
     const onChange = evento => {
         //destructurin de los valores enviados por el metodo onchange de cada input
@@ -61,30 +107,15 @@ const Login = (props) => {
 
         // Validar que no haya campos vacios
         if (documento.trim() === '' || contraseña.trim() === '') {
-            alert('Todos los campos son obligatorios');
             return;
         }
 
         if (documento <= 0) {
-            alert('Número de documento invalido');
+            mostrarError('Número de documento invalido');
             return;
         }
-
-        
-        //reinicia el form
-        guardarUsuario({
-            documento: '',
-            contraseña: ''
-        })
-
-        if (documento.trim() !== '' || contraseña.trim() !== '') {
-            iniciarSesion({ documento, contraseña });
-        }
-
         // Pasarlo al action
-     
-
-
+        iniciarSesion({ documento, contraseña });
 
     }
 
@@ -92,56 +123,82 @@ const Login = (props) => {
     return (
         <Fragment>
             <Header />
-
             <Barra />
+            {mensaje ?
+                (
+                    <Alert severity="error">{mensaje.msg}</Alert>
+                )
+                : null}
+            <div className="contenedor-form sombra-dark">
 
-            <div className="form-usuario">
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Inicia sesión
+                              </Typography>
 
-                {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>) : null}
-
-
-                <div className="contenedor-form sombra-dark">
-                    <h1>Iniciar Sesión</h1>
-                    <br></br>
-                    <form
-                        onSubmit={onSubmit}
-                    >
-                        <div className="campo-form">
-                            <label htmlFor="documento">N° Documento</label>
-                            <input
-                                type="text"
+                        <form
+                            onSubmit={onSubmit}
+                            className={classes.form}
+                        >
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                type="number"
+                                required
+                                fullWidth
                                 id="documento"
+                                label="N° Documento"
                                 name="documento"
-                                className="camposNum"
-                                placeholder="Tu numero de documento"
+                                className={classes.root}
+                                autoFocus
                                 value={documento}
                                 onChange={onChange}
                             />
-                        </div>
-
-                        <div className="campo-form">
-                            <label htmlFor="contraseña">Contraseña</label>
-                            <input
-                                type="password"
-                                id="contraseña"
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
                                 name="contraseña"
-                                placeholder="Tu contraseña"
+                                label="Contraseña"
+                                className={classes.root}
+                                type="password"
+                                id="password"
                                 value={contraseña}
                                 onChange={onChange}
                             />
-                        </div>
 
-                        <div className="campo-form">
-                            <input type="submit" className="btn btn-primary btn-block" value="Iniciar Sesión" />
-                        </div>
-                    </form>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >Acceder  </Button>
 
-                    <Link to={'/cambio-contrasena'} className="olvido enlace-cuenta" >
-                        Olvidaste la contraseña?
-                </Link>
-                </div>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link
+                                        to="/validar-pregunta"
+                                        variant="body2"
+                                        className={classes.link}
+                                    >
+                                        ¿Olvidaste la contraseña? </Link>
+                                </Grid>
+
+                            </Grid>
+                        </form>
+                    </div>
+                    <Box mt={8}>
+                        <Copyright />
+                    </Box>
+                </Container>
             </div>
-
         </Fragment>
     );
 }

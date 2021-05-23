@@ -1,6 +1,5 @@
 import React, { Fragment, useContext, useState, useEffect } from 'react';
 import ProductoContext from '../../context/productos/productoContext';
-import AlertaContext from '../../context/alertas/alertaContext';
 import "bootstrap/dist/css/bootstrap.min.css";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
@@ -17,19 +16,19 @@ import {
     ModalFooter,
 } from "reactstrap";
 
+
 function buscandoFiltro(consult) {
     return function (x) {
         return x.nombre.toLowerCase().includes(consult) || !consult;
     }
 }
 
+
 const ListadoProductos = () => {
 
     const productoContext = useContext(ProductoContext);
-    const alertaContext = useContext(AlertaContext);
     /** */
-    const { productos, obtenerProductos, actualizarProducto, mensaje } = productoContext;
-    const { mostrarAlerta } = alertaContext;
+    const { productos, obtenerProductos, actualizarProducto } = productoContext;
 
 
     const [consulta, guardarConsulta] = useState({
@@ -54,23 +53,15 @@ const ListadoProductos = () => {
 
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
-        // si hay un error
-        if (mensaje) {
-            mostrarAlerta(mensaje.msg, mensaje.categoria);
-        }
 
-        // eslint-disable-next-line
+
         obtenerProductos();
-
-    }, [mensaje]);
-
-
-
+        // eslint-disable-next-line
+    }, []);
 
     const onChangeBusqueda = e => {
 
         const { name, value } = e.target;
-
 
         guardarConsulta({
             ...consulta,
@@ -204,101 +195,105 @@ const ListadoProductos = () => {
                 </Container>
             </div>
 
-            <Modal isOpen={modalActualizar}>
-                <ModalHeader>
-                    <div><h3>Editar Producto</h3></div>
-                </ModalHeader>
+            <div className="modal">
+                <Modal isOpen={modalActualizar}>
+                    <ModalHeader>
+                        <div><h3>Editar Producto</h3></div>
+                    </ModalHeader>
 
-                <ModalBody>
-                    <FormGroup>
-                        <label>Nombre</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            name="nombre"
-                            value={nombre}
-                            onChange={handleChange}
+                    <ModalBody>
+                        <FormGroup>
+                            <label>Nombre</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="nombre"
+                                value={nombre}
+                                onChange={handleChange}
 
-                        />
-                    </FormGroup>
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <label>Descripción</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            name="descripcion"
-                            value={descripcion}
-                            onChange={handleChange}
+                        <FormGroup>
+                            <label>Descripción</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="descripcion"
+                                value={descripcion}
+                                onChange={handleChange}
 
-                        />
-                    </FormGroup>
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <label>Precio</label>
+                        <FormGroup>
+                            <label>Precio</label>
 
-                        <input
-                            className="form-control"
-                            name="precio"
-                            type="number"
-                            value={precio}
-                            onChange={handleChange}
+                            <input
+                                className="form-control"
+                                name="precio"
+                                type="number"
+                                value={precio}
+                                onChange={handleChange}
 
-                        />
-                    </FormGroup>
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <label>Foto</label>
+                        <FormGroup>
+                            <label>Foto</label>
 
-                        <input
-                            className="form-control"
-                            name="foto"
-                            type="text"
-                            value={foto}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
+                            <input
+                                className="form-control"
+                                name="foto"
+                                type="text"
+                                value={foto}
+                                onChange={handleChange}
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <label>Unidades</label>
+                        <FormGroup>
+                            <label>Unidades</label>
 
-                        <input
-                            className="form-control"
-                            name="disponibles"
-                            type="number"
-                            value={disponibles}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label>Estado</label>
+                            <input
+                                className="form-control"
+                                name="disponibles"
+                                type="number"
+                                value={disponibles}
+                                onChange={handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label>Estado</label>
 
-                        <input
-                            className="form-control"
-                            name="estado"
-                            type="text"
-                            value={estado}
-                            onChange={handleChange}
-                            readOnly
-                        />
-                    </FormGroup>
-                </ModalBody>
+                            <input
+                                className="form-control"
+                                name="estado"
+                                type="text"
+                                value={estado}
+                                onChange={handleChange}
+                                readOnly
+                            />
+                        </FormGroup>
+                    </ModalBody>
 
-                <ModalFooter>
-                    <Button
-                        color="primary"
-                        onClick={() => editar(editable)}
-                    >
-                        Editar
+                    <ModalFooter>
+                        <Button
+                            color="primary"
+                            onClick={() => editar(editable)}
+                        >
+                            Editar
             </Button>
-                    <Button
-                        color="danger"
-                        onClick={() => cerrarModalActualizar()}
-                    >
-                        Cancelar
+                        <Button
+                            color="danger"
+                            onClick={() => cerrarModalActualizar()}
+                        >
+                            Cancelar
             </Button>
-                </ModalFooter>
-            </Modal>
+                    </ModalFooter>
+                </Modal>
+
+            </div>
+
 
         </Fragment>
     );

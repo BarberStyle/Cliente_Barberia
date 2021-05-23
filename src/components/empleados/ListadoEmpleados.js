@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState, Fragment } from 'react';
 import EmpleadoContext from '../../context/empleados/empleadoContext';
 import AlertaContext from '../../context/alertas/alertaContext';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import EditIcon from '@material-ui/icons/Edit';
+
 import {
     Table,
     Button,
@@ -60,7 +60,7 @@ const ListadoEmpleados = () => {
 
     //extraer atributos del empleado
     const { tipo, documento, nombres, apellidos, correo, telefono,
-        perfil  } = editable;
+        perfil } = editable;
 
     // Obtener los empleados cuando carga el componente
     useEffect(() => {
@@ -134,66 +134,64 @@ const ListadoEmpleados = () => {
 
     return (
         <Fragment>
-            <h1>Listado de Empleados</h1>
-            <div className="barraBusqueda">
-                <input
-                    type="text"
-                    placeholder="Buscar"
-                    className="textField"
-                    name="consult"
-                    value={consult}
-                    onChange={onChangeBusqueda}
-                />
-                <button type="button" className="btnBuscar" /*onClick={onClear}*/>
-                    {" "}
-                    <FontAwesomeIcon icon={faSearch} />
-                </button>
+            <div className="contenedor-basico sombra-dark">
+                <h1>Listado de Empleados</h1>
+                <div className="barraBusqueda">
+                    <input
+                        type="text"
+                        placeholder="Buscar"
+                        className="textField"
+                        name="consult"
+                        value={consult}
+                        onChange={onChangeBusqueda}
+                    />
+                </div>
+
+                <br></br>
+                <Container>
+                    <Table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tipo Doc.</th>
+                                <th>N° de documento</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Correo Electrónico</th>
+                                <th>Teléfono</th>
+                                <th>Fecha de Nacimiento</th>
+                                <th>Perfil</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {empleados ? (
+                                empleados.filter(buscandoFiltro(consult)).map(empleado => (
+                                    <tr key={empleado._id}>
+                                        <td>{empleado.tipo}</td>
+                                        <td>{empleado.documento}</td>
+                                        <td>{empleado.nombres}</td>
+                                        <td>{empleado.apellidos}</td>
+                                        <td>{empleado.correo}</td>
+                                        <td>{empleado.telefono}</td>
+                                        <td>{empleado.fecha}</td>
+                                        <td>{empleado.perfil}</td>
+
+                                        <td>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => mostrarModalActualizar(empleado)}
+                                            > <EditIcon /></button>{"  "}
+                                        </td>
+
+                                    </tr>
+                                )))
+                                :
+                                null}
+
+                        </tbody>
+                    </Table>
+                </Container>
             </div>
-
-            <br></br>
-            <Container>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Tipo Doc.</th>
-                            <th>N° de documento</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Correo Electrónico</th>
-                            <th>Teléfono</th>
-                            <th>Fecha de Nacimiento</th>
-                            <th>Perfil</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {empleados ? (
-                            empleados.filter(buscandoFiltro(consult)).map(empleado => (
-                                <tr>
-                                    <td>{empleado.tipo}</td>
-                                    <td>{empleado.documento}</td>
-                                    <td>{empleado.nombres}</td>
-                                    <td>{empleado.apellidos}</td>
-                                    <td>{empleado.correo}</td>
-                                    <td>{empleado.telefono}</td>
-                                    <td>{empleado.fecha}</td>
-                                    <td>{empleado.perfil}</td>
-
-                                    <td>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => mostrarModalActualizar(empleado)}
-                                        > Actualizar</button>{"  "}
-                                    </td>
-
-                                </tr>
-                            )))
-                            :
-                            null}
-
-                    </tbody>
-                </Table>
-            </Container>
 
             <Modal isOpen={modalActualizar}>
                 <ModalHeader>
@@ -287,7 +285,7 @@ const ListadoEmpleados = () => {
                     </FormGroup>
 
                     <FormGroup>
-                    <label htmlFor="password">Perfil</label>
+                        <label htmlFor="password">Perfil</label>
                         <input
                             type="text"
                             id="perfil"
@@ -297,7 +295,7 @@ const ListadoEmpleados = () => {
                             value={perfil}
                             onChange={handleChange}
 
-                        > 
+                        >
                         </input>
                     </FormGroup>
 

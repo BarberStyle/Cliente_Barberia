@@ -11,7 +11,8 @@ import {
     LOGIN_EXITOSO,
     LOGIN_ERROR,
     CERRAR_SESION,
-    VALIDAR_FORMULARIO
+    VALIDAR_FORMULARIO,
+    CERRAR_SESION_LOG
 } from '../../types';
 
 const AuthState = props => {
@@ -21,7 +22,11 @@ const AuthState = props => {
         errorformulario: false,
         usuario: null,
         mensaje: null,
-        cargando: true
+        cargando: true,
+        textoAlert: '',
+        mensajeConfirmación: '',
+
+
     }
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -36,8 +41,14 @@ const AuthState = props => {
             });
 
         } catch (error) {
+            const alerta = {
+                msg: error.response?.data.msg,
+            }
+
             dispatch({
-                type: LOGIN_ERROR
+                type: LOGIN_ERROR,
+                payload: alerta
+
             })
         }
     }
@@ -78,6 +89,7 @@ const AuthState = props => {
             // Obtener el usuario
             usuarioAutenticado();
         } catch (error) {
+            console.log(error);
             const alerta = {
                 msg: error.response?.data.msg,
                 categoria: 'alerta-error'
@@ -90,19 +102,27 @@ const AuthState = props => {
         }
     }
 
-    // Valida el formulario por errores
-    const mostrarError = () => {
+     // Valida el formulario por errores
+     const mostrarError = alert => {
         dispatch({
-            type: VALIDAR_FORMULARIO
+            type: VALIDAR_FORMULARIO,
+            payload: alert
         })
     }
-
 
     // Cierra la sesión del usuario
     const cerrarSesion = () => {
 
         dispatch({
             type: CERRAR_SESION
+        })
+    }
+
+     // Cierra la sesión del usuario
+     const cerrarSesionLog = () => {
+
+        dispatch({
+            type: CERRAR_SESION_LOG
         })
     }
 
@@ -115,11 +135,14 @@ const AuthState = props => {
                 mensaje: state.mensaje,
                 cargando: state.cargando,
                 errorformulario: state.errorformulario,
+                textoAlert: state.textoAlert,
+                mensajeConfirmación: state.mensajeConfirmación,
                 registrarUsuario,
                 iniciarSesion,
                 usuarioAutenticado,
                 cerrarSesion,
-                mostrarError
+                mostrarError,
+                cerrarSesionLog
             }}
         >{props.children}
 

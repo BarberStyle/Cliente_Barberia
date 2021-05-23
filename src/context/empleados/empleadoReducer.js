@@ -25,7 +25,8 @@ export default (state, action) => {
         case VALIDAR_FORMULARIO:
             return {
                 ...state,
-                errorformulario: true
+                errorformulario: true,
+                textoAlert: action.payload
             }
         case CAMBIAR:
             return {
@@ -36,9 +37,9 @@ export default (state, action) => {
         case AGREGAR:
             return {
                 ...state,
-                empleados: [...state.empleados, action.payload],
                 formulario: false,
-                errorformulario: false
+                errorformulario: false,
+                mensajeConfirmación: [...state.mensajeConfirmación, action.payload]
             }
         case OBTENER:
             return {

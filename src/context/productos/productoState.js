@@ -25,7 +25,8 @@ const ProductoState = props => {
         errorformulario: false,
         producto: null,
         mensaje: null,
-        productoSeleccionado: null
+        productoSeleccionado: null,
+        textoAlert: ''
     }
     // Dispatch para ejecutar las acciones
     const [state, dispatch] = useReducer(productoReducer, initialState);
@@ -79,9 +80,10 @@ const ProductoState = props => {
     }
 
     // Valida el formulario por errores
-    const mostrarError = () => {
+    const mostrarError = alert => {
         dispatch({
-            type: VALIDAR_FORMULARIO
+            type: VALIDAR_FORMULARIO,
+            payload: alert
         })
     }
 
@@ -158,6 +160,7 @@ const ProductoState = props => {
                 producto: state.producto,
                 productoSeleccionado: state.productoSeleccionado,
                 mensaje: state.mensaje,
+                textoAlert: state.textoAlert,
                 obtenerProductos,
                 agregarProducto,
                 mostrarError,

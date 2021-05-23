@@ -181,6 +181,7 @@ aside {
   padding: 4rem;
   max-width: 100%;
   margin-left: 10%;
+  text-align: center;
 }
 
 .nombre-usuario {
@@ -303,11 +304,13 @@ aside {
 }
 
 .contenedor-form {
-  padding: 5rem 3rem;
+  padding: 2rem 3rem;
   max-width: 500px;
   width: 50%;
   background-color: var(--blanco);
   border-radius: 1rem;
+  margin-left: 30%;
+  margin-top: 3%;
 }
 
 .campo-form {
@@ -401,7 +404,7 @@ aside {
 .topnav {
   width: 100%;
   background: rgb(5, 4, 4);
-  padding-left: 30%;
+  text-align: center;
 }
 
 .olvido {
@@ -493,21 +496,12 @@ aside {
 }
 
 img {
-  width: 40%;
-  height: 40%;
-  margin-left: 30%;
+  position: relative;
+  width: 100%;
+  height: 525px;
 }
 
-.image-somos {
-  padding: 30px;
-  margin: 5%;
-}
 
-.texto-somos {
-  float: right;
-  padding: 30px;
-  margin: 5%;
-}
 
 .btn-cerrar {
   padding: 15px 20px;
@@ -551,7 +545,6 @@ img {
 .textField:hover {
   cursor: pointer;
   border: 1px solid #dee2e6;
-
 }
 
 .btnBuscar {
@@ -565,6 +558,7 @@ img {
 .barraBusqueda {
   float: right;
   padding: 20px;
+  display: flex;
 }
 
 /*mensaje de campos obligatorios*/
@@ -659,11 +653,281 @@ img {
 
 /*contenedor basico*/
 
-
 .contenedor-basico {
   padding: 5rem 3rem;
   width: 90%;
   background-color: var(--blanco);
   border-radius: 1rem;
   margin: 5%;
+  
 }
+
+.modal {
+  padding-top: 12%;
+}
+
+/*carrusel **/
+
+/*.logo {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}*/
+
+#slides {
+  position: fixed !important;
+  /* margin: 80px 0 0 0; */
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.carousel-caption {
+  font-size: 20px !important;
+  text-align: center !important;
+  background: rgba(63, 62, 62, 0.555);
+  box-sizing: border-box;
+  padding: 20px !important;
+  opacity: 0.8;
+  border-radius: 40px !important;
+  font-weight: bold;
+}
+
+.textoH3 {
+  position: absolute;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  z-index: 50;
+  width: 50px;
+  height: 30px;
+}
+
+.Parrafo {
+  font-weight: bolder !important;
+  font-size: 18px !important;
+  margin-top: 3%;
+  padding: 5px;
+}
+
+/*
+.btn {
+  position: relative !important;
+  color: #ffffff !important;
+  font-family: 'TRAJAN PRO' !important;
+  font-size: 17px !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+
+.btn:hover {
+  color: rgb(255, 255, 255) !important;
+  border-bottom: solid rgb(129, 0, 0) 3px !important;
+  font-size: 18px !important;
+}
+*/
+/*RESUMEN*/
+
+.contenedor-tareas {
+  justify-content: space-between;
+  background-color: var(--blanco);
+  float: right;
+  flex: 1;
+  margin: 2%;
+  padding: 2%;
+}
+
+.contenedor-agenda {
+  display: flex;
+}
+
+/*SOMOS Y CONTACTO*/
+
+.image-somos {
+ align-content: center;  
+ max-width: 50%;
+ display: flex;
+ margin-left: 25%;
+}
+
+
+
+.Parrafo {
+  padding: 10px;
+  font-size: 20px;
+}
+
+.Parrafo1 {
+  font-size: 20px;
+}
+
+.Parrafo2 {
+  padding: 30px;
+  font-size: 20px;
+  display: block;
+}
+
+.Parrafo3 {
+  padding: 10px 100px 10px;
+  font-size: 45px;
+  text-align: center;
+  color: rgb(170, 0, 0);
+  border-radius: 45px;
+  box-shadow: 0 5px 15px rgb(0, 0, 0, .5);
+}
+
+.Parrafo4 {
+  padding-top: 30px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.Parrafo5 {
+  font-size: 12px;
+  text-align: center;
+}
+
+.Parrafo6 {
+  font-size: 12px;
+  text-align: center;
+}
+
+.Titulo {
+  font-family: TRAJAN PRO !important;
+  color: #fc2004 !important;
+  font-size: 45px;
+  font-weight: bold !important;
+  position: relative !important;
+}
+
+.Titulo1 {
+  font-family: TRAJAN PRO !important;
+  color: #fc2004 !important;
+  font-weight: bold !important;
+  font-size: 35px;
+  padding: 30px;
+  position: relative;
+  margin-top: 10px !important;
+  color: rgb(170, 0, 0);
+  border-radius: 45px;
+  box-shadow: 0 6px 1px rgb(0, 0, 0, .5);
+}
+
+.Mision {
+  text-align: justify !important;
+  padding: 5%;
+}
+
+
+
+.Titulo3 {
+  font-family: TRAJAN PRO !important;
+  color: rgb(170, 0, 0) !important;
+  font-size: 35px;
+  font-weight: bold !important;
+  position: relative !important;
+  padding-bottom: 5%;
+}
+
+.Titulo4 {
+  font-family: TRAJAN PRO !important;
+  color: #000000;
+  font-weight: bold !important;
+}
+
+.Titulo5 {
+  font-family: TRAJAN PRO !important;
+  color: #000000;
+  font-weight: bold !important;
+}
+
+.Titulo6 {
+  font-size: 20px;
+  color: black;
+}
+
+.Info-Texto {
+  position: absolute;
+  padding: 5px 120px;
+  right: 720px !important;
+  text-align: justify !important;
+}
+
+.Info-Texto1 {
+  margin-left: 15%;
+}
+
+.Texto-Alusivo {
+  margin-top: 10%;
+  margin-right: 15px;
+  right: 300px !important;
+}
+
+.Texto-desarrolladores {
+  padding: 40px;
+}
+
+.Contenedor-mision-vision-objetivo {
+  display: flex;
+}
+
+.Mapa {
+  padding: 15px;
+  border: outset #F0EFEF 6px;
+  margin-top: 40px;
+}
+
+.Contenedor-todo {
+  display: flex;
+  align-content: space-between;
+}
+
+.contenedor-som{
+  width: 30%;
+  margin-left: 5%;
+}
+
+.texto-somos{
+  width: 100%;
+}
+
+
+
+/*AGENDAMIENTO*/
+
+.form-datos{
+  margin-left: 10%;
+}
+
+.resumen-modal{
+  width: 100%;
+  align-content: center;
+}
+
+.boton {
+  height: 30px;
+}
+
+.flex-med{
+  display: flex;
+}
+
+.contenedor-fechas{
+  display: flex;
+
+}
+
+.calendario{
+  width: 600px;
+  margin-left: 150px;
+
+}
+
+.header-modal{
+  display: flex;
+  width: 100%;
+
+}
+
+.header-seleccion{
+  width: 1000px;
+}
+
+
