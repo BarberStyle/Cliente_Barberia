@@ -20,14 +20,10 @@ function buscandoFiltro(consult) {
     }
 }
 
-
 const ListadoEmpleados = () => {
-
-
     //instanciar context de empleado
     const empleadoContext = useContext(EmpleadoContext);
     const alertaContext = useContext(AlertaContext);
-
 
     //extraer objetos y funciones del state de empleados
     const { empleados, mensaje, obtenerEmpleados, actualizarEmpleado } = empleadoContext;
@@ -51,18 +47,13 @@ const ListadoEmpleados = () => {
 
     })
 
-
     const [modalActualizar, setModalActualizar] = useState(false);
-
-
 
     const { consult } = consulta;
 
-    //extraer atributos del empleado
     const { tipo, documento, nombres, apellidos, correo, telefono,
         perfil } = editable;
 
-    // Obtener los empleados cuando carga el componente
     useEffect(() => {
         // si hay un error
         if (mensaje) {
@@ -72,7 +63,6 @@ const ListadoEmpleados = () => {
         obtenerEmpleados();
         // eslint-disable-next-line
     }, [mensaje]);
-
 
     const onChangeBusqueda = e => {
 
@@ -114,17 +104,13 @@ const ListadoEmpleados = () => {
 
         });
     };
-
-
     const editar = empleado => {
         actualizarEmpleado(empleado);
 
         setModalActualizar(false);
 
         alert("Empleado actualizado con éxito");
-
     }
-
 
     // revisar si hay empleados registrados
     if (empleados.length === 0) {
@@ -209,7 +195,6 @@ const ListadoEmpleados = () => {
                             placeholder="Tipo de Documento"
                             value={tipo}
                             onChange={handleChange}
-
                         />
                     </FormGroup>
 
@@ -223,8 +208,6 @@ const ListadoEmpleados = () => {
                             placeholder="Número de Doc."
                             value={documento}
                             onChange={handleChange}
-
-
                         />
                     </FormGroup>
 
@@ -238,8 +221,6 @@ const ListadoEmpleados = () => {
                             placeholder="Tu nombre"
                             value={nombres}
                             onChange={handleChange}
-
-
                         />
                     </FormGroup>
 
@@ -253,8 +234,6 @@ const ListadoEmpleados = () => {
                             placeholder="Tus apellidos"
                             value={apellidos}
                             onChange={handleChange}
-
-
                         />
                     </FormGroup>
                     <FormGroup>
@@ -267,7 +246,6 @@ const ListadoEmpleados = () => {
                             placeholder="Tu Correo Electrónico"
                             value={correo}
                             onChange={handleChange}
-
                         />
                     </FormGroup>
                     <FormGroup>
@@ -280,7 +258,6 @@ const ListadoEmpleados = () => {
                             placeholder="Tu Teléfono"
                             value={telefono}
                             onChange={handleChange}
-
                         />
                     </FormGroup>
 
@@ -294,32 +271,25 @@ const ListadoEmpleados = () => {
                             placeholder="Perfil del empleado"
                             value={perfil}
                             onChange={handleChange}
-
                         >
                         </input>
                     </FormGroup>
-
-
-
                 </ModalBody>
 
                 <ModalFooter>
                     <Button
                         color="primary"
                         onClick={() => editar(editable)}
-                    >
-                        Editar
-            </Button>
+                    > Editar </Button>
+
                     <Button
                         color="danger"
                         onClick={() => cerrarModalActualizar()}
-                    >
-                        Cancelar
-            </Button>
+                    > Cancelar </Button>
                 </ModalFooter>
             </Modal>
-
-        </Fragment>);
+        </Fragment>
+    );
 }
 
 export default ListadoEmpleados;

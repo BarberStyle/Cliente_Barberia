@@ -17,7 +17,9 @@ import {
     CONSULTA_EXITOSA,
     CONSULTA_ERROR,
     LIMPIAR_STATE,
-    LIMPIAR_SELECCION
+    LIMPIAR_SELECCION,
+    OBTENER_ESTADOS,
+    LIMPIAR_RESUMEN
 } from '../../types';
 
 const AgendamientoState = props => {
@@ -28,11 +30,12 @@ const AgendamientoState = props => {
         mensajeConfirmación: '',
         abrirModal: false,
         usuarioConfirmado: null,
-        servicioSeleccionado: [],
+        servicioSeleccionado: null,
         citas: [],
         totalDispo: null,
         mensajeError: null,
-        modalError: false
+        modalError: false,
+        estados: []
     }
 
     const [state, dispatch] = useReducer(AgendamientoReducer, initialState);
@@ -99,8 +102,8 @@ const AgendamientoState = props => {
 
     const guardarAgendamiento = async cita => {
         try {
+            console.log(cita);
             const respuesta = await clienteAxios.post('/api/agendar-cita', cita);
-            console.log(respuesta);
             dispatch({
                 type: REGISTRO_EXITOSO,
                 payload: respuesta.data
@@ -144,11 +147,29 @@ const AgendamientoState = props => {
     }
 
     const eliminarSeleccion = id => {
-
         dispatch({
             type: LIMPIAR_SELECCION,
             payload: id
 
+        })
+    }
+
+    // Obtener los empleados
+    const obtenerEstados = async () => {
+        try {
+            const resultado = await clienteAxios.get('/api/estados');
+            dispatch({
+                type: OBTENER_ESTADOS,
+                payload: resultado.data.estados
+            })
+        } catch (error) {
+
+        }
+    }
+
+    const limpiarStateResumen = () => {
+        dispatch({
+            type: LIMPIAR_RESUMEN
         })
     }
 
@@ -167,6 +188,7 @@ const AgendamientoState = props => {
                 totalDispo: state.totalDispo,
                 mensajeError: state.mensajeError,
                 modalError: state.modalError,
+                estados: state.estados,
                 guardarServicio,
                 eliminarDelResumen,
                 calcularCostoTotal,
@@ -176,7 +198,9 @@ const AgendamientoState = props => {
                 guardarAgendamiento,
                 consultarAgendamiento,
                 limpiarAlert,
-                eliminarSeleccion
+                eliminarSeleccion,
+                obtenerEstados,
+                limpiarStateResumen
             }}
         >{props.children}
 

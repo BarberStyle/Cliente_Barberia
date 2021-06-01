@@ -87,7 +87,6 @@ const ProductoState = props => {
         })
     }
 
-    // Selecciona el Proyecto que el usuario dio click
     const guardarProductoSeccionado = producto => {
         dispatch({
             type: ACTUAL,

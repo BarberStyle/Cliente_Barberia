@@ -1,30 +1,26 @@
 import {
-    DISPONIBLE,
-    FORMULARIO,
-    DIAS
+    OBTENER,
+    ELIMINAR,
+    ACTUALIZAR
 } from '../../types';
-
-
 
 export default (state, action) => {
     switch (action.type) {
-
-        case FORMULARIO:
+        case OBTENER:
             return {
                 ...state,
-                formulario: true
+                citas: action.payload
             }
-        case DISPONIBLE:
+        case ELIMINAR:
             return {
                 ...state,
-                empleadoDisponible: action.payload
+                citas: state.citas.filter(cita => cita._id !== action.payload),
             }
-        case DIAS:
+        case ACTUALIZAR:
             return {
                 ...state,
-                diasTrabajados: action.payload
+                citas: state.citas.map(cita => cita._id === action.payload._id ? action.payload : cita)
             }
-
         default:
             return state;
     }

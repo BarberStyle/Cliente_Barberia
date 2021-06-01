@@ -47,7 +47,7 @@ const ListadoServicios = () => {
 
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
-      
+
         obtenerServicios();
         // eslint-disable-next-line
     }, []);
@@ -210,6 +210,7 @@ const ListadoServicios = () => {
                     <FormGroup>
                         <label>Tipo</label>
                         <input
+                            readOnly
                             type="text"
                             className="input-text"
                             placeholder="Tipo"

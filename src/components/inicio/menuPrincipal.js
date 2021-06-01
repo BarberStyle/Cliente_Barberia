@@ -63,6 +63,7 @@ const MenuPrincipal = () => {
                         <li><a href="/agendamiento">Agendamiento</a>
 
                             <ul className="submenu">
+                                <li><a href="/citas">Lista de Citas</a></li>
                                 <li><a href="/agendamiento">Agendar Cita</a></li>
 
                             </ul>

@@ -930,4 +930,13 @@ img {
   width: 1000px;
 }
 
+.derecha {
+  text-align: right;
+}
+
+.espaciado {
+  margin-right: 10px;
+}
+
+
 

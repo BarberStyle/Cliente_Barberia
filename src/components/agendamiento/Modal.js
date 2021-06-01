@@ -22,7 +22,6 @@ import {
     Button,
     ModalHeader,
     ModalFooter,
-    Table
 } from "reactstrap";
 import MostrarAgenda from './MostrarAgenda';
 
@@ -82,10 +81,9 @@ const Modales = () => {
     const empleadoContext = useContext(EmpleadoContext);
     const agendamientoContext = useContext(AgendamientoContext);
 
-    const { abrirModal, CerrarModal, servicios, eliminarDelResumen,
-        costoTotal, calcularCostoTotal, usuarioConfirmado,
+    const { abrirModal, CerrarModal, obtenerEstados, usuarioConfirmado,
         servicioSeleccionado, guardarAgendamiento, mensajeConfirmación,
-        consultarAgendamiento, modalError, mensajeError, limpiarAlert, eliminarSeleccion } = agendamientoContext;
+        consultarAgendamiento, modalError, mensajeError, limpiarAlert, eliminarSeleccion, estados } = agendamientoContext;
 
     const { empleados, obtenerEmpleados } = empleadoContext;
 
@@ -93,11 +91,12 @@ const Modales = () => {
 
     const [cita, guardarCita] = useState({
         docCliente: '',
-        idServicio: '',
+        Servicio: '',
         docEmpleado: '',
         horaInicio: new Date(),
         horaFin: new Date(),
-        costo: ''
+        costo: '',
+        Estado: ''
     });
 
     const { docEmpleado, horaInicio, horaFin } = cita;
@@ -109,6 +108,7 @@ const Modales = () => {
             setModalActualizar(abrirModal);
         }
         obtenerEmpleados();
+        obtenerEstados();
         // eslint-disable-next-line
     }, [abrirModal]);
 
@@ -149,9 +149,17 @@ const Modales = () => {
         if (usuarioConfirmado === null) {
             return;
         }
+
+        if (servicioSeleccionado === null) {
+            return;
+        }
+
+        let estado = estados.filter(estado => estado.nombreEstado === 'Pendiente')
         cita.costo = servicioSeleccionado.precio;
         cita.docCliente = usuarioConfirmado.documento;
-        cita.idServicio = servicioSeleccionado._id;
+        cita.Servicio = servicioSeleccionado.nombre;
+        cita.Estado = estado[0].nombreEstado;
+        console.log(cita);
 
         guardarAgendamiento(cita);
 
@@ -162,7 +170,7 @@ const Modales = () => {
     const LimpiarForm = () => {
         guardarCita({
             docCliente: '',
-            idServicio: '',
+            Servicio: '',
             docEmpleado: Number,
             horaInicio: new Date(),
             horaFin: new Date(),
@@ -188,7 +196,7 @@ const Modales = () => {
                         ) : null}
 
                         {modalError ? (
-                            <Alert severity="error">{mensajeError.msg}</Alert>
+                            <Alert severity="error">{mensajeError?.msg}</Alert>
                         ) : null}
 
                     </div>
@@ -209,52 +217,50 @@ const Modales = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                             {servicioSeleccionado ? (
-                                servicioSeleccionado.map((servicio) => (
-                                    <Card
-                                        className={classes.card}
-                                        key={servicio._id}>
-                                        <Card.Body>
-                                            <Card.Title>{servicio.nombre}
-                                                <hr></hr>
-                                                {`$ ${servicio.precio}`}{'  |  '}
-                                                <AccessTimeIcon />
-                                                {servicio.duracion}<br></br>
-                                            </Card.Title>
-                                            <Grid item xs={12} sm={6}>
-                                                <FormControl required className={classes.formControl}>
-                                                    <Select
-                                                        required
-                                                        type="number"
-                                                        labelId="required-label"
-                                                        id="select-required"
-                                                        name="docEmpleado"
-                                                        value={docEmpleado}
-                                                        className={classes.selectEmpty}
-                                                        fullWidth
-                                                        onChange={onChange}
-                                                    >
-                                                        {empleados ? (
-                                                            empleados.map(empleado => (
-                                                                <MenuItem
-                                                                    key={empleado._id}
-                                                                    value={empleado.documento}
-                                                                >
-                                                                    {empleado.nombres}
-                                                                </MenuItem>
-                                                            )))
-                                                            :
-                                                            null}
-                                                    </Select>
-                                                </FormControl>
-                                                <button className="btn btn-danger"
-                                                    onClick={() => eliminarServicio(servicio)}
-                                                ><HighlightOffIcon /></button>
-                                            </Grid>
-                                        </Card.Body>
-                                        <Card.Footer>
-                                        </Card.Footer>
-                                    </Card>
-                                ))
+                                <Card
+                                    className={classes.card}
+                                    key={servicioSeleccionado._id}>
+                                    <Card.Body>
+                                        <Card.Title>{servicioSeleccionado.nombre}
+                                            <hr></hr>
+                                            {`$ ${servicioSeleccionado.precio}`}{'  |  '}
+                                            <AccessTimeIcon />
+                                            {servicioSeleccionado.duracion}<br></br>
+                                        </Card.Title>
+                                        <Grid item xs={12} sm={6}>
+                                            <FormControl required className={classes.formControl}>
+                                                <Select
+                                                    required
+                                                    type="number"
+                                                    labelId="required-label"
+                                                    id="select-required"
+                                                    name="docEmpleado"
+                                                    value={docEmpleado}
+                                                    className={classes.selectEmpty}
+                                                    fullWidth
+                                                    onChange={onChange}
+                                                >
+                                                    {empleados ? (
+                                                        empleados.map(empleado => (
+                                                            <MenuItem
+                                                                key={empleado._id}
+                                                                value={empleado.documento}
+                                                            >
+                                                                {empleado.nombres}
+                                                            </MenuItem>
+                                                        )))
+                                                        :
+                                                        null}
+                                                </Select>
+                                            </FormControl>
+                                            <button className="btn btn-danger"
+                                                onClick={() => eliminarServicio(servicioSeleccionado)}
+                                            ><HighlightOffIcon /></button>
+                                        </Grid>
+                                    </Card.Body>
+                                    <Card.Footer>
+                                    </Card.Footer>
+                                </Card>
 
                             ) : null}
 

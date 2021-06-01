@@ -40,7 +40,7 @@ const ListadoServiciosCita = () => {
     const { guardarServicio, calcularCostoTotal, costoTotal ,guardarSeleccion} = agendamientoContext;
 
 
-    // Obtener proyectos cuando carga el componente
+    // Obtener servicios cuando carga el componente
     useEffect(() => {
         // si hay un error
 
@@ -60,8 +60,6 @@ const ListadoServiciosCita = () => {
         guardarServicio(servicio);
 
 
-
-
     }
 
 
@@ -76,6 +74,7 @@ const ListadoServiciosCita = () => {
             <br></br>
             <GridList cellHeight={180} className={classes.gridList}>
                 {servicios.map((servicio) => (
+
                     <Card key={servicio._id}>
                         <Card.Body>
                             <Card.Title>{servicio.nombre}
@@ -93,6 +92,7 @@ const ListadoServiciosCita = () => {
                             > Agendar </Button>
                         </Card.Footer>
                     </Card>
+
                 ))}
             </GridList>
        

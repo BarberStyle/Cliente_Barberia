@@ -11,13 +11,18 @@ import {
 const Resumen = () => {
   const agendamientoContext = useContext(AgendamientoContext);
 
-  const { servicios, eliminarDelResumen, costoTotal, calcularCostoTotal } = agendamientoContext;
+  const { servicios, eliminarDelResumen, costoTotal, calcularCostoTotal,limpiarStateResumen } = agendamientoContext;
 
   const eliminarServicio = servicio => {
     eliminarDelResumen(servicio._id);
     let total = costoTotal - servicio.precio;
     calcularCostoTotal(total);
 
+  }
+
+  const limpiarResumen = () => {
+    
+    limpiarStateResumen();
   }
 
   // revisar si proyectos tiene contenido
@@ -51,16 +56,18 @@ const Resumen = () => {
                     <button
                       onClick={() => eliminarServicio(servicio)}
                     > <BackspaceOutlinedIcon /> </button>
-
                   </td>
-
                 </tr>
               )))
               :
               null}
           </tbody>
         </Table>
-        <h3>Precio Total:  {`$ ${costoTotal}`} </h3>
+        <h3>Precio Total:{`$ ${costoTotal}`}</h3>
+        <button
+          onClick={() => limpiarResumen()}
+          className="btn btn-success derecha"
+        >Finalizar</button>
       </Container>
     </div>
 

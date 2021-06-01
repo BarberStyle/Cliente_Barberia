@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import AuthContext from '../../context/autenticacion/authContext';
-import ListaServicios from '../servicios/ListadoServiciosCita';
+import ListaServicios from './ListadoServiciosCita';
 import AppBar from '@material-ui/core/AppBar';
 import Header from '../layout/Header';
 import MenuPrincipal from '../inicio/menuPrincipal';

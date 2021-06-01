@@ -10,7 +10,9 @@ import {
     CONSULTA_EXITOSA,
     REGISTRO_ERROR,
     LIMPIAR_STATE,
-    LIMPIAR_SELECCION
+    LIMPIAR_SELECCION,
+    OBTENER_ESTADOS,
+    LIMPIAR_RESUMEN
 } from '../../types';
 
 export default (state, action) => {
@@ -36,7 +38,8 @@ export default (state, action) => {
                 ...state,
                 abrirModal: action.payload,
                 mensajeConfirmación: null,
-                citas: []
+                citas: [],
+                modalError: false
             }
         case USUARIO_EXITOSO:
             return {
@@ -54,8 +57,7 @@ export default (state, action) => {
         case GUARDAR_SELECCION:
             return {
                 ...state,
-                servicioSeleccionado: [...state.servicioSeleccionado, action.payload],
-
+                servicioSeleccionado: action.payload
             }
         case REGISTRO_EXITOSO:
             return {
@@ -64,8 +66,9 @@ export default (state, action) => {
                 mensaje: null,
                 errorformulario: false,
                 mensajeError: null,
-                citas: [],
-                servicioSeleccionado: []
+                servicioSeleccionado: null,
+                modalError: false,
+                citas: []
             }
         case CONSULTA_EXITOSA:
             return {
@@ -78,19 +81,29 @@ export default (state, action) => {
                 mensajeConfirmación: null,
                 modalError: true,
                 mensajeError: action.payload,
-                citas: null
+                citas: []
             }
         case LIMPIAR_STATE:
             return {
                 ...state,
                 citas: [],
                 mensajeConfirmación: null,
-                mensajeError: null
+                mensajeError: null,
+                modalError: false
             }
         case LIMPIAR_SELECCION:
             return {
                 ...state,
                 servicioSeleccionado: state.servicioSeleccionado.filter(servicio => servicio._id !== action.payload),
+            }
+        case OBTENER_ESTADOS:
+            return {
+                ...state,
+                estados: action.payload
+            }
+        case LIMPIAR_RESUMEN:
+            return {
+                servicios: []
             }
         default:
             return state;

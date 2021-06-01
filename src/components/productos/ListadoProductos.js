@@ -117,7 +117,7 @@ const ListadoProductos = () => {
     }
 
 
-    // revisar si proyectos tiene contenido
+    // revisar si productos tiene contenido
     if (productos.length === 0) {
         return <p>No hay productos, comienza creando uno</p>
     }
