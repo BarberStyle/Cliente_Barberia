@@ -83,7 +83,8 @@ const Modales = () => {
 
     const { abrirModal, CerrarModal, obtenerEstados, usuarioConfirmado,
         servicioSeleccionado, guardarAgendamiento, mensajeConfirmación,
-        consultarAgendamiento, modalError, mensajeError, limpiarAlert, eliminarSeleccion, estados } = agendamientoContext;
+        consultarAgendamiento, modalError, mensajeError, limpiarAlert,
+        eliminarSeleccion, estados, mostrarError, textoAlert, errorformulario } = agendamientoContext;
 
     const { empleados, obtenerEmpleados } = empleadoContext;
 
@@ -154,6 +155,18 @@ const Modales = () => {
             return;
         }
 
+        if (Date.parse(horaInicio) >= Date.parse(horaFin)) {
+            mostrarError('LA HORA FINAL DEBE SER MAYOR A LA HORA INICIAL');
+            return;
+        }
+
+        if (Date.parse(horaInicio) < Date.now()) {
+            mostrarError('NO PUEDE AGENDAR EN UNA FECHA PASADA');
+            return;
+        }
+
+
+
         let estado = estados.filter(estado => estado.nombreEstado === 'Pendiente')
         cita.costo = servicioSeleccionado.precio;
         cita.docCliente = usuarioConfirmado.documento;
@@ -199,6 +212,9 @@ const Modales = () => {
                             <Alert severity="error">{mensajeError?.msg}</Alert>
                         ) : null}
 
+                        {errorformulario ? (
+                            <Alert severity="error">{textoAlert}</Alert>
+                        ) : null}
                     </div>
                 </div>
             </ModalHeader>

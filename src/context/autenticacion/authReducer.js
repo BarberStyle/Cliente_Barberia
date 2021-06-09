@@ -5,7 +5,9 @@ import {
     LOGIN_EXITOSO,
     LOGIN_ERROR,
     CERRAR_SESION,
-    VALIDAR_FORMULARIO
+    VALIDAR_FORMULARIO,
+    LIMPIAR_STATE,
+    CERRAR_SESION_LOG
 } from '../../types';
 
 export default (state, action) => {
@@ -19,14 +21,6 @@ export default (state, action) => {
                 cargando: false,
                 errorformulario: false
             }
-        case REGISTRO_EXITOSO:
-            return {
-                ...state,
-                mensaje: null,
-                cargando: false,
-                errorformulario: false,
-                mensajeConfirmación: [...state.mensajeConfirmación, action.payload]
-            }
         case OBTENER_USUARIO:
             return {
                 ...state,
@@ -38,11 +32,10 @@ export default (state, action) => {
             return {
                 ...state,
                 errorformulario: true,
-                textoAlert: action.payload
+                mensaje: action.payload
             }
         case CERRAR_SESION:
         case LOGIN_ERROR:
-        case REGISTRO_ERROR:
             localStorage.removeItem('token');
             return {
                 token: null,
@@ -51,7 +44,20 @@ export default (state, action) => {
                 mensaje: action.payload,
                 cargando: false,
             }
-        
+        case LIMPIAR_STATE:
+            return {
+                ...state,
+                errorformulario: false,
+                textoAlert: '',
+                mensajeConfirmación: '',
+                mensaje: null
+            }
+        case CERRAR_SESION_LOG:
+            return {
+                usuario: null,
+                autenticado: false,
+                cargando: false,
+            }
         default:
             return state;
     }

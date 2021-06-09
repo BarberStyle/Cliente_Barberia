@@ -1,11 +1,7 @@
 import {
-
     AGREGAR,
     ERROR
-
 } from '../../types';
-
-
 
 export default (state, action) => {
     switch (action.type) {
@@ -13,7 +9,7 @@ export default (state, action) => {
         case AGREGAR:
             return {
                 ...state,
-                respuestas: [...state.respuestas, action.payload]
+                mensajeConfirmacion:  action.payload
             }
 
         case ERROR:

@@ -12,7 +12,9 @@ import {
     LIMPIAR_STATE,
     LIMPIAR_SELECCION,
     OBTENER_ESTADOS,
-    LIMPIAR_RESUMEN
+    LIMPIAR_RESUMEN,
+    VALIDAR_FORMULARIO,
+    CONSULTA_ERROR
 } from '../../types';
 
 export default (state, action) => {
@@ -89,7 +91,9 @@ export default (state, action) => {
                 citas: [],
                 mensajeConfirmación: null,
                 mensajeError: null,
-                modalError: false
+                modalError: false,
+                errorformulario: false,
+                mensajeDispo: ''
             }
         case LIMPIAR_SELECCION:
             return {
@@ -104,6 +108,17 @@ export default (state, action) => {
         case LIMPIAR_RESUMEN:
             return {
                 servicios: []
+            }
+        case VALIDAR_FORMULARIO:
+            return {
+                ...state,
+                errorformulario: true,
+                textoAlert: action.payload
+            }
+        case CONSULTA_ERROR:
+            return {
+                ...state,
+                mensajeDispo:  action.payload
             }
         default:
             return state;

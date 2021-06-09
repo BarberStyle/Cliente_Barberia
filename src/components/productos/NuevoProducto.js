@@ -261,6 +261,7 @@ const NuevoProducto = () => {
                                     <FormControl required className={classes.formControl}>
                                         <InputLabel className={classes.text} id="required-label">Estado</InputLabel>
                                         <Select
+                                            required
                                             labelId="required-label"
                                             id="select-required"
                                             value={estado}

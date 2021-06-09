@@ -1,5 +1,7 @@
-import React, { Fragment, useState, useContext, useEffect } from 'react';
-import EmpleadoContext from '../../context/empleados/empleadoContext';
+
+import React, { useState, useContext, useEffect } from 'react';
+import { Fragment } from 'react';
+import ClienteContext from '../../context/clientes/clienteContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
 import Header from '../layout/Header';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,8 +16,6 @@ import AppBar from '@material-ui/core/AppBar';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
-import ServicioContext from '../../context/servicios/servicioContext';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,59 +83,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const NuevoEmpleado = () => {
+
+const NuevoCliente = () => {
 
     const classes = useStyles();
 
+    // extraer los valores del context
+    const clienteContext = useContext(ClienteContext);
 
-    //obtener el state de empleados y todas sus funciones
-    const empleadoContext = useContext(EmpleadoContext);
-    const servicioContext = useContext(ServicioContext);
+    const { registrarCliente, errorformulario, mensaje, limpiarAlert, mensajeConfirmación,mostrarError } = clienteContext;
 
-
-    //extraer objetos del state
-    const { mostrarError, errorformulario,
-        agregarEmpleado, limpiarEmpleado, mensajeConfirmación, mensaje,limpiarAlert } = empleadoContext;
-
-
-    const { tipos, obtenerTipos } = servicioContext;
-
-
-    // Effect que detecta si hay un empleado seleccionado
-
-    useEffect(() => {
-        obtenerTipos();
-        // eslint-disable-next-line
-    }, []);
-
-    //State para guardar los datos personales del empleado
-    const [empleado, guardarEmpleado] = useState({
+    // State para guardar usuario
+    const [usuario, guardarUsuario] = useState({
         tipo: '',
         documento: '',
         nombres: '',
         apellidos: '',
         correo: '',
         confirmarCorreo: '',
-        telefono: '',
+        telefono: Number,
         fecha: '',
-        perfil: '',
-        contraseña: '',
-        confirmarcontraseña: ''
+        contraseña: ''
+
     });
 
-    //extraer atributos del empleado
-    const { tipo, documento, nombres, apellidos, correo, telefono, fecha,
-        perfil, contraseña, confirmarcontraseña, confirmarCorreo } = empleado;
+    // extraer de usuario
+    const { tipo, documento, nombres, apellidos, correo,
+        confirmarCorreo, telefono, fecha } = usuario;
 
+    const onChange = evento => {
 
-    //funcion que lee los inputs
-    const onChange = e => {
-        const { name, value } = e.target;//destructure de los valores enviados por el metodo onchange de cada input
-
-        if (name !== "telefono" && name !== "fecha" && name !== "documento" && name !== "correo" && name !== "confirmarCorreo"
-            && name !== "confirmarcontraseña" && name !== "contraseña" && name !== "perfil"
-
+        //destructure de los valores enviados por el metodo onchange de cada input
+        const { name, value } = evento.target;
+        //no permite escribir numeros en el campo tipo
+        if (name !== "telefono" && name !== "documento" && name !== "correo" && name !== "confirmarCorreo"
+            && name !== "fecha"
         ) {
+            //No permite escribir numeros en los campos de texto
             let regex = new RegExp("^[ñíóáéú a-zA-Z ]+$");
             for (let i = 0; i <= value.length - 1; i++) {
                 let letra = value[i]
@@ -144,53 +128,58 @@ const NuevoEmpleado = () => {
                 }
             }
         }
-        guardarEmpleado({
-            ...empleado,
+
+        guardarUsuario({
+            ...usuario,
             [name]: value
         })
 
         limpiarAlert();
     }
 
-    //funcion onsubmit
+    // Cuando el usuario quiere iniciar sesión
     const onSubmit = e => {
-
         e.preventDefault();
 
-        if (contraseña.length < 6) {
-            mostrarError('LA CONTRASEÑA DEBE SER MINIM DE 6 CARACTERES');
+        // Validar que no haya campos vacios
+        if (tipo.trim() === '' || documento.trim() === '' || nombres.trim() === '' || apellidos.trim() === '' ||
+            correo.trim() === '' || confirmarCorreo.trim() === '' || telefono.trim() === '') {
+            mostrarError();
             return;
+
         }
-        // Los 2 passwords son iguales
-        if (contraseña !== confirmarcontraseña) {
-            mostrarError('LAS CONTRASEÑAS NO SON IGUALES');
-            return;
-        }
-        // confirma que Los 2 correos son iguales
-        if (correo !== confirmarCorreo) {
-            mostrarError('LOS CORREOS NO SON IGUALES');
-            return;
-        }
+
+        // Los 2 correos son iguales
         if (documento <= 0) {
-            mostrarError("INGRESE UN DOCUMENTO VALIDO")
-            return;
-        }
-        if (telefono <= 0) {
-            mostrarError("INGRESE UN TELÉFONO VALIDO")
+            mostrarError('INGRESE UN NÚMERO DE DOCUMENTO VALIDO');
             return;
         }
 
-        agregarEmpleado(empleado);
 
-        // Elimina empleado seleccionado del state
-        limpiarEmpleado();
+        // Los 2 correos son iguales
+        if (correo !== confirmarCorreo) {
+            mostrarError('LOS CORREOS NO COINCIDEN');
+            return;
+        }
 
-        //reiniciar formulario
+        // Pasarlo al action
+        registrarCliente
+            ({
+                tipo,
+                documento,
+                nombres,
+                apellidos,
+                correo,
+                telefono,
+                fecha
+            });
+
+        //limpiar form
         limpiarForm();
-
     }
+
     const limpiarForm = () => {
-        guardarEmpleado({
+        guardarUsuario({
             tipo: '',
             documento: '',
             nombres: '',
@@ -198,11 +187,9 @@ const NuevoEmpleado = () => {
             correo: '',
             confirmarCorreo: '',
             telefono: '',
-            fecha: '',
-            perfil: '',
-            contraseña: '',
-            confirmarcontraseña: ''
-        })
+            fecha: ''
+        });
+
     }
 
     return (
@@ -211,24 +198,25 @@ const NuevoEmpleado = () => {
                 <Header />
                 <MenuPrincipal />
             </AppBar>
-
             <div className="contenedor-principal">
                 <br></br>
 
                 <form
                     onSubmit={onSubmit}
                 >
-
                     <main className={classes.layout}>
-                        {errorformulario ? (<Alert severity="error">{mensaje?.msg}</Alert>) : null}
+
+                        {errorformulario ? (<Alert severity="error">{mensaje.msg}</Alert>) : null}
+
                         {mensajeConfirmación ? (<Alert severity="success">{mensajeConfirmación}</Alert>) : null}
 
                         <Paper className={classes.paper}>
+
                             <div className="campos-obligatorios">
                                 <h3>Los campos marcados con * son obligatorios</h3>
                             </div>
 
-                            <h1>Nuevo Empleado</h1>
+                            <h1>Nuevo Cliente</h1>
                             <hr></hr>
                             <br></br>
 
@@ -237,6 +225,7 @@ const NuevoEmpleado = () => {
                                     <FormControl required className={classes.formControl}>
                                         <InputLabel className={classes.text} id="required-label">Tipo Documento</InputLabel>
                                         <Select
+                                            required
                                             labelId="required-label"
                                             id="select-required"
                                             value={tipo}
@@ -244,17 +233,17 @@ const NuevoEmpleado = () => {
                                             className={classes.selectEmpty}
                                             fullWidth
                                             onChange={onChange}
-
                                         >
                                             <MenuItem value='CC'>CC</MenuItem>
                                             <MenuItem value='PASAPORTE'>PASAPORTE</MenuItem>
+                                            <MenuItem value='TI'>T.I.</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        type="number"
+                                        type="text"
                                         id="documento"
                                         name="documento"
                                         label="N° Documento"
@@ -288,7 +277,6 @@ const NuevoEmpleado = () => {
                                         className={classes.root}
                                         fullWidth
                                         onChange={onChange}
-
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -317,7 +305,7 @@ const NuevoEmpleado = () => {
                                         onChange={onChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} >
+                                <Grid item xs={12} sm={6} >
                                     <TextField
                                         required
                                         type="number"
@@ -331,6 +319,7 @@ const NuevoEmpleado = () => {
 
                                     />
                                 </Grid>
+
                                 <Grid item xs={12} sm={6}>
 
                                     <InputLabel className={classes.textFecha} id="required-label">Fecha de nacimiento</InputLabel>
@@ -346,66 +335,6 @@ const NuevoEmpleado = () => {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                    />
-                                </Grid>
-
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl required className={classes.formControl}>
-                                        <InputLabel className={classes.text} id="required-label">Tipo</InputLabel>
-
-                                        <Select
-                                            required
-                                            labelId="required-label"
-                                            id="select-required"
-                                            value={perfil}
-                                            name="perfil"
-                                            className={classes.selectEmpty}
-                                            fullWidth
-                                            onChange={onChange}
-                                        >
-                                            {tipos ? (
-                                                tipos.map(tipo => (
-                                                    <MenuItem
-                                                        key={tipo._id}
-                                                        value={tipo.nombreTipo}
-                                                    >
-                                                        {tipo.nombreTipo}
-                                                    </MenuItem>
-                                                )))
-                                                :
-                                                null}
-
-                                        </Select>
-
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        type="password"
-                                        id="contraseña"
-                                        name="contraseña"
-                                        label="Contraseña"
-                                        value={contraseña}
-                                        className={classes.root}
-                                        fullWidth
-                                        onChange={onChange}
-
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        type="password"
-                                        id="confirmarcontraseña"
-                                        name="confirmarcontraseña"
-                                        label="Confirmar contraseña"
-                                        value={confirmarcontraseña}
-                                        className={classes.root}
-                                        fullWidth
-                                        onChange={onChange}
-
                                     />
                                 </Grid>
 
@@ -432,7 +361,8 @@ const NuevoEmpleado = () => {
             </div>
 
         </Fragment>
+
     );
 }
 
-export default NuevoEmpleado;
+export default NuevoCliente;

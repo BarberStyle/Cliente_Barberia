@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Fragment } from 'react';
 import AuthContext from '../../context/autenticacion/authContext';
 import MenuPrincipal from '../inicio/menuPrincipal';
@@ -89,10 +89,14 @@ const NuevaCuenta = (props) => {
     // extraer los valores del context
     const authContext = useContext(AuthContext);
     const { registrarUsuario, errorformulario, mostrarError,
-         mensajeConfirmación, textoAlert } = authContext;
+        mensajeConfirmación, mensaje, limpiarAlert, usuarioAutenticado } = authContext;
 
+    useEffect(() => {
 
-    // State para iniciar sesión
+        usuarioAutenticado();
+        // eslint-disable-next-line
+    }, [])
+    // State para guardar usuario
     const [usuario, guardarUsuario] = useState({
         tipo: '',
         documento: '',
@@ -100,17 +104,15 @@ const NuevaCuenta = (props) => {
         apellidos: '',
         correo: '',
         confirmarCorreo: '',
-        telefono: '',
-        contraseña: '',
-        confirmarContraseña: '',
-        idPregunta: ''
+        telefono: Number,
+        fecha: '',
+        contraseña: ''
 
     });
 
     // extraer de usuario
     const { tipo, documento, nombres, apellidos, correo,
-        confirmarCorreo, telefono, contraseña, confirmarContraseña,
-        idPregunta } = usuario;
+        confirmarCorreo, telefono, fecha } = usuario;
 
     const onChange = evento => {
 
@@ -118,8 +120,7 @@ const NuevaCuenta = (props) => {
         const { name, value } = evento.target;
         //no permite escribir numeros en el campo tipo
         if (name !== "telefono" && name !== "documento" && name !== "correo" && name !== "confirmarCorreo"
-            && name !== "confirmarContraseña" && name !== "contraseña"
-
+            && name !== "fecha"
         ) {
             //No permite escribir numeros en los campos de texto
             let regex = new RegExp("^[ñíóáéú a-zA-Z ]+$");
@@ -135,6 +136,8 @@ const NuevaCuenta = (props) => {
             ...usuario,
             [name]: value
         })
+
+        limpiarAlert();
     }
 
     // Cuando el usuario quiere iniciar sesión
@@ -143,24 +146,18 @@ const NuevaCuenta = (props) => {
 
         // Validar que no haya campos vacios
         if (tipo.trim() === '' || documento.trim() === '' || nombres.trim() === '' || apellidos.trim() === '' ||
-            correo.trim() === '' || confirmarCorreo.trim() === '' || telefono.trim() === '' ||
-            contraseña.trim() === '' || confirmarContraseña.trim() === '') {
+            correo.trim() === '' || confirmarCorreo.trim() === '' || telefono.trim() === '') {
             mostrarError();
             return;
 
         }
 
-        // Password minimo de 6 caracteres
-        if (contraseña.length < 6) {
-            mostrarError('LA CONTRASEÑA DEBE SER MÍNIMO DE 6 CARACTERES');
+        // Los 2 correos son iguales
+        if (documento <= 0) {
+            mostrarError('INGRESE UN NÚMERO DE DOCUMENTO VALIDO');
             return;
         }
 
-        // Los 2 passwords son iguales
-        if (contraseña !== confirmarContraseña) {
-            mostrarError('LAS CONTRASEÑAS NO COINCIDEN');
-            return;
-        }
 
         // Los 2 correos son iguales
         if (correo !== confirmarCorreo) {
@@ -177,19 +174,11 @@ const NuevaCuenta = (props) => {
                 apellidos,
                 correo,
                 telefono,
-                contraseña,
-                idPregunta
-
+                fecha
             });
-
 
         //limpiar form
         limpiarForm();
-
-
-        alert('Registro del cliente exitoso');
-
-
     }
 
     const limpiarForm = () => {
@@ -201,9 +190,7 @@ const NuevaCuenta = (props) => {
             correo: '',
             confirmarCorreo: '',
             telefono: '',
-            contraseña: '',
-            confirmarContraseña: '',
-
+            fecha: ''
         });
 
     }
@@ -214,29 +201,17 @@ const NuevaCuenta = (props) => {
                 <Header />
                 <MenuPrincipal />
             </AppBar>
-
             <div className="contenedor-principal">
                 <br></br>
 
                 <form
                     onSubmit={onSubmit}
                 >
-
                     <main className={classes.layout}>
 
-                        {errorformulario ?
-                            (
-                                <Alert severity="error">{textoAlert}</Alert>
+                        {errorformulario ? (<Alert severity="error">{mensaje}</Alert>) : null}
 
-                            )
-                            : null}
-
-                        {mensajeConfirmación ?
-                            (
-                                <Alert severity="success">{mensajeConfirmación}</Alert>
-
-                            )
-                            : null}
+                        {mensajeConfirmación ? (<Alert severity="success">{mensajeConfirmación}</Alert>) : null}
 
                         <Paper className={classes.paper}>
 
@@ -253,6 +228,7 @@ const NuevaCuenta = (props) => {
                                     <FormControl required className={classes.formControl}>
                                         <InputLabel className={classes.text} id="required-label">Tipo Documento</InputLabel>
                                         <Select
+                                            required
                                             labelId="required-label"
                                             id="select-required"
                                             value={tipo}
@@ -260,17 +236,17 @@ const NuevaCuenta = (props) => {
                                             className={classes.selectEmpty}
                                             fullWidth
                                             onChange={onChange}
-
                                         >
                                             <MenuItem value='CC'>CC</MenuItem>
                                             <MenuItem value='PASAPORTE'>PASAPORTE</MenuItem>
+                                            <MenuItem value='TI'>T.I.</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        type="number"
+                                        type="text"
                                         id="documento"
                                         name="documento"
                                         label="N° Documento"
@@ -304,7 +280,6 @@ const NuevaCuenta = (props) => {
                                         className={classes.root}
                                         fullWidth
                                         onChange={onChange}
-
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -333,7 +308,7 @@ const NuevaCuenta = (props) => {
                                         onChange={onChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} >
+                                <Grid item xs={12} sm={6} >
                                     <TextField
                                         required
                                         type="number"
@@ -349,30 +324,20 @@ const NuevaCuenta = (props) => {
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        type="password"
-                                        id="contraseña"
-                                        name="contraseña"
-                                        label="Contraseña"
-                                        value={contraseña}
-                                        className={classes.root}
-                                        fullWidth
-                                        onChange={onChange}
 
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
+                                    <InputLabel className={classes.textFecha} id="required-label">Fecha de nacimiento</InputLabel>
                                     <TextField
                                         required
-                                        type="password"
-                                        id="confirmarcontraseña"
-                                        name="confirmarContraseña"
-                                        label="Confirmar Contraseña"
-                                        value={confirmarContraseña}
-                                        className={classes.root}
+                                        type="date"
+                                        id="fecha"
+                                        name="fecha"
+                                        value={fecha}
+                                        className={classes.textField}
                                         fullWidth
                                         onChange={onChange}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
                                     />
                                 </Grid>
 

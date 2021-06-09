@@ -280,15 +280,11 @@ const ListadoProductos = () => {
                         <Button
                             color="primary"
                             onClick={() => editar(editable)}
-                        >
-                            Editar
-            </Button>
+                        >Editar</Button>
                         <Button
                             color="danger"
                             onClick={() => cerrarModalActualizar()}
-                        >
-                            Cancelar
-            </Button>
+                        > Cancelar   </Button>
                     </ModalFooter>
                 </Modal>
 

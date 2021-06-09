@@ -81,6 +81,7 @@ const ListadoCitas = () => {
 
         eliminacionCita(cita._id);
     }
+    
 
     const cambiarEstado = cita => {
 
@@ -96,21 +97,24 @@ const ListadoCitas = () => {
                 break;
 
             case 'Incumplida':
-                cita.Estado = 'Cancelada';
-                actualizarCita(cita);
-                break;
-
-            case 'Cancelada':
                 cita.Estado = 'Pendiente';
                 actualizarCita(cita);
                 break;
+
             default:
                 break;
         }
     }
-    // revisar si citas tiene contenido
-    if (citas.length === 0) {
-        return <p>No hay citas, comienza creando una</p>
+
+    const mostrarModalActualizar = (cita) => {
+        setModalActualizar(true);
+      
+
+    };
+
+      // revisar si hay empleados registrados
+      if (citas.length === 0) {
+        return <p >NO HAY CITAS, COMIENZA CREANDO UNA</p>
     }
 
 
@@ -131,7 +135,7 @@ const ListadoCitas = () => {
 
                 <br></br>
                 <Container>
-                    <Table className="table table-striped">
+                    <Table className="table table-striped responsive">
                         <thead>
                             <tr>
                                 <th>Doc. Cliente</th>
@@ -174,7 +178,7 @@ const ListadoCitas = () => {
 
                                             {cita.Estado === 'Cumplida' ? (
                                                 <a
-                                                    className="btn btn-primary espaciado"
+                                                    className="btn btn-success espaciado"
                                                     onClick={() => cambiarEstado(cita)}
                                                 > <AssignmentTurnedInIcon /> </a>
 
@@ -188,18 +192,12 @@ const ListadoCitas = () => {
 
                                             ) : null}
 
-                                            {cita.Estado === 'Cancelada' ? (
-                                                <a
-                                                    className="btn btn-warning espaciado"
-                                                    onClick={() => cambiarEstado(cita)}
-                                                ><BlockIcon /> </a>
-
-                                            ) : null}
                                             <a
                                                 className="btn btn-danger"
                                                 data-toggle="tooltip"
                                                 title="Eliminar"
-                                                onClick={() => eliminarCita(cita)}
+                                                onClick={() => mostrarModalActualizar(cita)}
+                                              //  onClick={() => eliminarCita(cita)}
                                             ><HighlightOffIcon /></a>
                                         </td>
                                     </tr>

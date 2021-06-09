@@ -73,9 +73,9 @@ const ListadoServicios = () => {
         });
     };
 
-    const mostrarModalActualizar = (producto) => {
+    const mostrarModalActualizar = (servicio) => {
         setModalActualizar(true);
-        guardarEditable(producto);
+        guardarEditable(servicio);
 
     };
 
@@ -94,7 +94,7 @@ const ListadoServicios = () => {
 
         setModalActualizar(false);
 
-        alert("Producto actualizado con éxito");
+        alert("Servicio actualizado con éxito");
 
     }
 

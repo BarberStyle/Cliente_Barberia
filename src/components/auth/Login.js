@@ -25,7 +25,7 @@ function Copyright() {
                 La Terraza de Frida
         </Link>{' '}
             {new Date().getFullYear()}
-            
+
             {'.'}
         </Typography>
     );
@@ -70,14 +70,14 @@ const Login = (props) => {
     // extraer los valores del context
 
     const authContext = useContext(AuthContext);
-    const { mensaje, autenticado, iniciarSesion, mostrarError } = authContext;
+    const { mensaje, autenticado, iniciarSesion, mostrarError, limpiarAlert } = authContext;
 
     // En caso de que el password o usuario no exista
     useEffect(() => {
         if (autenticado && documento !== '' && contraseña !== '') {
             alert("Ingreso Exitoso");
             props.history.push('/inicio');
-        
+
         }
         // eslint-disable-next-line
     }, [mensaje, autenticado, props.history]);
@@ -99,6 +99,9 @@ const Login = (props) => {
             ...usuario,
             [name]: value
         })
+
+        limpiarAlert();
+
     }
 
     // Cuando el usuario quiere iniciar sesión
@@ -116,7 +119,6 @@ const Login = (props) => {
         }
         // Pasarlo al action
         iniciarSesion({ documento, contraseña });
-
     }
 
 
@@ -124,13 +126,8 @@ const Login = (props) => {
         <Fragment>
             <Header />
             <Barra />
-            {mensaje ?
-                (
-                    <Alert severity="error">{mensaje.msg}</Alert>
-                )
-                : null}
+            {mensaje ? (<Alert severity="error">{mensaje.msg}</Alert>) : null}
             <div className="contenedor-form sombra-dark">
-
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <div className={classes.paper}>
@@ -140,7 +137,6 @@ const Login = (props) => {
                         <Typography component="h1" variant="h5">
                             Inicia sesión
                               </Typography>
-
                         <form
                             onSubmit={onSubmit}
                             className={classes.form}

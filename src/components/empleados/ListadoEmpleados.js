@@ -21,6 +21,7 @@ function buscandoFiltro(consult) {
 }
 
 const ListadoEmpleados = () => {
+    let fechaForm;
     //instanciar context de empleado
     const empleadoContext = useContext(EmpleadoContext);
     const alertaContext = useContext(AlertaContext);
@@ -152,6 +153,11 @@ const ListadoEmpleados = () => {
                         <tbody>
                             {empleados ? (
                                 empleados.filter(buscandoFiltro(consult)).map(empleado => (
+                                    
+                                    fechaForm = new Date(empleado.fecha),
+                                    empleado.fecha = fechaForm.toDateString(),
+
+
                                     <tr key={empleado._id}>
                                         <td>{empleado.tipo}</td>
                                         <td>{empleado.documento}</td>

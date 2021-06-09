@@ -19,7 +19,8 @@ import {
     LIMPIAR_STATE,
     LIMPIAR_SELECCION,
     OBTENER_ESTADOS,
-    LIMPIAR_RESUMEN
+    LIMPIAR_RESUMEN,
+    VALIDAR_FORMULARIO
 } from '../../types';
 
 const AgendamientoState = props => {
@@ -35,7 +36,10 @@ const AgendamientoState = props => {
         totalDispo: null,
         mensajeError: null,
         modalError: false,
-        estados: []
+        estados: [],
+        textoAlert: '',
+        errorformulario: false,
+        mensajeDispo: ''
     }
 
     const [state, dispatch] = useReducer(AgendamientoReducer, initialState);
@@ -131,7 +135,7 @@ const AgendamientoState = props => {
             const alerta = {
                 msg: error.response?.data.msg,
             }
-
+         
             dispatch({
                 type: CONSULTA_ERROR,
                 payload: alerta
@@ -173,6 +177,14 @@ const AgendamientoState = props => {
         })
     }
 
+    // Valida el formulario por errores
+    const mostrarError = alert => {
+        dispatch({
+            type: VALIDAR_FORMULARIO,
+            payload: alert
+        })
+    }
+
     return (
         <AgendamientoContext.Provider
             value={{
@@ -189,6 +201,9 @@ const AgendamientoState = props => {
                 mensajeError: state.mensajeError,
                 modalError: state.modalError,
                 estados: state.estados,
+                textoAlert: state.textoAlert,
+                errorformulario: state.errorformulario,
+                mensajeDispo: state.mensajeDispo,
                 guardarServicio,
                 eliminarDelResumen,
                 calcularCostoTotal,
@@ -200,7 +215,8 @@ const AgendamientoState = props => {
                 limpiarAlert,
                 eliminarSeleccion,
                 obtenerEstados,
-                limpiarStateResumen
+                limpiarStateResumen,
+                mostrarError
             }}
         >{props.children}
 

@@ -9,7 +9,9 @@ import {
     OBTENER,
     ACTUAL,
     LIMPIAR,
-    ACTUALIZAR
+    REGISTRO_EXITOSO,
+    REGISTRO_ERROR,
+    LIMPIAR_STATE
 } from '../../types';
 
 
@@ -23,18 +25,23 @@ const ClienteState = props => {
         empleado: null,
         mensaje: null,
         clienteSeleccionado: null,
-        textoAlert:''
+        textoAlert: '',
+        mensajeConfirmación: ''
+
     }
 
     // Dispatch para ejecutar las acciones del reducer
     const [state, dispatch] = useReducer(clienteReducer, initialState);
 
-
     // Valida el formulario por errores
     const mostrarError = alert => {
+        const alerta = {
+            msg: alert
+        }
+
         dispatch({
             type: VALIDAR_FORMULARIO,
-            payload: alert
+            payload: alerta
         })
     }
 
@@ -76,19 +83,47 @@ const ClienteState = props => {
     }
 
 
-    // Edita o modifica un servicio
-    const actualizarEmpleado = async empleado => {
+    // // Edita o modifica un servicio
+    // const actualizarEmpleado = async empleado => {
 
+    //     try {
+    //         const resultado = await clienteAxios.put(`/api/clientes/${empleado._id}`, empleado);
+    //         dispatch({
+    //             type: ACTUALIZAR,
+    //             payload: resultado.data.empleado
+    //         })
+    //     } catch (error) {
+    //     }
+    // }
+
+
+    const registrarCliente = async datos => {
         try {
-            const resultado = await clienteAxios.put(`/api/clientes/${empleado._id}`, empleado);
+            const respuesta = await clienteAxios.post('/api/usuarios', datos);
             dispatch({
-                type: ACTUALIZAR,
-                payload: resultado.data.empleado
-            })
+                type: REGISTRO_EXITOSO,
+                payload: respuesta.data
+            });
+
         } catch (error) {
+            const alerta = {
+                msg: error.response?.data.msg,
+            }
+
+            dispatch({
+                type: REGISTRO_ERROR,
+                payload: alerta
+
+            })
         }
     }
 
+    const limpiarAlert = () => {
+
+        dispatch({
+            type: LIMPIAR_STATE,
+        })
+    }
 
     return (
         <clienteContext.Provider
@@ -98,11 +133,13 @@ const ClienteState = props => {
                 errorformulario: state.errorformulario,
                 clienteSeleccionado: state.clienteSeleccionado,
                 mensaje: state.mensaje,
+                mensajeConfirmación: state.mensajeConfirmación,
                 mostrarError,
                 obtenerClientes,
                 guardarClienteSeleccionado,
                 limpiarCliente,
-                actualizarEmpleado
+                registrarCliente,
+                limpiarAlert
             }}
         >
             {props.children}

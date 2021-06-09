@@ -8,13 +8,22 @@ import {
     ACTUAL,
     LIMPIAR,
     ACTUALIZAR,
-    CAMBIAR
+    CAMBIAR,
+    REGISTRO_EXITOSO,
+    REGISTRO_ERROR,
+    LIMPIAR_STATE
 } from '../../types';
-
-
 
 export default (state, action) => {
     switch (action.type) {
+        case REGISTRO_EXITOSO:
+            return {
+                ...state,
+                mensaje: null,
+                cargando: false,
+                errorformulario: false,
+                mensajeConfirmación:  action.payload
+            }
         case FORMULARIO:
             return {
                 ...state,
@@ -25,52 +34,29 @@ export default (state, action) => {
             return {
                 ...state,
                 errorformulario: true,
-                textoAlert: action.payload
-            }
-        case CAMBIAR:
-            return {
-                ...state,
-                caso: action.payload
+                mensaje: action.payload
             }
 
-        case AGREGAR:
-            return {
-                ...state,
-                clientes: [...state.clientes, action.payload],
-                formulario: false,
-                errorformulario: false
-            }
         case OBTENER:
             return {
                 ...state,
                 clientes: action.payload
             }
-        case ACTUAL:
-            return {
-                ...state,
-                clienteseleccionado: action.payload
-            }
 
-        case ELIMINAR:
-            return {
-                ...state,
-                clientes: state.clientes.filter(cliente => cliente._id !== action.payload),
-                cliente: null
-            }
-        case ACTUALIZAR:
-            return {
-                ...state,
-                clientes: state.clientes.map(cliente => cliente._id === action.payload._id ? action.payload : cliente)
-            }
-        case LIMPIAR:
-            return {
-                ...state,
-                clienteseleccionado: null
-            }
         case ERROR:
             return {
                 ...state,
                 mensaje: action.payload
+            }
+        case REGISTRO_ERROR:
+            return {
+                errorformulario: true,
+                mensaje: action.payload
+            }
+        case LIMPIAR_STATE:
+            return {
+                errorformulario: false,
+                mensaje: null
             }
 
         default:

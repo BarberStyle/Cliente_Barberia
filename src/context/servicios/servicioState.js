@@ -170,7 +170,7 @@ const ServicioState = props => {
 
     const obtenerTipos = async () => {
         try {
-            const resultado = await clienteAxios.get('/api/tipos');
+            const resultado = await clienteAxios.get('/api/tipos-servicios');
             dispatch({
                 type: OBTENER_TIPOS,
                 payload: resultado.data.tipo

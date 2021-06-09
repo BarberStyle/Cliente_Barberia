@@ -13,7 +13,9 @@ import {
     ACTUAL,
     LIMPIAR,
     ACTUALIZAR,
-    CAMBIAR
+    CAMBIAR,
+    REGISTRO_ERROR,
+    LIMPIAR_STATE
 } from '../../types';
 
 
@@ -48,18 +50,21 @@ const EmpleadoSatate = props => {
         })
     }
 
-
-
     // Valida el formulario por errores
     const mostrarError = alert => {
+        const alerta = {
+            msg: alert
+        }
+
         dispatch({
             type: VALIDAR_FORMULARIO,
-            payload: alert
+            payload: alerta
         })
     }
 
     //guardar nuevo empleado peticion al api
     const agregarEmpleado = async empleado => {
+        
         try {
             const resultado = await clienteAxios.post('/api/empleados', empleado);
 
@@ -73,11 +78,10 @@ const EmpleadoSatate = props => {
             console.log(error);
             const alerta = {
                 msg: error.response?.data.msg,
-                categoria: 'alerta-error'
             }
 
             dispatch({
-                type: ERROR,
+                type: REGISTRO_ERROR,
                 payload: alerta
             })
         }
@@ -161,6 +165,13 @@ const EmpleadoSatate = props => {
         })
     }
 
+    const limpiarAlert = () => {
+
+        dispatch({
+            type: LIMPIAR_STATE,
+        })
+    }
+
     return (
         <empleadoContext.Provider
             value={{
@@ -170,6 +181,7 @@ const EmpleadoSatate = props => {
                 errorformulario: state.errorformulario,
                 empleadoSeleccionado: state.empleadoSeleccionado,
                 mensajeConfirmación: state.mensajeConfirmación,
+                mensaje: state.mensaje,
                 caso: state.caso,
                 mostrarFormulario,
                 mostrarError,
@@ -180,15 +192,14 @@ const EmpleadoSatate = props => {
                 limpiarEmpleado,
                 actualizarEmpleado,
                 tipoEmpleado,
-                cambiarCaso
+                cambiarCaso,
+                limpiarAlert
             }}
         >
             {props.children}
         </empleadoContext.Provider>
 
     )
-
-
 }
 
 export default EmpleadoSatate;

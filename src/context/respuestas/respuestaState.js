@@ -16,7 +16,8 @@ const RespuestaState = props => {
     const initialState = {
 
         respuestas: [],
-        mensaje: null
+        mensaje: null,
+        mensajeConfirmacion: ''
 
     }
 
@@ -27,8 +28,6 @@ const RespuestaState = props => {
     const agregarRespuesta = async respuesta => {
         try {
             const resultado = await clienteAxios.post('/api/respuestas', respuesta);
-
-
             // Insertar el respuesta en el state
             dispatch({
                 type: AGREGAR,
@@ -46,7 +45,6 @@ const RespuestaState = props => {
                 payload: alerta
             })
         }
-
     }
 
     return (
@@ -54,6 +52,7 @@ const RespuestaState = props => {
             value={{
                 respuestas: state.respuestas,
                 mensaje: state.mensaje,
+                mensajeConfirmacion: state.mensajeConfirmacion,
                 agregarRespuesta
 
             }}

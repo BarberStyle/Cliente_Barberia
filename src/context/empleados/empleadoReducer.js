@@ -2,17 +2,16 @@ import {
     FORMULARIO,
     VALIDAR_FORMULARIO,
     AGREGAR,
-    ERROR,
+    REGISTRO_ERROR,
     OBTENER,
     ELIMINAR,
     ACTUAL,
     LIMPIAR,
     ACTUALIZAR,
     DISPONIBLE,
-    CAMBIAR
+    CAMBIAR,
+    LIMPIAR_STATE
 } from '../../types';
-
-
 
 export default (state, action) => {
     switch (action.type) {
@@ -26,7 +25,7 @@ export default (state, action) => {
             return {
                 ...state,
                 errorformulario: true,
-                textoAlert: action.payload
+                mensaje: action.payload
             }
         case CAMBIAR:
             return {
@@ -39,7 +38,7 @@ export default (state, action) => {
                 ...state,
                 formulario: false,
                 errorformulario: false,
-                mensajeConfirmación: [...state.mensajeConfirmación, action.payload]
+                mensajeConfirmación:  action.payload
             }
         case OBTENER:
             return {
@@ -73,10 +72,16 @@ export default (state, action) => {
                 ...state,
                 empleadoSeleccionado: null
             }
-        case ERROR:
+        case REGISTRO_ERROR:
             return {
                 ...state,
+                errorformulario: true,
                 mensaje: action.payload
+            }
+        case LIMPIAR_STATE:
+            return {
+                errorformulario: false,
+                mensaje: null
             }
 
         default:

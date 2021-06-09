@@ -6,13 +6,13 @@ import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/token';
 
 import {
-    REGISTRO_EXITOSO,
     OBTENER_USUARIO,
     LOGIN_EXITOSO,
     LOGIN_ERROR,
     CERRAR_SESION,
     VALIDAR_FORMULARIO,
-    CERRAR_SESION_LOG
+    CERRAR_SESION_LOG,
+    LIMPIAR_STATE,
 } from '../../types';
 
 const AuthState = props => {
@@ -24,34 +24,10 @@ const AuthState = props => {
         mensaje: null,
         cargando: true,
         textoAlert: '',
-        mensajeConfirmación: '',
-
-
+        mensajeConfirmación: ''
     }
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
-
-    const registrarUsuario = async datos => {
-        try {
-            const respuesta = await clienteAxios.post('/api/usuarios', datos);
-
-            dispatch({
-                type: REGISTRO_EXITOSO,
-                payload: respuesta.data
-            });
-
-        } catch (error) {
-            const alerta = {
-                msg: error.response?.data.msg,
-            }
-
-            dispatch({
-                type: LOGIN_ERROR,
-                payload: alerta
-
-            })
-        }
-    }
 
     // Retorna el usuario autenticado
     const usuarioAutenticado = async () => {
@@ -89,12 +65,10 @@ const AuthState = props => {
             // Obtener el usuario
             usuarioAutenticado();
         } catch (error) {
-            console.log(error);
             const alerta = {
                 msg: error.response?.data.msg,
                 categoria: 'alerta-error'
             }
-
             dispatch({
                 type: LOGIN_ERROR,
                 payload: alerta
@@ -102,8 +76,8 @@ const AuthState = props => {
         }
     }
 
-     // Valida el formulario por errores
-     const mostrarError = alert => {
+    // Valida el formulario por errores
+    const mostrarError = alert => {
         dispatch({
             type: VALIDAR_FORMULARIO,
             payload: alert
@@ -118,11 +92,10 @@ const AuthState = props => {
         })
     }
 
-     // Cierra la sesión del usuario
-     const cerrarSesionLog = () => {
+    const limpiarAlert = () => {
 
         dispatch({
-            type: CERRAR_SESION_LOG
+            type: LIMPIAR_STATE,
         })
     }
 
@@ -137,12 +110,11 @@ const AuthState = props => {
                 errorformulario: state.errorformulario,
                 textoAlert: state.textoAlert,
                 mensajeConfirmación: state.mensajeConfirmación,
-                registrarUsuario,
                 iniciarSesion,
                 usuarioAutenticado,
                 cerrarSesion,
                 mostrarError,
-                cerrarSesionLog
+                limpiarAlert
             }}
         >{props.children}
 

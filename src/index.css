@@ -435,15 +435,12 @@ aside {
 .navegacion {
   background: rgb(5, 4, 4);
   max-width: 100%;
+  text-align: center;
+
 }
 
 .navegacion ul {
   list-style: none;
-}
-
-.menu {
-  margin-left: 18%;
-  margin-right: 18%;
 }
 
 .menu>li {
@@ -565,9 +562,8 @@ img {
 
 .campos-obligatorios {
   color: #fc2004;
-  margin-left: 15%;
-  margin-bottom: 10%;
-  margin-right: 15%;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 .asterisco {
@@ -935,7 +931,7 @@ img {
 }
 
 .espaciado {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 

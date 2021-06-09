@@ -90,7 +90,7 @@ const NuevaRespuesta = () => {
     //extraer objetos del state
     const { usuario } = authContext;
 
-    const { agregarRespuesta, mensaje } = respuestaContext;
+    const { agregarRespuesta, mensaje,mensajeConfirmacion } = respuestaContext;
 
 
 
@@ -153,29 +153,19 @@ const NuevaRespuesta = () => {
                 <form
                     onSubmit={onSubmit}
                 >
-
                     <main className={classes.layout}>
-
-                        {mensaje ?
-                            (
-                                <Alert severity="error">{mensaje.msg}</Alert>
-
-                            )
-                            : null}
+                        {mensaje ? (<Alert severity="error">{mensaje.msg}</Alert>) : null}
+                        {mensajeConfirmacion ? (<Alert severity="success">{mensajeConfirmacion}</Alert>) : null}
 
                         <Paper className={classes.paper}>
-
                             <div className="campos-obligatorios">
                                 <h3>Los campos marcados con * son obligatorios</h3>
                             </div>
 
-
                             <h1>Registrar Pregunta</h1>
                             <br></br>
-
                             <hr></hr>
                             <br></br>
-
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={6}>
                                     <FormControl required className={classes.formControl}>

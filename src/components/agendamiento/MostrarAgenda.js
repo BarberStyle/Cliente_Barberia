@@ -1,6 +1,7 @@
 import React from 'react';
 import { Fragment, useContext, useEffect } from 'react';
 import AgendamientoContext from '../../context/agendamiento/agendamientoContext';
+import Alert from '@material-ui/lab/Alert';
 import {
     Table
 } from "reactstrap";
@@ -8,17 +9,24 @@ import {
 const MostrarAgenda = () => {
     const agendamientoContext = useContext(AgendamientoContext);
 
-    const { citas } = agendamientoContext;
+    const { citas, mensajeDispo } = agendamientoContext;
 
-    if (citas.length === 0) {
-        return <p>No hay agendamiento</p>
+   
+    if (citas.length === 0 && mensajeDispo === '' ) {
+        return <p></p>
     }
+
+    if (mensajeDispo !== '') {
+        return <Alert severity="success">{mensajeDispo?.msg}</Alert>
+    }
+
 
     let str;
     let str1;
 
     return (
         <Fragment>
+
             <h2>Citas Agendadas</h2>
             <Table className="table table-striped">
                 <thead>
@@ -30,11 +38,11 @@ const MostrarAgenda = () => {
                 <tbody>
                     {citas ? (
                         citas.map((cita) => (
-                           str  = new Date(cita.horaInicio),
-                           str1  = new Date(cita.horaFin),
+                            str = new Date(cita.horaInicio),
+                            str1 = new Date(cita.horaFin),
 
-                           cita.horaInicio = str.toTimeString(),
-                           cita.horaFin = str1.toTimeString(),
+                            cita.horaInicio = str.toTimeString(),
+                            cita.horaFin = str1.toTimeString(),
 
                             < tr key={cita._id} >
                                 <td>{cita.horaInicio}</td>
