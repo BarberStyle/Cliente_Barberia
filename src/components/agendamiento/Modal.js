@@ -139,7 +139,20 @@ const Modales = () => {
 
     const consultar = () => {
 
-        let consulta = ({ doc: docEmpleado, fecha: horaInicio });
+        if (docEmpleado === '') {
+            mostrarError('SELECCIONE UN EMPLEADO');
+            return;
+        }
+        if (horaInicio === '') {
+            mostrarError('SELECCIONE UN DÍA DE LA SEMANA');
+            return;
+        }
+
+        let consulta = ({
+            doc: docEmpleado,
+            fecha: horaInicio
+        });
+
         consultarAgendamiento(consulta);
     };
 
@@ -161,11 +174,9 @@ const Modales = () => {
         }
 
         if (Date.parse(horaInicio) < Date.now()) {
-            mostrarError('NO PUEDE AGENDAR EN UNA FECHA PASADA');
+            mostrarError('NO PUEDE AGENDAR EN FECHAS PASADAS');
             return;
         }
-
-
 
         let estado = estados.filter(estado => estado.nombreEstado === 'Pendiente')
         cita.costo = servicioSeleccionado.precio;

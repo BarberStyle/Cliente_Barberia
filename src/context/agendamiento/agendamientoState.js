@@ -124,7 +124,8 @@ const AgendamientoState = props => {
         }
     }
 
-    const consultarAgendamiento = async (consulta) => {
+    const consultarAgendamiento = async (consulta) => { 
+        console.log(consulta);
         try {
             const resultado = await clienteAxios.post('/api/consultar-agendamiento', consulta);
             dispatch({

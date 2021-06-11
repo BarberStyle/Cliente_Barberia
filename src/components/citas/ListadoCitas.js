@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import CitaContext from '../../context/citas/citaContext';
-import BlockIcon from '@material-ui/icons/Block';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AgendamientoContext from '../../context/agendamiento/agendamientoContext';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,7 +8,13 @@ import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 
 import {
     Table,
-    Container
+    Button,
+    Container,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    FormGroup,
+    ModalFooter,
 } from "reactstrap";
 
 function buscandoFiltro(consult) {
@@ -44,7 +49,27 @@ const ListadoCitas = () => {
     let str1;
 
 
-    const [modalActualizar, setModalActualizar] = useState(false);
+    const [modalEliminar, setModalEliminar] = useState(false);
+    const [modalIncumplimiento, setModalIncumplimiento] = useState(false);
+    const [modalLiberacion, setModalLiberacion] = useState(false);
+    const [puntos, guardarPuntos] = useState({
+        cantidad: '',
+        docCliente: '' 
+    })
+
+    const [eliminable, guardarEliminable] = useState('');
+    const [cita, guardarCita] = useState({
+        _id: '',
+        docCliente: '',
+        Servicio: '',
+        docEmpleado: '',
+        horaInicio: '',
+        horaFin: '',
+        costo: '',
+        Estado: ''
+    });
+     
+    const {cantidad, docCliente} = puntos;
 
     const citaContext = useContext(CitaContext);
 
@@ -77,46 +102,68 @@ const ListadoCitas = () => {
 
     }
 
-    const eliminarCita = cita => {
+    const eliminarCita = (cita) => {
+        eliminacionCita(cita);
+        setModalEliminar(false);
 
-        eliminacionCita(cita._id);
     }
-    
 
     const cambiarEstado = cita => {
 
         switch (cita.Estado) {
             case 'Pendiente':
-                cita.Estado = 'Cumplida';
-                actualizarCita(cita);
-                break;
-
-            case 'Cumplida':
                 cita.Estado = 'Incumplida';
                 actualizarCita(cita);
                 break;
-
             case 'Incumplida':
-                cita.Estado = 'Pendiente';
+                cita.Estado = 'Cumplida';
                 actualizarCita(cita);
                 break;
-
+            case 'Cumplida':
+                cita.Estado = 'Pendiente';
+                actualizarCita(cita);
+                calcularPuntos(cita.costo , cita.docCliente);
+                break;
             default:
                 break;
         }
+
+        setModalIncumplimiento(false);
+        setModalLiberacion(false);
     }
 
-    const mostrarModalActualizar = (cita) => {
-        setModalActualizar(true);
-      
-
+    const mostrarModalEliminar = (cita) => {
+        setModalEliminar(true);
+        guardarEliminable(cita._id);
     };
 
-      // revisar si hay empleados registrados
-      if (citas.length === 0) {
-        return <p >NO HAY CITAS, COMIENZA CREANDO UNA</p>
+    const cerrarModalEliminar = () => {
+        setModalEliminar(false);
     }
 
+    const mostrarModalIncumplimiento = (cita) => {
+        setModalIncumplimiento(true);
+        guardarCita(cita);
+    }
+
+    const mostrarModalLiberacion = (cita) => {
+        setModalLiberacion(true);
+        guardarCita(cita);
+    }
+
+    const calcularPuntos = (costo , docCliente) => {
+        let cantidad = (5 / 100) * costo;
+        console.log(cantidad);
+
+        guardarPuntos(cantidad, docCliente)
+        console.log(puntos);
+
+    }
+
+    // revisar si hay empleados registrados
+    if (citas.length === 0) {
+        return <p >NO HAY CITAS, COMIENZA CREANDO UNA</p>
+    }
 
     return (
         <Fragment>
@@ -157,7 +204,6 @@ const ListadoCitas = () => {
                                     cita.horaInicio = str.toString(),
                                     cita.horaFin = str1.toString(),
 
-
                                     <tr key={cita._id}>
                                         <td>{cita.docCliente}</td>
                                         <td>{cita.Servicio}</td>
@@ -171,24 +217,22 @@ const ListadoCitas = () => {
                                             {cita.Estado === 'Pendiente' ? (
                                                 <a
                                                     className="btn btn-info espaciado"
-                                                    onClick={() => cambiarEstado(cita)}
+                                                    onClick={() => mostrarModalIncumplimiento(cita)}
                                                 > <ContactSupportIcon /> </a>
+
+                                            ) : null}
+                                            {cita.Estado === 'Incumplida' ? (
+                                                <a
+                                                    className="btn btn-secondary espaciado"
+                                                    onClick={() => mostrarModalLiberacion(cita)}
+                                                > <HighlightOffIcon /> </a>
 
                                             ) : null}
 
                                             {cita.Estado === 'Cumplida' ? (
                                                 <a
                                                     className="btn btn-success espaciado"
-                                                    onClick={() => cambiarEstado(cita)}
                                                 > <AssignmentTurnedInIcon /> </a>
-
-                                            ) : null}
-
-                                            {cita.Estado === 'Incumplida' ? (
-                                                <a
-                                                    className="btn btn-secondary espaciado"
-                                                    onClick={() => cambiarEstado(cita)}
-                                                > <HighlightOffIcon /> </a>
 
                                             ) : null}
 
@@ -196,8 +240,8 @@ const ListadoCitas = () => {
                                                 className="btn btn-danger"
                                                 data-toggle="tooltip"
                                                 title="Eliminar"
-                                                onClick={() => mostrarModalActualizar(cita)}
-                                              //  onClick={() => eliminarCita(cita)}
+                                                onClick={() => mostrarModalEliminar(cita)}
+                                            // onClick={() => eliminarCita(cita)}
                                             ><HighlightOffIcon /></a>
                                         </td>
                                     </tr>
@@ -208,6 +252,66 @@ const ListadoCitas = () => {
                     </Table>
                 </Container>
             </div>
+
+            <Modal isOpen={modalEliminar}>
+                <ModalHeader>
+                    <div><h3>Advertencia</h3></div>
+                </ModalHeader>
+                <ModalBody>
+                    ¿Seguro que desea eliminar la cita?
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => eliminarCita(eliminable)}
+                    > Eliminar</Button>
+
+                    <Button
+                        color="danger"
+                        onClick={() => cerrarModalEliminar()}
+                    > Cancelar </Button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={modalIncumplimiento}>
+                <ModalHeader>
+                    <div><h3>Advertencia</h3></div>
+                </ModalHeader>
+                <ModalBody>
+                    ¿Seguro que desea cambiar el estado de la cita a incumplido?
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => cambiarEstado(cita)}
+                    > Confirmar</Button>
+
+                    <Button
+                        color="danger"
+                        onClick={() => setModalIncumplimiento(false)}
+                    > Cancelar </Button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={modalLiberacion}>
+                <ModalHeader>
+                    <div><h3>Advertencia</h3></div>
+                </ModalHeader>
+                <ModalBody>
+                    ¿Seguro que desea cambiar el estado de la cita a cumplida?
+                    ¡Se liberarán los puntos del cliente!
+
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => cambiarEstado(cita)}
+                    > Confirmar</Button>
+
+                    <Button
+                        color="danger"
+                        onClick={() => setModalLiberacion(false)}
+                    > Cancelar </Button>
+                </ModalFooter>
+            </Modal>
         </Fragment>
     );
 }

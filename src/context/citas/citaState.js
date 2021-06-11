@@ -7,20 +7,19 @@ import {
     ACTUALIZAR,
     OBTENER,
     ERROR,
-    ELIMINAR
+    ELIMINAR,
+    REGISTRO_EXITOSO,
+    REGISTRO_ERROR
 } from '../../types';
-
-
-
 
 const CitaState = props => {
 
     const initialState = {
-        citas: []
+        citas: [],
+        
     }
 
     const [state, dispatch] = useReducer(citaReducer, initialState);
-
 
     // Obtener las citas
     const obtenerCitas = async () => {
@@ -65,7 +64,6 @@ const CitaState = props => {
     }
 
     const actualizarCita = async cita => {
-
         try {
             const resultado = await clienteAxios.put(`/api/citas/${cita._id}`, cita);
             dispatch({
@@ -84,13 +82,38 @@ const CitaState = props => {
         }
     }
 
+    // Obtener las citas
+    const obtenerCitasEmpleado = async () => {
+        try {
+            const resultado = await clienteAxios.get('/api/citas');
+            dispatch({
+                type: OBTENER,
+                payload: resultado.data.citas
+            })
+        } catch (error) {
+            const alerta = {
+                msg: 'Hubo un error',
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type: ERROR,
+                payload: alerta
+            })
+        }
+    }
+
+    const calcularPuntos = async costo => {
+       
+    }
+
     return (
         <citaContext.Provider
             value={{
                 citas: state.citas,
                 obtenerCitas,
                 eliminacionCita,
-                actualizarCita
+                actualizarCita,
+                obtenerCitasEmpleado
             }}
         >
             {props.children}

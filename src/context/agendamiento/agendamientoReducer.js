@@ -75,7 +75,8 @@ export default (state, action) => {
         case CONSULTA_EXITOSA:
             return {
                 ...state,
-                citas: action.payload
+                citas: action.payload,
+                modalError: false
             }
         case REGISTRO_ERROR:
             return {
