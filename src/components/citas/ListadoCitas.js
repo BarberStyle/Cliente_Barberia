@@ -300,7 +300,7 @@ const ListadoCitas = () => {
             </Modal>
             <Modal isOpen={modalLiberacion}>
                 <ModalHeader>
-                    <div><h3>Advertencia</h3></div>
+                    <h3>Advertencia</h3>
                 </ModalHeader>
                 <ModalBody>
                     <div className="text-alert">
