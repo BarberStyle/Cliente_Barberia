@@ -935,4 +935,13 @@ img {
 }
 
 
+/*MODAL ALERTA*/
+.warning{
+  color: rgb(252, 252, 6);
+  width: 300px;
 
+}
+.text-alert{
+  text-align: center;
+  font-size: medium;
+}

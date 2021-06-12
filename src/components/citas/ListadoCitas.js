@@ -5,6 +5,7 @@ import AgendamientoContext from '../../context/agendamiento/agendamientoContext'
 import { makeStyles } from '@material-ui/core/styles';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 
 import {
     Table,
@@ -54,7 +55,7 @@ const ListadoCitas = () => {
     const [modalLiberacion, setModalLiberacion] = useState(false);
     const [puntos, guardarPuntos] = useState({
         cantidad: '',
-        docCliente: '' 
+        docCliente: ''
     })
 
     const [eliminable, guardarEliminable] = useState('');
@@ -68,8 +69,8 @@ const ListadoCitas = () => {
         costo: '',
         Estado: ''
     });
-     
-    const {cantidad, docCliente} = puntos;
+
+    const { cantidad, docCliente } = puntos;
 
     const citaContext = useContext(CitaContext);
 
@@ -122,7 +123,7 @@ const ListadoCitas = () => {
             case 'Cumplida':
                 cita.Estado = 'Pendiente';
                 actualizarCita(cita);
-                calcularPuntos(cita.costo , cita.docCliente);
+                calcularPuntos(cita.costo, cita.docCliente);
                 break;
             default:
                 break;
@@ -151,7 +152,7 @@ const ListadoCitas = () => {
         guardarCita(cita);
     }
 
-    const calcularPuntos = (costo , docCliente) => {
+    const calcularPuntos = (costo, docCliente) => {
         let cantidad = (5 / 100) * costo;
         console.log(cantidad);
 
@@ -255,10 +256,14 @@ const ListadoCitas = () => {
 
             <Modal isOpen={modalEliminar}>
                 <ModalHeader>
-                    <div><h3>Advertencia</h3></div>
+                    <h3>Advertencia</h3>
                 </ModalHeader>
                 <ModalBody>
-                    ¿Seguro que desea eliminar la cita?
+                    <WarningRoundedIcon />
+                    <div className="text-alert">
+                        <span className="warning"><WarningRoundedIcon /></span><br></br>
+                        ¿Seguro que desea eliminar la cita?
+                    </div>
                 </ModalBody>
                 <ModalFooter>
                     <Button
@@ -274,17 +279,19 @@ const ListadoCitas = () => {
             </Modal>
             <Modal isOpen={modalIncumplimiento}>
                 <ModalHeader>
-                    <div><h3>Advertencia</h3></div>
+                    <h3>Advertencia</h3>
                 </ModalHeader>
                 <ModalBody>
-                    ¿Seguro que desea cambiar el estado de la cita a incumplido?
+                    <div className="text-alert">
+                        <span className="warning"><WarningRoundedIcon /></span><br></br>
+                        ¿Seguro que desea cambiar el estado de la cita a incumplido?
+                    </div>
                 </ModalBody>
                 <ModalFooter>
                     <Button
                         color="primary"
                         onClick={() => cambiarEstado(cita)}
                     > Confirmar</Button>
-
                     <Button
                         color="danger"
                         onClick={() => setModalIncumplimiento(false)}
@@ -296,9 +303,11 @@ const ListadoCitas = () => {
                     <div><h3>Advertencia</h3></div>
                 </ModalHeader>
                 <ModalBody>
-                    ¿Seguro que desea cambiar el estado de la cita a cumplida?
-                    ¡Se liberarán los puntos del cliente!
-
+                    <div className="text-alert">
+                        <span className="warning"><WarningRoundedIcon /></span><br></br>
+                        ¿Seguro que desea cambiar el estado de la cita a cumplida?
+                        ¡Se liberarán los puntos del cliente!
+                    </div>
                 </ModalBody>
                 <ModalFooter>
                     <Button
