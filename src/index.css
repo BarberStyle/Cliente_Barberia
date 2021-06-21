@@ -945,3 +945,13 @@ img {
   text-align: center;
   font-size: medium;
 }
+
+/*Reportes*/
+.item-report{
+  border: none;
+}
+
+.card-report:hover{
+  color: red;
+  
+}

@@ -78,6 +78,12 @@ const MenuPrincipal = () => {
                                 </ul>
                             </li>
                         }
+
+                        {usuario?.rol !== '604e9ebe6e69f62dc4e181b6' ? (
+                            <li><a href="/reportes">Reportes</a>
+                               
+                            </li>
+                        ) : null}
                     </ul>
                 </nav>
             </header>
