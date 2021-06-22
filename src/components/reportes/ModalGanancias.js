@@ -57,20 +57,31 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+    }
+};
+
 const ref = React.createRef();
 
 const Ganancias = () => {
     const classes = useStyles();
     let str;
     let str1;
+    let total = 0;
+    var today = new Date(), hoy = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
     const reporteContext = useContext(ReporteContext);
 
-    let submit = false;
-
     const [modalGanancias, setModalGanancias] = useState(false);
-
-    const { abrirModalGanancias, generarReporte, mensajeConfirmación, citas, cerrarModalGanancias } = reporteContext;
+    const { abrirModalGanancias, generarReporte, mensajeConfirmación,
+         citas, cerrarModalGanancias, mensaje, limpiarReporte } = reporteContext;
 
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
@@ -78,9 +89,8 @@ const Ganancias = () => {
         if (abrirModalGanancias) {
             setModalGanancias(abrirModalGanancias);
         }
-
         // eslint-disable-next-line
-    }, [abrirModalGanancias, citas]);
+    }, [abrirModalGanancias]);
 
 
     const [rango, guardarRango] = useState({
@@ -97,28 +107,28 @@ const Ganancias = () => {
             ...rango,
             [name]: value
         })
+
+        limpiarReporte();
     }
 
-
-
     const consultarGanancias = () => {
-
         generarReporte(rango);
     }
 
     const cerrarModal = () => {
-        cerrarModalGanancias();
+        cerrarModalGanancias(false);
+        setModalGanancias(false);
     }
 
     return (
         <Fragment>
-            <Modal isOpen={modalGanancias}>
+            <Modal
+                style={customStyles}
+                isOpen={modalGanancias}>
                 <ModalHeader>
                     <h3>Generar Reporte</h3>
                 </ModalHeader>
-
                 <ModalBody>
-
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={4}>
                             <InputLabel className={classes.textFecha} id="required-label">Fecha Inicial</InputLabel>
@@ -150,42 +160,49 @@ const Ganancias = () => {
                     {mensajeConfirmación ? (
                         <Alert severity="success">{mensajeConfirmación}</Alert>
                     ) : null}
-                    <div className="Post" ref={ref}>
+                    {mensaje ? (
+                        <Alert severity="error">{mensaje.msg}</Alert>
+                    ) : null}
+                    <div className="container" ref={ref}>
+                        {citas.length !== 0 ? (
+                            <div>
+                                <span className="text-reportes">Fecha de Reporte: {hoy}</span>
+                                <Table className="table table-striped responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Servicio</th>
+                                            <th>Fecha</th>
+                                            <th>Costo</th>
 
-                        <Container>
-                            <Table className="table table-striped responsive">
-                                <thead>
-                                    <tr>
-                                        <th>Servicio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {citas ? (
+                                            citas.map(cita => (
+                                                str = new Date(cita.horaInicio),
+                                                str1 = new Date(cita.horaFin),
+                                                cita.horaInicio = str.toDateString(),
+                                                cita.horaFin = str1.toDateString(),
+                                                total = cita.costo + total,
 
-                                        <th>Hora Inicio</th>
-                                        <th>Hora Fin</th>
-                                        <th>Costo</th>
+                                                <tr key={cita._id}>
+                                                    <td>{cita.Servicio}</td>
+                                                    <td>{cita.horaInicio}</td>
+                                                    <td>{cita.costo}</td>
+                                                </tr>
+                                            )))
+                                            :
+                                            null}
+                                    </tbody>
+                                </Table>
+                            </div>
+                        ) : null}
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {citas ? (
-                                        citas.map(cita => (
-                                            str = new Date(cita.horaInicio),
-                                            str1 = new Date(cita.horaFin),
-
-                                            cita.horaInicio = str.toString(),
-                                            cita.horaFin = str1.toString(),
-
-                                            <tr key={cita._id}>
-                                                <td>{cita.Servicio}</td>
-                                                <td>{cita.horaInicio}</td>
-                                                <td>{cita.horaFin}</td>
-                                                <td>{cita.costo}</td>
-
-                                            </tr>
-                                        )))
-                                        :
-                                        null}
-                                </tbody>
-                            </Table>
-                        </Container>
+                        {total !== 0 ? (
+                            <div>
+                                <span className="text-reportes">Total Ganancias: {total}</span>
+                            </div>
+                        ) : null}
                     </div>
                 </ModalBody>
                 <ModalFooter>

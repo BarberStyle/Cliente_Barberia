@@ -6,10 +6,6 @@ import {
     ABRIR_MODAL,
     AGREGAR,
     ERROR,
-    VALIDAR_FORMULARIO,
-    ACTUAL,
-    ELIMINAR,
-    ACTUALIZAR,
     LIMPIAR,
     CERRAR_MODAL
 } from '../../types';
@@ -32,21 +28,16 @@ const ReporteState = props => {
 
 
     // Serie de funciones para el CRUD
-
-    // Agregar nuevo proyecto
     const generarReporte = async rango => {
-
         try {
             const resultado = await clienteAxios.post('/api/reportes', rango);
-            console.log(resultado);
             dispatch({
                 type: AGREGAR,
                 payload: resultado.data
             })
         } catch (error) {
             const alerta = {
-                msg: error.response?.data.msg,
-                categoria: 'alerta-error'
+                msg: error.response?.data.msg
             }
             dispatch({
                 type: ERROR,
@@ -57,75 +48,19 @@ const ReporteState = props => {
 
     const mostrarModalGanancias = () => {
         dispatch({
-            type: ABRIR_MODAL,
+            type: ABRIR_MODAL
         })
 
     }
 
-    const cerrarModalGanancias = () => {
+    const cerrarModalGanancias = negativo => {
         dispatch({
             type: CERRAR_MODAL,
+            payload: negativo
         })
     }
 
-    // Valida el formulario por errores
-    const mostrarError = alert => {
-        dispatch({
-            type: VALIDAR_FORMULARIO,
-            payload: alert
-        })
-    }
-
-    const guardarreporteSeccionado = reporte => {
-        dispatch({
-            type: ACTUAL,
-            payload: reporte
-        })
-    }
-
-    // Elimina un reporte
-    const eliminarreporte = async reporteId => {
-        try {
-            await clienteAxios.delete(`/api/reportes/${reporteId}`);
-            dispatch({
-                type: ELIMINAR,
-                payload: reporteId
-            })
-        } catch (error) {
-            const alerta = {
-                msg: 'Hubo un error',
-                categoria: 'alerta-error'
-            }
-            dispatch({
-                type: ERROR,
-                payload: alerta
-            })
-        }
-    }
-
-    // Edita o modifica un reporte
-    const actualizarProducto = async producto => {
-
-        try {
-            const resultado = await clienteAxios.put(`/api/productos/${producto._id}`, producto);
-            dispatch({
-                type: ACTUALIZAR,
-                payload: resultado.data.producto
-            })
-        } catch (error) {
-            const alerta = {
-                msg: 'Hubo un error',
-                categoria: 'alerta-error'
-            }
-            dispatch({
-                type: ERROR,
-                payload: alerta
-            })
-        }
-    }
-
-    // Elimina el producto seleccionado
-    const limpiarProducto = () => {
+    const limpiarReporte = () => {
         dispatch({
             type: LIMPIAR
         })
@@ -137,10 +72,11 @@ const ReporteState = props => {
             value={{
                 citas: state.citas,
                 abrirModalGanancias: state.abrirModalGanancias,
-                mensajeConfirmación: state.mensajeConfirmación,
+                mensaje: state.mensaje,
                 generarReporte,
                 mostrarModalGanancias,
-                cerrarModalGanancias
+                cerrarModalGanancias,
+                limpiarReporte
             }}
         >
             {props.children}

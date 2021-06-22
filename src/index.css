@@ -951,7 +951,8 @@ img {
   border: none;
 }
 
-.card-report:hover{
-  color: red;
-  
+.text-reportes{
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

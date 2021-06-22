@@ -22,6 +22,7 @@ export default (state, action) => {
             return {
                 ...state,
                 abrirModalGanancias: false,
+                mensajeConfirmación: "",
                 citas: []
             }
         case AGREGAR:
@@ -32,7 +33,18 @@ export default (state, action) => {
                 errorformulario: false,
                 mensajeConfirmación: 'Datos Encontrados'
             }
-    
+        case ERROR:
+            return {
+                ...state,
+                mensaje: action.payload
+            }
+        case LIMPIAR:
+            return {
+                citas: [],
+                mensaje: null,
+                mensajeConfirmación: ""
+            }
+
         default:
             return state;
     }
