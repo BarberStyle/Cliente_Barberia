@@ -1,10 +1,11 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 import MenuPrincipal from '../inicio/menuPrincipal';
 import AppBar from '@material-ui/core/AppBar';
 import Header from '../layout/Header';
 import { makeStyles } from '@material-ui/core/styles';
 import ListadoReportes from './ListadoReportes';
 import Ganancias  from './ModalGanancias';
+import Edades from './ModalEdades';
 const useStyles = makeStyles((theme) => ({
 
     appBar: {
@@ -29,6 +30,7 @@ const Reportes = () => {
                     <br></br>
                    <ListadoReportes/>
                    <Ganancias/>
+                   <Edades/>
                 </main>
             </div>
         </div>

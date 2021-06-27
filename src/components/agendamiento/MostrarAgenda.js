@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useContext } from 'react';
 import AgendamientoContext from '../../context/agendamiento/agendamientoContext';
 import Alert from '@material-ui/lab/Alert';
 import {
@@ -54,7 +54,6 @@ const MostrarAgenda = () => {
                 </tbody>
             </Table>
         </Fragment >
-
     );
 }
 

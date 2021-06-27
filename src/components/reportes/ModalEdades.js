@@ -11,9 +11,11 @@ import Alert from '@material-ui/lab/Alert';
 import {
     Table,
     Button,
+    Container,
     Modal,
     ModalHeader,
     ModalBody,
+    FormGroup,
     ModalFooter,
 } from "reactstrap";
 
@@ -67,7 +69,7 @@ const customStyles = {
 
 const ref = React.createRef();
 
-const Ganancias = () => {
+const Edades = () => {
     const classes = useStyles();
     let str;
     let str1;
@@ -76,22 +78,23 @@ const Ganancias = () => {
 
     const reporteContext = useContext(ReporteContext);
 
-    const [modalGanancias, setModalGanancias] = useState(false);
-    const { abrirModalGanancias, generarReporte, citas, cerrarModalGanancias, mensaje, limpiarReporte } = reporteContext;
+    const [modalEdades, setModalEdades] = useState(false);
+    const { abrirModalEdades, generarReporteEdades, limpiarReporteEdades,
+        segmentacion, cerrarModalEdades, mensaje } = reporteContext;
 
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
         // si hay un error
-        if (abrirModalGanancias) {
-            setModalGanancias(abrirModalGanancias);
+        if (abrirModalEdades) {
+            setModalEdades(abrirModalEdades);
         }
         // eslint-disable-next-line
-    }, [abrirModalGanancias]);
+    }, [abrirModalEdades]);
 
 
     const [rango, guardarRango] = useState({
         fechaInicio: new Date(),
-        fechaFinal: new Date()
+        fechaFinal: new Date(),
     });
 
     const { fechaInicio, fechaFinal } = rango;
@@ -104,23 +107,24 @@ const Ganancias = () => {
             [name]: value
         })
 
-        limpiarReporte();
+        limpiarReporteEdades();
     }
 
-    const consultarGanancias = () => {
-        generarReporte(rango);
+    const consultarEdades = () => {
+        generarReporteEdades(rango);
     }
 
     const cerrarModal = () => {
-        cerrarModalGanancias(false);
-        setModalGanancias(false);
+        cerrarModalEdades(false);
+        setModalEdades(false);
     }
+    
 
     return (
         <Fragment>
             <Modal
                 style={customStyles}
-                isOpen={modalGanancias}>
+                isOpen={modalEdades}>
                 <ModalHeader>
                     <h3>Generar Reporte</h3>
                 </ModalHeader>
@@ -153,36 +157,30 @@ const Ganancias = () => {
                             />
                         </Grid>
                     </Grid>
-                  
+                
                     {mensaje ? (
                         <Alert severity="error">{mensaje.msg}</Alert>
                     ) : null}
-                    <div  ref={ref}>
-                        {citas.length !== 0 ? (
+                    <div className="container" ref={ref}>
+                        {segmentacion.length !== 0 ? (
                             <div>
                                 <span className="text-reportes">Fecha de Reporte: {hoy}</span>
                                 <Table className="table table-striped responsive">
                                     <thead>
                                         <tr>
-                                            <th>Servicio</th>
-                                            <th>Fecha</th>
-                                            <th>Costo</th>
-
+                                            <th>Categoria</th>
+                                            <th>Cantidad</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {citas ? (
-                                            citas.map(cita => (
-                                                str = new Date(cita.horaInicio),
-                                                str1 = new Date(cita.horaFin),
-                                                cita.horaInicio = str.toDateString(),
-                                                cita.horaFin = str1.toDateString(),
-                                                total = cita.costo + total,
+                                        {segmentacion ? (
+                                            segmentacion.map(s => (
+                                              
+                                                total = s.cantidad + total,
 
-                                                <tr key={cita._id}>
-                                                    <td>{cita.Servicio}</td>
-                                                    <td>{cita.horaInicio}</td>
-                                                    <td>{cita.costo}</td>
+                                                <tr key={s._id}>
+                                                    <td>{s.categoria}</td>
+                                                    <td>{s.cantidad}</td>
                                                 </tr>
                                             )))
                                             :
@@ -194,7 +192,7 @@ const Ganancias = () => {
 
                         {total !== 0 ? (
                             <div>
-                                <span className="text-reportes">Total Ganancias: {total}</span>
+                                <span className="text-reportes">Total Clientes: {total}</span>
                             </div>
                         ) : null}
                     </div>
@@ -204,7 +202,7 @@ const Ganancias = () => {
                         {({ toPdf }) => <button onClick={toPdf}>Generar PDF</button>}
                     </Pdf>
                     <Button
-                        onClick={() => consultarGanancias()}
+                        onClick={() => consultarEdades()}
                         color="primary"
                     > Consultar</Button>
                     <Button
@@ -219,4 +217,4 @@ const Ganancias = () => {
     );
 }
 
-export default Ganancias;
+export default Edades;

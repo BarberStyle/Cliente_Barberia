@@ -1,5 +1,5 @@
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Fragment } from 'react';
 import ClienteContext from '../../context/clientes/clienteContext';
 import MenuPrincipal from '../inicio/menuPrincipal';

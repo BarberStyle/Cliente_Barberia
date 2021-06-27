@@ -1,14 +1,13 @@
 import {
     CERRAR_MODAL,
-    OBTENER,
     AGREGAR,
     ERROR,
-    VALIDAR_FORMULARIO,
-    ACTUAL,
-    ELIMINAR,
-    ACTUALIZAR,
+    ABRIR_MODAL_EDAD,
     LIMPIAR,
-    ABRIR_MODAL
+    ABRIR_MODAL,
+    CERRAR_MODAL_EDAD,
+    AGREGAR_EDADES,
+    LIMPIAR_EDADES
 } from '../../types';
 
 export default (state, action) => {
@@ -18,12 +17,25 @@ export default (state, action) => {
                 ...state,
                 abrirModalGanancias: true
             }
+        case ABRIR_MODAL_EDAD:
+            return {
+                ...state,
+                abrirModalEdades: true
+            }
         case CERRAR_MODAL:
             return {
                 ...state,
-                abrirModalGanancias: false,
+                abrirModalEdades: false,
                 mensajeConfirmación: "",
                 citas: []
+            }
+        case CERRAR_MODAL_EDAD:
+            return {
+                ...state,
+                abrirModalEdades: action.payload,
+                mensajeConfirmación: "",
+                citas: [],
+                segmentacion: []
             }
         case AGREGAR:
             return {
@@ -31,7 +43,8 @@ export default (state, action) => {
                 citas: action.payload,
                 formulario: false,
                 errorformulario: false,
-                mensajeConfirmación: 'Datos Encontrados'
+                mensaje: null,
+                segmentacion: []
             }
         case ERROR:
             return {
@@ -42,7 +55,25 @@ export default (state, action) => {
             return {
                 citas: [],
                 mensaje: null,
-                mensajeConfirmación: ""
+                mensajeConfirmación: "",
+                segmentacion: []
+
+            }
+        case AGREGAR_EDADES:
+            return {
+                segmentacion: action.payload,
+                formulario: false,
+                errorformulario: false,
+                mensajeConfirmación: 'Datos Encontrados',
+                mensaje: null,
+                citas: [],
+            }
+        case LIMPIAR_EDADES:
+            return {
+                segmentacion: [],
+                mensaje: null,
+                mensajeConfirmación: "",
+                citas: []
             }
 
         default:

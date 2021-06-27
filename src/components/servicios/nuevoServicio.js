@@ -81,9 +81,8 @@ const NuevoServicio = () => {
     // Obtener el state del formulario
     const servicioContext = useContext(ServicioContext);
 
-    const { errorformulario,
-        servicioSeleccionado, agregarServicio, mostrarError,
-        actualizarServicio, limpiarServicio, textoAlert, obtenerTipos, tipos, mensajeConfirmación } = servicioContext;
+    const { errorformulario, agregarServicio, mostrarError,
+         limpiarServicio, textoAlert, obtenerTipos, tipos, mensajeConfirmación } = servicioContext;
 
     // Effect que detecta si hay un servicio seleccionado
     useEffect(() => {

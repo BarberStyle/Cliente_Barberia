@@ -9,35 +9,8 @@ import {
     Container
 } from "reactstrap";
 
-function buscandoFiltro(consult) {
-    return function (x) {
-        return x.docCliente.includes(consult) || !consult;
-    }
-}
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-    },
-    heading: {
-        fontSize: theme.typography.pxToRem(18),
-        fontWeight: theme.typography.fontWeightRegular,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-        width: 105
-
-    },
-    formControl: {
-        minWidth: 200,
-
-    }
-
-}));
-
 
 const CitaEmpleado = () => {
-    const classes = useStyles();
     let str;
     let str1;
 
@@ -45,14 +18,6 @@ const CitaEmpleado = () => {
     const { usuarioAutenticado, usuario } = authContext;
     const citaContext = useContext(CitaContext);
     const { obtenerCitas, citas } = citaContext;
-
-    const [consulta, guardarConsulta] = useState({
-        consult: ''
-    });
-
-    let buscar = usuario.documento;
-
-    const { consult } = consulta;
 
     useEffect(() => {
 
