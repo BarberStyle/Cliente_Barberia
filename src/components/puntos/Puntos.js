@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import ListaServicios from '../servicios/listadoServicios';
+import ListaPuntos from '../puntos/ListadoPuntos';
 import MenuPrincipal from '../inicio/menuPrincipal';
 import AuthContext from '../../context/autenticacion/authContext';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Servicios = () => {
+const Puntos = () => {
 
     const classes = useStyles();
 
@@ -37,7 +37,7 @@ const Servicios = () => {
             <div className="contenedor-principal">
                 <main>
                     <br></br>
-                    <ListaServicios />
+                    <ListaPuntos />
                 </main>
             </div>
         </div>
@@ -45,4 +45,4 @@ const Servicios = () => {
     );
 }
 
-export default Servicios;
+export default Puntos;

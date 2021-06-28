@@ -8,15 +8,15 @@ import {
     OBTENER,
     ERROR,
     ELIMINAR,
-    REGISTRO_EXITOSO,
-    REGISTRO_ERROR
+    OBTENER_PUNTOS
 } from '../../types';
 
 const CitaState = props => {
 
     const initialState = {
         citas: [],
-        
+        puntos:[]
+
     }
 
     const [state, dispatch] = useReducer(citaReducer, initialState);
@@ -102,18 +102,69 @@ const CitaState = props => {
         }
     }
 
-    const calcularPuntos = async costo => {
-       
+    const liberacionPuntos = async cita => {
+        let calculo = (5 / 100) * cita.costo;
+
+        let puntos = ({
+            docCliente: cita.docCliente,
+            cantidad: calculo,
+            estado: 'Activo'
+        });
+
+        console.log(puntos);
+        try {
+            const resultado = await clienteAxios.post('/api/puntos', puntos);
+            // Insertar los puntos
+            // dispatch({
+            //     type: AGREGAR,
+            //     payload: resultado.data
+            // })
+        } catch (error) {
+            // console.log(error);
+            // const alerta = {
+            //     msg: error.response?.data.msg,
+            // }
+
+            // dispatch({
+            //     type: REGISTRO_ERROR,
+            //     payload: alerta
+            // })
+        }
+
     }
+
+      // Obtener las citas
+      const obtenerPuntaje = async () => {
+        try {
+            const resultado = await clienteAxios.get('/api/puntos');
+            dispatch({
+                type: OBTENER_PUNTOS,
+                payload: resultado.data.puntos
+            })
+        } catch (error) {
+            const alerta = {
+                msg: 'Hubo un error',
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type: ERROR,
+                payload: alerta
+            })
+        }
+    }
+
 
     return (
         <citaContext.Provider
             value={{
                 citas: state.citas,
+                puntos: state.puntos,
                 obtenerCitas,
                 eliminacionCita,
                 actualizarCita,
-                obtenerCitasEmpleado
+                obtenerCitasEmpleado,
+                liberacionPuntos,
+                obtenerPuntaje
             }}
         >
             {props.children}

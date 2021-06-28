@@ -197,7 +197,7 @@ const ListadoEmpleados = () => {
                             type="text"
                             id="tipo"
                             name="tipo"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Tipo de Documento"
                             value={tipo}
                             onChange={handleChange}
@@ -210,7 +210,7 @@ const ListadoEmpleados = () => {
                             type="number"
                             id="documento"
                             name="documento"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Número de Doc."
                             value={documento}
                             onChange={handleChange}
@@ -223,7 +223,7 @@ const ListadoEmpleados = () => {
                             type="text"
                             id="nombres"
                             name="nombres"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Tu nombre"
                             value={nombres}
                             onChange={handleChange}
@@ -236,7 +236,7 @@ const ListadoEmpleados = () => {
                             type="text"
                             id="apellidos"
                             name="apellidos"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Tus apellidos"
                             value={apellidos}
                             onChange={handleChange}
@@ -248,7 +248,7 @@ const ListadoEmpleados = () => {
                             type="email"
                             id="correo"
                             name="correo"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Tu Correo Electrónico"
                             value={correo}
                             onChange={handleChange}
@@ -260,7 +260,7 @@ const ListadoEmpleados = () => {
                             type="number"
                             id="telefono"
                             name="telefono"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Tu Teléfono"
                             value={telefono}
                             onChange={handleChange}
@@ -273,7 +273,7 @@ const ListadoEmpleados = () => {
                             type="text"
                             id="perfil"
                             name="perfil"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Perfil del empleado"
                             value={perfil}
                             onChange={handleChange}

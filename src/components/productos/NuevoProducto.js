@@ -234,23 +234,29 @@ const NuevoProducto = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        id="descripcion"
-                                        name="descripcion"
-                                        label="Descripción"
-                                        value={descripcion}
-                                        className={classes.root}
-                                        fullWidth
-                                        onChange={onChangeProducto}
-                                    />
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel className={classes.text} id="required-label">Unidad de Medida</InputLabel>
+                                        <Select
+                                            required
+                                            labelId="required-label"
+                                            id="select-required"
+                                            value={estado}
+                                            name="estado"
+                                            className={classes.selectEmpty}
+                                            fullWidth
+                                            onChange={onChangeProducto}
+                                        >
+                                            <MenuItem value='Activo'>Activo</MenuItem>
+                                            <MenuItem value='Inactivo'>Inactivo</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
                                         id="disponibles"
                                         name="disponibles"
-                                        label="Unidades"
+                                        label="Cantidad"
                                         value={disponibles}
                                         className={classes.root}
                                         fullWidth

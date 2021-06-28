@@ -37,8 +37,7 @@ import CitaState from './context/citas/citaState';
 import NuevoCliente from './components/clientes/NuevoCliente';
 import Reportes from './components/reportes/Reportes';
 import ReporteState from './context/reportes/reporteState';
-
-
+import Puntos from './components/puntos/Puntos';
 Modal.setAppElement('#root');
 
 //Revisar si tenemos un token
@@ -52,56 +51,57 @@ function App() {
     <div >
       <CarouselContainer />
     </div>,
-    <ReporteState>
-      <ClienteState>
-        <CitaState>
-          <AgendamientoState>
-            <ClienteState>
-              <EmpleadoSatate>
-                <ServicioState>
-                  <ProductoState>
-                    <AlertaState>
-                      <ConfiguracionState>
-                        <RespuestaState>
-                          <AuthState>
-                            <Router>
-                              <Switch>
-                                <RutaPrivada exact path="/inicio" component={Inicio} />
-                                <RutaPrivada exact path="/nueva-cuenta" component={NuevaCuenta} />
-                                <RutaPrivada exact path='/nuevo-servicio' component={NuevoServicio} />
-                                <RutaPrivada exact path='/empleados' component={Empleados} />
-                                <RutaPrivada exact path='/nuevo-empleado' component={NuevoEmpleado} />
-                                <RutaPrivada exact path='/nuevo-producto' component={NuevoProducto} />
-                                <RutaPrivada exact path='/productos' component={Productos} />
-                                <RutaPrivada exact path="/nueva-pregunta" component={NuevaRespuesta} />
-                                <RutaPrivada exact path='/servicios' component={Servicios} />
-                                <RutaPrivada exact path="/agendamiento" component={Agendamientos} />
-                                <RutaPrivada exact path='/clientes' component={Clientes} />
-                                <RutaPrivada exact path='/nuevo-cliente' component={NuevoCliente} />
-                                <RutaPrivada exact path='/citas' component={Citas} />
-                                <RutaPrivada exact path='/reportes' component={Reportes} />
-                                <Route exact path="/iniciar-sesion" component={Login} />
-                                <Route exact path="/validar-pregunta" component={ValidarPregunta} />
-                                <Route exact path="/nueva-contraseña" component={NuevaContraseña} />
-                                <Route exact path='/lista-servicios' component={ListadoServicios} />
-                                <Route exact path="/somos" component={Somos} />
-                                <Route exact path="/galeria" component={Galeria} />
-                                <Route exact path="/contacto" component={Contacto} />
-                                <Route exact path="/" component={Principal} />
-                              </Switch>
-                            </Router>
-                          </AuthState>
-                        </RespuestaState>
-                      </ConfiguracionState>
-                    </AlertaState>
-                  </ProductoState>
-                </ServicioState>
-              </EmpleadoSatate>
-            </ClienteState>
-          </AgendamientoState>
-        </CitaState>
-      </ClienteState>
-    </ReporteState>
+      <ReporteState>
+        <ClienteState>
+          <CitaState>
+            <AgendamientoState>
+              <ClienteState>
+                <EmpleadoSatate>
+                  <ServicioState>
+                    <ProductoState>
+                      <AlertaState>
+                        <ConfiguracionState>
+                          <RespuestaState>
+                            <AuthState>
+                              <Router>
+                                <Switch>
+                                  <RutaPrivada exact path="/inicio" component={Inicio} />
+                                  <RutaPrivada exact path="/nueva-cuenta" component={NuevaCuenta} />
+                                  <RutaPrivada exact path='/nuevo-servicio' component={NuevoServicio} />
+                                  <RutaPrivada exact path='/empleados' component={Empleados} />
+                                  <RutaPrivada exact path='/nuevo-empleado' component={NuevoEmpleado} />
+                                  <RutaPrivada exact path='/nuevo-producto' component={NuevoProducto} />
+                                  <RutaPrivada exact path='/productos' component={Productos} />
+                                  <RutaPrivada exact path="/nueva-pregunta" component={NuevaRespuesta} />
+                                  <RutaPrivada exact path='/servicios' component={Servicios} />
+                                  <RutaPrivada exact path="/agendamiento" component={Agendamientos} />
+                                  <RutaPrivada exact path='/clientes' component={Clientes} />
+                                  <RutaPrivada exact path='/nuevo-cliente' component={NuevoCliente} />
+                                  <RutaPrivada exact path='/citas' component={Citas} />
+                                  <RutaPrivada exact path='/reportes' component={Reportes} />
+                                  <RutaPrivada exact path='/puntos' component={Puntos} />
+                                  <Route exact path="/iniciar-sesion" component={Login} />
+                                  <Route exact path="/validar-pregunta" component={ValidarPregunta} />
+                                  <Route exact path="/nueva-contraseña" component={NuevaContraseña} />
+                                  <Route exact path='/lista-servicios' component={ListadoServicios} />
+                                  <Route exact path="/somos" component={Somos} />
+                                  <Route exact path="/galeria" component={Galeria} />
+                                  <Route exact path="/contacto" component={Contacto} />
+                                  <Route exact path="/" component={Principal} />
+                                </Switch>
+                              </Router>
+                            </AuthState>
+                          </RespuestaState>
+                        </ConfiguracionState>
+                      </AlertaState>
+                    </ProductoState>
+                  </ServicioState>
+                </EmpleadoSatate>
+              </ClienteState>
+            </AgendamientoState>
+          </CitaState>
+        </ClienteState>
+      </ReporteState>
   );
 }
 

@@ -60,6 +60,8 @@ const MenuPrincipal = () => {
                                 <ul className="submenu">
                                     <li><a href="/clientes">Lista de Clientes</a></li>
                                     <li><a href="/nuevo-cliente">Crear Cliente</a></li>
+                                    <li><a href="/puntos">Saldos</a></li>
+
                                 </ul>
                             </li>
                         ) : null}
@@ -81,6 +83,7 @@ const MenuPrincipal = () => {
 
                         {usuario?.rol !== '604e9ebe6e69f62dc4e181b6' ? (
                             <li><a href="/reportes">Reportes</a>
+
                                
                             </li>
                         ) : null}

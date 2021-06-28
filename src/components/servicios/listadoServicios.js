@@ -172,7 +172,7 @@ const ListadoServicios = () => {
                         <label>Nombre</label>
                         <input
                             type="text"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Nombre Servicio"
                             name="nombre"
                             value={nombre}
@@ -185,7 +185,7 @@ const ListadoServicios = () => {
                         <label>Precio</label>
                         <input
                             type="number"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Precio Servicio"
                             name="precio"
                             value={precio}
@@ -198,7 +198,7 @@ const ListadoServicios = () => {
                         <label>Duración</label>
                         <input
                             type="number"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Duración (Min)"
                             name="duracion"
                             value={duracion}
@@ -212,7 +212,7 @@ const ListadoServicios = () => {
                         <input
                             readOnly
                             type="text"
-                            className="input-text"
+                            className="form-control"
                             placeholder="Tipo"
                             name="tipo"
                             value={tipo}

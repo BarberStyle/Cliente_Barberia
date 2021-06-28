@@ -1,11 +1,18 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import CitaContext from '../../context/citas/citaContext';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import AgendamientoContext from '../../context/agendamiento/agendamientoContext';
+import ProductoContext from '../../context/productos/productoContext';
 import { makeStyles } from '@material-ui/core/styles';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+
 
 import {
     Table,
@@ -26,7 +33,12 @@ function buscandoFiltro(consult) {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
+        '& .MuiFormLabel-root':
+        {
+            fontSize: 14,
+            marginTop: -10
+
+        }
     },
     heading: {
         fontSize: theme.typography.pxToRem(18),
@@ -34,12 +46,16 @@ const useStyles = makeStyles((theme) => ({
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
-        width: 105
+        width: 265
 
     },
     formControl: {
-        minWidth: 200,
+        minWidth: 265,
 
+    },
+    text: {
+        fontSize: 14,
+        marginTop: -10
     }
 
 }));
@@ -53,10 +69,13 @@ const ListadoCitas = () => {
     const [modalEliminar, setModalEliminar] = useState(false);
     const [modalIncumplimiento, setModalIncumplimiento] = useState(false);
     const [modalLiberacion, setModalLiberacion] = useState(false);
-    const [puntos, guardarPuntos] = useState({
-        cantidad: '',
-        docCliente: ''
-    })
+    const [modalProducto, setModalProducto] = useState(false);
+    const [gasto, guardarGasto] = useState({
+        nombreProducto: '',
+        idCita: '',
+        medida: '',
+        cantidad: ''
+    });
 
     const [eliminable, guardarEliminable] = useState('');
     const [cita, guardarCita] = useState({
@@ -70,11 +89,12 @@ const ListadoCitas = () => {
         Estado: ''
     });
 
-    const { cantidad, docCliente } = puntos;
-
     const citaContext = useContext(CitaContext);
 
-    const { obtenerCitas, citas, eliminacionCita, actualizarCita } = citaContext;
+    const { obtenerCitas, citas, eliminacionCita, actualizarCita,liberacionPuntos } = citaContext;
+    const productoContext = useContext(ProductoContext);
+
+    const { productos, obtenerProductos } = productoContext;
 
 
     const [consulta, guardarConsulta] = useState({
@@ -83,13 +103,11 @@ const ListadoCitas = () => {
 
     const { consult } = consulta;
 
-    const agendamientoContext = useContext(AgendamientoContext);
-
-    const { estados } = agendamientoContext;
 
     useEffect(() => {
 
         obtenerCitas();
+        obtenerProductos();
         // eslint-disable-next-line
     }, []);
 
@@ -119,11 +137,7 @@ const ListadoCitas = () => {
             case 'Incumplida':
                 cita.Estado = 'Cumplida';
                 actualizarCita(cita);
-                break;
-            case 'Cumplida':
-                cita.Estado = 'Pendiente';
-                actualizarCita(cita);
-                calcularPuntos(cita.costo, cita.docCliente);
+                liberacionPuntos(cita);
                 break;
             default:
                 break;
@@ -138,10 +152,6 @@ const ListadoCitas = () => {
         guardarEliminable(cita._id);
     };
 
-    const cerrarModalEliminar = () => {
-        setModalEliminar(false);
-    }
-
     const mostrarModalIncumplimiento = (cita) => {
         setModalIncumplimiento(true);
         guardarCita(cita);
@@ -152,14 +162,11 @@ const ListadoCitas = () => {
         guardarCita(cita);
     }
 
-    const calcularPuntos = (costo, docCliente) => {
-        let cantidad = (5 / 100) * costo;
-        console.log(cantidad);
-
-        guardarPuntos(cantidad, docCliente)
-        console.log(puntos);
-
+    const mostrarModalProducto = (cita) => {
+        setModalProducto(true);
+        guardarCita(cita);
     }
+
 
     // revisar si hay empleados registrados
     if (citas.length === 0) {
@@ -186,6 +193,7 @@ const ListadoCitas = () => {
                     <Table className="table table-striped responsive">
                         <thead>
                             <tr>
+                                <th>Añadir Productos</th>
                                 <th>Doc. Cliente</th>
                                 <th>Servicio</th>
                                 <th>Doc. Empleado</th>
@@ -206,6 +214,14 @@ const ListadoCitas = () => {
                                     cita.horaFin = str1.toString(),
 
                                     <tr key={cita._id}>
+                                        <td>
+                                            <a
+                                                className="btn btn-info espaciado"
+                                                data-toggle="tooltip"
+                                                title="Añadir"
+                                                onClick={() => mostrarModalProducto(cita)}
+                                            ><AddBoxIcon /></a>
+                                        </td>
                                         <td>{cita.docCliente}</td>
                                         <td>{cita.Servicio}</td>
                                         <td>{cita.docEmpleado}</td>
@@ -242,7 +258,6 @@ const ListadoCitas = () => {
                                                 data-toggle="tooltip"
                                                 title="Eliminar"
                                                 onClick={() => mostrarModalEliminar(cita)}
-                                            // onClick={() => eliminarCita(cita)}
                                             ><HighlightOffIcon /></a>
                                         </td>
                                     </tr>
@@ -259,7 +274,6 @@ const ListadoCitas = () => {
                     <h3>Advertencia</h3>
                 </ModalHeader>
                 <ModalBody>
-                    <WarningRoundedIcon />
                     <div className="text-alert">
                         <span className="warning"><WarningRoundedIcon /></span><br></br>
                         ¿Seguro que desea eliminar la cita?
@@ -273,7 +287,7 @@ const ListadoCitas = () => {
 
                     <Button
                         color="danger"
-                        onClick={() => cerrarModalEliminar()}
+                        onClick={() => setModalEliminar(false)}
                     > Cancelar </Button>
                 </ModalFooter>
             </Modal>
@@ -318,6 +332,67 @@ const ListadoCitas = () => {
                     <Button
                         color="danger"
                         onClick={() => setModalLiberacion(false)}
+                    > Cancelar </Button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={modalProducto}>
+                <ModalHeader>
+                    <h3>Gasto de Productos</h3>
+                </ModalHeader>
+                <ModalBody>
+                    <FormGroup>
+                        <label>Nombre</label>
+                        <select
+                            required
+                            className="form-control"
+                            name="idProducto"
+                        >
+                            <option>--Seleccione--</option>
+                            {productos ? (
+                                productos.map(producto => (
+                                    <option
+                                        key={producto._id}
+                                        value={producto._id}
+                                    >
+                                        {producto.nombre}
+                                    </option>
+                                )))
+                                :
+                                null}
+                        </select>
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Unidad de Medida</label>
+                        <select
+                            required
+                            className="form-control"
+                            name="idProducto"
+                        >
+                            <option >--Selecccione--</option>
+                            <option value='ML'>ML / GR</option>
+                            <option value='Unidad'>Unidad</option>
+                        </select>
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Cantidad</label>
+                        <input
+                            required
+                            className="form-control"
+                            name="cantidad"
+                            type="number"
+                        />
+                    </FormGroup>
+
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => eliminarCita(eliminable)}
+                    > Aceptar</Button>
+
+                    <Button
+                        color="danger"
+                        onClick={() => setModalProducto(false)}
                     > Cancelar </Button>
                 </ModalFooter>
             </Modal>

@@ -54,7 +54,6 @@ const ListadoProductos = () => {
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
 
-
         obtenerProductos();
         // eslint-disable-next-line
     }, []);
@@ -147,7 +146,7 @@ const ListadoProductos = () => {
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Descripción</th>
+                                <th>Unidad de Medida</th>
                                 <th>Precio</th>
                                 <th>Unidades</th>
                                 <th>Estado</th>
@@ -171,15 +170,15 @@ const ListadoProductos = () => {
 
                                             {producto.estado === 'Activo' ? (
                                                 <button
-                                                    className="btn btn-danger"
+                                                    className="btn btn-success"
                                                     onClick={() => cambiarEstado(producto)}
-                                                ><HighlightOffIcon /></button>
+                                                ><AssignmentTurnedInIcon /></button>
                                             ) :
                                                 (
                                                     <button
-                                                        className="btn btn-success"
+                                                        className="btn btn-danger"
                                                         onClick={() => cambiarEstado(producto)}
-                                                    > <AssignmentTurnedInIcon /> </button>
+                                                    > <HighlightOffIcon /> </button>
 
                                                 )}
 
@@ -215,7 +214,7 @@ const ListadoProductos = () => {
                         </FormGroup>
 
                         <FormGroup>
-                            <label>Descripción</label>
+                            <label>Unidad de Medida</label>
                             <input
                                 className="form-control"
                                 type="text"

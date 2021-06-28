@@ -1,7 +1,8 @@
 import {
     OBTENER,
     ELIMINAR,
-    ACTUALIZAR
+    ACTUALIZAR,
+    OBTENER_PUNTOS
 } from '../../types';
 
 export default (state, action) => {
@@ -20,6 +21,11 @@ export default (state, action) => {
             return {
                 ...state,
                 citas: state.citas.map(cita => cita._id === action.payload._id ? action.payload : cita)
+            }
+        case OBTENER_PUNTOS:
+            return {
+                ...state,
+                puntos: action.payload
             }
         default:
             return state;
