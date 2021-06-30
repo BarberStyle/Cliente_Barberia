@@ -167,7 +167,6 @@ const Ganancias = () => {
                                             <th>Servicio</th>
                                             <th>Fecha</th>
                                             <th>Costo</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>

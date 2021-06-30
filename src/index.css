@@ -537,6 +537,7 @@ img {
   border-radius: 25px;
   background-color: #dee2e6;
   padding: 0 32px 0 16px;
+  float: right;
 }
 
 .textField:hover {
@@ -550,12 +551,6 @@ img {
   text-align: center;
   align-items: center;
   justify-content: center;
-}
-
-.barraBusqueda {
-  float: right;
-  padding: 20px;
-  display: flex;
 }
 
 /*mensaje de campos obligatorios*/

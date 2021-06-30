@@ -24,103 +24,84 @@ function buscandoFiltro(consult) {
 
 const ListadoPuntos = () => {
 
+    let str1;
+    var puntajeTotal = 0;
+    let puntosCliente;
     const citaContext = useContext(CitaContext);
-    const { puntos, obtenerPuntaje } = citaContext;
+    const { puntos, obtenerPuntaje, actualizarPuntos,guardarPuntaje,puntaje } = citaContext;
     const [consulta, guardarConsulta] = useState({
         consult: ''
     });
 
-    const [editable, guardarEditable] = useState({
-        nombre: '',
-        descripcion: '',
-        precio: '',
-        foto: '',
-        disponibles: '',
-        estado: ''
-    })
-
-    const [modalActualizar, setModalActualizar] = useState(false);
-
-
+    const [modalCalcular, setModalCalcular] = useState(false);
+    const [cliente, guardarCliente] = useState({
+        documento: ''
+    });
     const { consult } = consulta;
-
-    const { nombre, descripcion, precio, foto, disponibles, estado } = editable;
+    const { documento } = cliente;
 
     // Obtener proyectos cuando carga el componente
     useEffect(() => {
-
         obtenerPuntaje();
         // eslint-disable-next-line
-    }, []);
+    }, [puntaje]);
 
     const onChangeBusqueda = e => {
-
         const { name, value } = e.target;
 
         guardarConsulta({
             ...consulta,
             [name]: value
         })
-
     }
-
-
-    const mostrarModalActualizar = (producto) => {
-        setModalActualizar(true);
-        guardarEditable(producto);
-
-    };
-
-    const cerrarModalActualizar = () => {
-        guardarEditable({
-            nombre: '',
-            descripcion: '',
-            precio: '',
-            foto: '',
-            disponibles: '',
-            estado: ''
-        });
-        setModalActualizar(false);
-    }
-
-    const editar = producto => {
-
-        setModalActualizar(false);
-
-        alert("Producto actualizado con éxito");
-
-    }
-
 
     const handleChange = (e) => {
-        guardarEditable({
-            ...editable,
+        guardarCliente({
+            ...cliente,
             [e.target.name]: e.target.value,
 
         });
     };
 
-    const cambiarEstado = producto => {
-        if (producto.estado === 'Activo') {
-            producto.estado = 'Inactivo';
+    const cambiarEstado = puntos => {
+        if (puntos.estado === 'Activo') {
+            puntos.estado = 'Inactivo';
         } else {
-            producto.estado = 'Activo'
+            puntos.estado = 'Activo'
         }
+        actualizarPuntos(puntos);
+
     }
 
+    const abrirModal = () => {
+        setModalCalcular(true);
+    }
+
+    const calcularPuntaje = () => {
+
+        puntosCliente = puntos.filter(punto => punto.docCliente == cliente.documento);
+        puntosCliente.map((punto) => {
+            puntajeTotal = punto.cantidad + puntajeTotal;
+        });
+        console.log(puntajeTotal);
+
+        guardarPuntaje(puntajeTotal);
+
+    }
 
     // revisar si puntos tiene contenido
     if (puntos.length === 0) {
         return <p>No hay puntos, comienza creando uno</p>
     }
 
-
     return (
         <Fragment>
             <div className="contenedor-basico sombra-dark">
                 <h1>Listado de Puntos</h1>
-
-                <div className="barraBusqueda">
+                <div className="mb-3">
+                    <button className="btn-outline-primary mt-0 btn-lg"
+                        onClick={() => abrirModal()}
+                    >Calcular Puntaje</button>
                     <input
                         type="number"
                         placeholder="Buscar"
@@ -130,8 +111,6 @@ const ListadoPuntos = () => {
                         onChange={onChangeBusqueda}
                     />
                 </div>
-
-                <br></br>
                 <Container >
                     <Table className="table table-striped">
                         <thead>
@@ -146,12 +125,14 @@ const ListadoPuntos = () => {
                         <tbody>
                             {puntos ? (
                                 puntos.filter(buscandoFiltro(consult)).map(punto => (
+
+                                    str1 = new Date(punto.creado),
+                                    punto.creado = str1.toDateString(),
                                     <tr key={punto._id}>
                                         <td>{punto.docCliente}</td>
                                         <td>{punto.cantidad}</td>
                                         <td>{punto.estado}</td>
                                         <td>{punto.creado}</td>
-
                                         <td>
                                             <button
                                                 className="btn btn-primary"
@@ -160,6 +141,7 @@ const ListadoPuntos = () => {
                                             {punto.estado === 'Activo' ? (
                                                 <button
                                                     className="btn btn-success"
+                                                    onClick={() => cambiarEstado(punto)}
                                                 ><AssignmentTurnedInIcon /></button>
                                             ) :
                                                 (
@@ -167,22 +149,51 @@ const ListadoPuntos = () => {
                                                         className="btn btn-danger"
                                                         onClick={() => cambiarEstado(punto)}
                                                     > <HighlightOffIcon /> </button>
-
                                                 )}
-
                                         </td>
-
                                     </tr>
                                 )))
                                 :
                                 null}
-
                         </tbody>
                     </Table>
                 </Container>
             </div>
+            <div className="modal">
+                <Modal isOpen={modalCalcular}>
+                    <ModalHeader>
+                        <div><h3>Calcular puntaje</h3></div>
+                    </ModalHeader>
 
-
+                    <ModalBody>
+                        <FormGroup>
+                            <label>Documento del cliente</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="documento"
+                                value={documento}
+                                onChange={handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <div>
+                                <span className="text-reportes">Puntaje Total : {puntaje}</span>
+                            </div>
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            color="primary"
+                            onClick={() => calcularPuntaje()}
+                        >Calcular</Button>
+                        <Button
+                            color="danger"
+                            onClick={() => setModalCalcular(false)}
+                        > Cancelar   </Button>
+                    </ModalFooter>
+                </Modal>
+            </div>
         </Fragment>
     );
 }

@@ -8,14 +8,16 @@ import {
     OBTENER,
     ERROR,
     ELIMINAR,
-    OBTENER_PUNTOS
+    OBTENER_PUNTOS,
+    GUARDAR_PUNTAJE
 } from '../../types';
 
 const CitaState = props => {
 
     const initialState = {
         citas: [],
-        puntos:[]
+        puntos: [],
+        puntaje: ''
 
     }
 
@@ -111,30 +113,17 @@ const CitaState = props => {
             estado: 'Activo'
         });
 
-        console.log(puntos);
         try {
             const resultado = await clienteAxios.post('/api/puntos', puntos);
-            // Insertar los puntos
-            // dispatch({
-            //     type: AGREGAR,
-            //     payload: resultado.data
-            // })
-        } catch (error) {
-            // console.log(error);
-            // const alerta = {
-            //     msg: error.response?.data.msg,
-            // }
 
-            // dispatch({
-            //     type: REGISTRO_ERROR,
-            //     payload: alerta
-            // })
+        } catch (error) {
+
         }
 
     }
 
-      // Obtener las citas
-      const obtenerPuntaje = async () => {
+    // Obtener las citas
+    const obtenerPuntaje = async () => {
         try {
             const resultado = await clienteAxios.get('/api/puntos');
             dispatch({
@@ -153,18 +142,47 @@ const CitaState = props => {
         }
     }
 
+    const actualizarPuntos = async puntos => {
+        try {
+            const resultado = await clienteAxios.put(`/api/puntos/${puntos._id}`, puntos);
+            dispatch({
+                type: ACTUALIZAR,
+                payload: resultado.data.puntos
+            })
+        } catch (error) {
+            const alerta = {
+                msg: 'Hubo un error',
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type: ERROR,
+                payload: alerta
+            })
+        }
+    }
+
+    const guardarPuntaje = async puntosCliente => {
+        dispatch({
+            type: GUARDAR_PUNTAJE,
+            payload: puntosCliente
+        })
+    }
+
 
     return (
         <citaContext.Provider
             value={{
                 citas: state.citas,
                 puntos: state.puntos,
+                puntaje: state.puntaje,
                 obtenerCitas,
                 eliminacionCita,
                 actualizarCita,
                 obtenerCitasEmpleado,
                 liberacionPuntos,
-                obtenerPuntaje
+                obtenerPuntaje,
+                actualizarPuntos,
+                guardarPuntaje
             }}
         >
             {props.children}

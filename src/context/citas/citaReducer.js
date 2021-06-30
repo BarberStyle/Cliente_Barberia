@@ -2,7 +2,8 @@ import {
     OBTENER,
     ELIMINAR,
     ACTUALIZAR,
-    OBTENER_PUNTOS
+    OBTENER_PUNTOS,
+    GUARDAR_PUNTAJE
 } from '../../types';
 
 export default (state, action) => {
@@ -26,6 +27,11 @@ export default (state, action) => {
             return {
                 ...state,
                 puntos: action.payload
+            }
+        case GUARDAR_PUNTAJE:
+            return {
+                ...state,
+                puntaje: action.payload
             }
         default:
             return state;
